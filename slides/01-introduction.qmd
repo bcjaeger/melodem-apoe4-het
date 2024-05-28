@@ -155,3 +155,15 @@ create_from_github("bcjaeger/melodem-apoe4-het",
 ```{=html}
 <iframe width="1280" height="550" src="https://books.ropensci.org/targets/" title="Webpage example"></iframe>
 ```
+
+## Your turn
+
+1. Open `_targets.R` in the `melodem-apoe4-het` project and skim it.
+1. Run `tar_glimpse()` to inspect the pipeline.
+1. Run `tar_make()` to make the pipeline.
+
+Red sticky note if you encounter an error
+
+Green sticky note when you have successfully made the pipeline
+
+

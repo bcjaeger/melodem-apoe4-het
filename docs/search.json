@@ -102,6 +102,20 @@
     "href": "slides/01-introduction.html#introducing-targets",
     "title": "MELODEM data workshop",
     "section": "Introducing targets",
-    "text": "Introducing targets\n\n\n\nSlides available at https://byronjaeger.com/talk"
+    "text": "Introducing targets"
+  },
+  {
+    "objectID": "slides/01-introduction.html#your-turn",
+    "href": "slides/01-introduction.html#your-turn",
+    "title": "MELODEM data workshop",
+    "section": "Your turn",
+    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project and skim it.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nRed sticky note if you encounter an error\nGreen sticky note when you have successfully made the pipeline"
+  },
+  {
+    "objectID": "slides/01-introduction.html#viewing-the-pipeline",
+    "href": "slides/01-introduction.html#viewing-the-pipeline",
+    "title": "MELODEM data workshop",
+    "section": "Viewing the pipeline",
+    "text": "Viewing the pipeline\n\n\nhere() starts at D:/melodem-apoe4-het\n\n\n\n\n\n\n\n\nSlides available at https://byronjaeger.com/talk"
   }
 ]

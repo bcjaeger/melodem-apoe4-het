@@ -8,7 +8,6 @@ data_prepare <- function(cohort_name, ...){
     data_select() %>%
     data_exclude(...)
 
-  browser()
   check_names(output$values,
               c("age", "sex", "apoe4", "time", "status"))
 
