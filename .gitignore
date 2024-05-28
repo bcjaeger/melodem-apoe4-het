@@ -60,4 +60,6 @@ data/sensitive/
 
 /.quarto/
 .DS_Store
+/_site/
+
 
