@@ -1,0 +1,107 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Methods in longitudinal dementia research workshop",
+    "section": "",
+    "text": "These are the materials for the MEthods in LOngitudinal DEMentia (MELODEM) workshops offered at Château de Bellinglise, France, July 2024.\nThe workshop focuses on the use of random forests to predict dementia risk and identify heterogeneity in the association between APOE4 and dementia risk. This website hosts the materials for the workshop and the corresponding GitHub repository (todo: add link here) includes additional materials for manuscript development."
+  },
+  {
+    "objectID": "index.html#welcome",
+    "href": "index.html#welcome",
+    "title": "Methods in longitudinal dementia research workshop",
+    "section": "",
+    "text": "These are the materials for the MEthods in LOngitudinal DEMentia (MELODEM) workshops offered at Château de Bellinglise, France, July 2024.\nThe workshop focuses on the use of random forests to predict dementia risk and identify heterogeneity in the association between APOE4 and dementia risk. This website hosts the materials for the workshop and the corresponding GitHub repository (todo: add link here) includes additional materials for manuscript development."
+  },
+  {
+    "objectID": "index.html#preparation",
+    "href": "index.html#preparation",
+    "title": "Methods in longitudinal dementia research workshop",
+    "section": "Preparation",
+    "text": "Preparation\nPlease join the workshop with a computer that has the following installed (all available for free):\n\nA recent version of R, available at https://cran.r-project.org/\nA recent version of RStudio Desktop (RStudio Desktop Open Source License, at least v2022.02), available at https://posit.co/download/rstudio-desktop/\nA recent version of git, available at https://git-scm.com/downloads\nThe following R packages, which you can install from the R console:\n\n\n# Install the packages for the workshop\npkgs &lt;- \n  c(\"bonsai\", \"doParallel\", \"embed\", \"finetune\", \"lightgbm\", \"lme4\",\n    \"plumber\", \"probably\", \"ranger\", \"rpart\", \"rpart.plot\", \"rules\",\n    \"splines2\", \"stacks\", \"text2vec\", \"textrecipes\", \"tidymodels\", \n    \"vetiver\", \"remotes\")\n\ninstall.packages(pkgs)\n\nIf you’re a Windows user and encounter an error message during installation noting a missing Rtools installation, install Rtools using the installer linked here.\n\nGitHub\nA major aim of the workshop will be to establish a baseline of collaboration for developing and publishing a manuscript. We will use GitHub to facilitate this.\n\nIf you do not have a GitHub account, please create one here: https://github.com/\nIf you have a GitHub account, make sure you have a personal access token for HTTPS stored in your local Rstudio. Instructions to do this are provided here: https://happygitwithr.com/https-pat\n\n\n\ntargets\nIn addition to using GitHub, we will also use targets to coordinate our workflow. There will be a brief tutorial for targets during the workshop, but getting familiar with this R package before the workshop is highly encouraged. A full textbook on targets is available: https://books.ropensci.org/targets/.\nReading the following sections prior to the workshop will be very helpful:\n\nIntroduction: https://books.ropensci.org/targets/#intro\nA walk through: https://books.ropensci.org/targets/walkthrough.html\nFunction-based workflow: https://books.ropensci.org/targets/functions.html"
+  },
+  {
+    "objectID": "index.html#slides",
+    "href": "index.html#slides",
+    "title": "Methods in longitudinal dementia research workshop",
+    "section": "Slides",
+    "text": "Slides\nThese slides are designed to use with live teaching and are published for workshop participants’ convenience. They are not meant as standalone learning materials.\n\nDay 1: Oblique and causal random forests\n\nIntroduction\n\n\n\nDay 2: Collaborative analysis and manuscript planning"
+  },
+  {
+    "objectID": "index.html#code",
+    "href": "index.html#code",
+    "title": "Methods in longitudinal dementia research workshop",
+    "section": "Code",
+    "text": "Code"
+  },
+  {
+    "objectID": "index.html#acknowledgments",
+    "href": "index.html#acknowledgments",
+    "title": "Methods in longitudinal dementia research workshop",
+    "section": "Acknowledgments",
+    "text": "Acknowledgments\n\nThis website, including the slides, is made with Quarto and is based on the fantastic workshops developed by the tidymodels team. Please submit an issue (todo: add link to github repo) on the GitHub repo for this workshop if you find something that could be fixed or improved."
+  },
+  {
+    "objectID": "index.html#reuse-and-licensing",
+    "href": "index.html#reuse-and-licensing",
+    "title": "Methods in longitudinal dementia research workshop",
+    "section": "Reuse and licensing",
+    "text": "Reuse and licensing\n\nUnless otherwise noted (i.e. not an original creation and reused from another source), these educational materials are licensed under Creative Commons Attribution CC BY-SA 4.0."
+  },
+  {
+    "objectID": "slides/01-introduction.html#hello-my-name-is-byron",
+    "href": "slides/01-introduction.html#hello-my-name-is-byron",
+    "title": "MELODEM data workshop",
+    "section": "Hello! My name is Byron",
+    "text": "Hello! My name is Byron\n\nI am an R enthusiast.\nI love dogs.\nI study risk  prediction + machine learning"
+  },
+  {
+    "objectID": "slides/01-introduction.html#schedule-for-day-1-morning",
+    "href": "slides/01-introduction.html#schedule-for-day-1-morning",
+    "title": "MELODEM data workshop",
+    "section": "Schedule for day 1: Morning",
+    "text": "Schedule for day 1: Morning\nIntroduction, data management (75m)\n\nBreak (15m)\n\nDecision trees and random forests (75m)\n\nBreak (15m)\n\nLunch (1 hour)"
+  },
+  {
+    "objectID": "slides/01-introduction.html#schedule-for-day-1-afternoon",
+    "href": "slides/01-introduction.html#schedule-for-day-1-afternoon",
+    "title": "MELODEM data workshop",
+    "section": "Schedule for day 1: Afternoon",
+    "text": "Schedule for day 1: Afternoon\nDevelop and evaluate prediction models (75m)\n\nBreak (15m)\n\nDevelop and evaluate causal models (75m)\n\nBreak (15m)\n\nCollaboration (1 hour)"
+  },
+  {
+    "objectID": "slides/01-introduction.html#schedule-for-day-2-morning",
+    "href": "slides/01-introduction.html#schedule-for-day-2-morning",
+    "title": "MELODEM data workshop",
+    "section": "Schedule for day 2: Morning",
+    "text": "Schedule for day 2: Morning\nReview and discuss manuscript aims (30m)\n\nAlign on aims and responsibilities\n\nThree break-out sessions (60m each)\n\nWork independently or in small groups (45m)\nProgress updates (10m)\nBreak (5m)\n\nWrap-up (30m)"
+  },
+  {
+    "objectID": "slides/01-introduction.html#set-up",
+    "href": "slides/01-introduction.html#set-up",
+    "title": "MELODEM data workshop",
+    "section": "Set-up",
+    "text": "Set-up\nEveryone should have a GitHub account and PAT stored in Rstudio\n\nOpen Rstudio\nCopy/paste code below, adjust destdir, and run\n\n\nlibrary(usethis)\n\ncreate_from_github(\"bcjaeger/melodem-apoe4-het\",\n                   destdir = \"path/of/your/choice\", \n                   fork = TRUE)\n\n\n\nSlides available at https://byronjaeger.com/talk"
+  },
+  {
+    "objectID": "slides/01-introduction.html#set-up-r-packages",
+    "href": "slides/01-introduction.html#set-up-r-packages",
+    "title": "MELODEM data workshop",
+    "section": "Set-up R packages",
+    "text": "Set-up R packages\nMake sure we all have up-to-date versions of these R packages:\n\n# Install the packages for the workshop\npkgs &lt;- \n  c(\"bonsai\", \"doParallel\", \"embed\", \"finetune\", \"lightgbm\", \"lme4\",\n    \"plumber\", \"probably\", \"ranger\", \"rpart\", \"rpart.plot\", \"rules\",\n    \"splines2\", \"stacks\", \"text2vec\", \"textrecipes\", \"tidymodels\", \n    \"vetiver\", \"remotes\")\n\ninstall.packages(pkgs)"
+  },
+  {
+    "objectID": "slides/01-introduction.html#set-up-github",
+    "href": "slides/01-introduction.html#set-up-github",
+    "title": "MELODEM data workshop",
+    "section": "Set-up GitHub",
+    "text": "Set-up GitHub\nMake sure we all have GitHub account with personal access token (PAT) stored in Rstudio\n\nOpen Rstudio\nCopy/paste code below, adjust destdir, and run\n\n\nlibrary(usethis)\n\ncreate_from_github(\"bcjaeger/melodem-apoe4-het\",\n                   destdir = \"path/of/your/choice\", \n                   fork = TRUE)"
+  },
+  {
+    "objectID": "slides/01-introduction.html#introducing-targets",
+    "href": "slides/01-introduction.html#introducing-targets",
+    "title": "MELODEM data workshop",
+    "section": "Introducing targets",
+    "text": "Introducing targets\n\n\n\nSlides available at https://byronjaeger.com/talk"
+  }
+]

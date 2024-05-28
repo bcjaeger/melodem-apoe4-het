@@ -1,0 +1,157 @@
+---
+title: "MELODEM data workshop"
+subtitle: "Introduction"
+author: "Byron C. Jaeger, PhD"
+institute: "Wake Forest University School of Medicine"
+format: 
+  revealjs:
+    slide-number: true
+    footer: Slides available at <https://byronjaeger.com/talk>
+    include-before-body: header.html
+    include-after-body: footer-annotations.html
+    theme: [default, tidymodels.scss]
+    width: 1280
+    height: 720
+---
+
+```{r setup, cache=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      dpi = 300,
+                      cache = TRUE,
+                      fig.height = 6,
+                      fig.align = 'center')
+
+```
+
+::: r-fit-text
+Welcome!
+:::
+
+::: columns
+::: {.column width="50%"}
+
+<center>
+
+### <i class="fa fa-wifi"></i>
+
+Wi-Fi network name
+
+`TODO-ADD-LATER`
+
+</center>
+
+:::
+
+::: {.column width="50%"}
+
+<center>
+
+### <i class="fa fa-key"></i>
+
+Wi-Fi password
+
+`TODO-ADD-LATER`
+
+</center>
+
+:::
+:::
+
+## Hello! My name is Byron 
+
+:::{.column width="25%"}
+I am an R enthusiast.
+
+I love dogs.
+
+I study risk <br/> prediction + machine learning
+:::
+
+:::{.column width="70%"}
+![](img/run_R_kids.png){width=90%}
+:::
+
+## Schedule for day 1: Morning
+
+*Introduction, data management (75m)*
+
+- Break (15m)
+
+*Decision trees and random forests (75m)*
+
+- Break (15m)
+
+**Lunch (1 hour)**
+
+## Schedule for day 1: Afternoon
+
+*Develop and evaluate prediction models (75m)*
+
+- Break (15m)
+
+*Develop and evaluate causal models (75m)*
+
+- Break (15m)
+
+**Collaboration (1 hour)**
+
+## Schedule for day 2: Morning
+
+*Review and discuss manuscript aims (30m)*
+
+- Align on aims and responsibilities
+
+*Three break-out sessions (60m each)*
+
+- Work independently or in small groups (45m)
+- Progress updates (10m)
+- Break (5m)
+
+**Wrap-up (30m)**
+
+# Part 1: Introduction and data management
+
+## Set-up R packages
+
+Make sure we all have up-to-date versions of these R packages:
+
+```{r}
+#| label: installs
+#| eval: false
+#| echo: true
+
+# Install the packages for the workshop
+pkgs <- 
+  c("bonsai", "doParallel", "embed", "finetune", "lightgbm", "lme4",
+    "plumber", "probably", "ranger", "rpart", "rpart.plot", "rules",
+    "splines2", "stacks", "text2vec", "textrecipes", "tidymodels", 
+    "vetiver", "remotes")
+
+install.packages(pkgs)
+```
+
+## Set-up GitHub
+
+Make sure we all have GitHub account with personal access token (PAT) stored in Rstudio
+
+1. Open Rstudio
+1. Copy/paste code below, adjust `destdir`, and run
+
+```{r, eval=FALSE, echo = TRUE}
+
+library(usethis)
+
+create_from_github("bcjaeger/melodem-apoe4-het",
+                   destdir = "path/of/your/choice", 
+                   fork = TRUE)
+
+```
+
+## Introducing `targets`
+
+```{=html}
+<iframe width="1280" height="550" src="https://books.ropensci.org/targets/" title="Webpage example"></iframe>
+```

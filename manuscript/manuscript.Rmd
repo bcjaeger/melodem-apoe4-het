@@ -1,0 +1,184 @@
+---
+title: "MELODEM Workshop Paper (title TBD)"
+bibliography: refs.bib
+csl: jama.csl
+always_allow_html: true
+output: 
+  officedown::rdocx_document:
+    reference_docx: style_manuscript_times_new_roman.docx
+    keep_md: true
+---
+
+
+```{r setup, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      dpi = 600, 
+                      fig.width = 11, 
+                      fig.height = 6)
+
+# unified specification for rounding in the paper.
+# if |value| is 0 to 1, round to 2 decimals
+# if |value| is 1 to 10, round to 1 decimal
+# if |value| is > 10, round to 0 decimals
+rspec <- round_spec() |>
+  round_using_magnitude(digits = c(2, 1, 0),
+                        breaks = c(1, 10, Inf))
+
+# save it to options:
+names(rspec) <- paste('table.glue', names(rspec), sep = '.')
+options(rspec)
+
+# make a short name for table.glue::table_value - this makes
+# the inline reporting of results less complicated to read.
+tv <- table_value
+tg <- table_glue
+
+
+# default is double space 
+# single spacing for title page, abstract, captions
+single_par <- fp_par(line_spacing=1)
+
+# default page margins
+margins_normal <- page_mar(bottom = 2.54 * 0.3937, 
+                           top    = 2.54 * 0.3937, 
+                           right  = 2.54 * 0.3937, 
+                           left   = 2.54 * 0.3937,
+                           gutter = 0)
+
+plain_text <- function(x){
+  paste(x[[1]]$txt, collapse = '')
+}
+
+
+```
+
+Your name here, your degree,^1^ 
+
+^1^Your department, University, City, State. `r single_par`
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+**Correspondence to:**\
+Byron C. Jaeger, PhD\
+Department of Biostatistics and Data Science\
+Division of Public Health Sciences\
+Wake Forest School of Medicine\
+Medical Center Boulevard\
+Winston-Salem, NC 27154\
+336-716-6956\
+[bjaeger\@wakehealth.edu](mailto:bjaeger@wakehealth.edu){.email} `r single_par`
+
+**Word Count:** Abstract: ; Manuscript: 
+
+\newpage
+
+```{r load-targets}
+
+withr::with_dir(
+  here::here(),
+  code = {
+    targets::tar_load(
+      names = c("data_sim_1",
+                "data_sim_2",
+                "data_pooled",
+                "bm_risk")
+    )
+  }
+)
+
+```
+
+
+# ABSTRACT
+
+\newpage
+
+# INTRODUCTION
+
+
+Here's how to cite one thing.[@r_language]
+
+Here's how to cite two or more things.[@ambrosius_design_2014; @sprint_research_group_randomized_2015]
+
+# METHODS
+
+Chronic kidney disease was defined by `r labels$definitions$ckd`
+
+# RESULTS
+
+# DISCUSSION
+
+\newpage
+
+# REFERENCES
+
+<div id="refs"></div>
+
+\newpage
+
+# ACKNOWLEDGMENTS 
+
+# FINANCIAL DISCLOSURE 
+
+```{r tbl_footers}
+
+
+
+```
+
+
+
+<!-- new page not needed at the end of a block section -->
+
+```{r}
+
+block_section(
+  prop_section(
+    page_size = page_size(orient = "portrait"),
+    type = "continuous",
+    page_margins = margins_normal
+  )
+)
+
+```
+
+To make a landscape section, use the block_section code here. Note that the section will be applied to all content prior to the block reaching up to the most recent block.
+
+```{r echo = TRUE}
+
+block_section(
+  prop_section(
+    page_size = page_size(orient = "landscape"),
+    page_margins = page_mar(bottom = 1/8, top = 1/8, 
+                            right = 1/4, left = 1/4),
+    type = "continuous"
+  )
+)
+```
+
+
+To switch back to regular portrait section, add another portrait block. Notice how the block below acts on all content above it up to the prior block.
+
+
+```{r echo = TRUE}
+block_section(
+  prop_section(
+    page_size = page_size(orient = "portrait"),
+    type = "continuous",
+    page_margins = margins_normal
+  )
+)
+```
+
