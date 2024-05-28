@@ -117,5 +117,12 @@
     "title": "MELODEM data workshop",
     "section": "Viewing the pipeline",
     "text": "Viewing the pipeline\n\n\nhere() starts at D:/melodem-apoe4-het\n\n\n\n\n\n\n\n\nSlides available at https://byronjaeger.com/talk"
+  },
+  {
+    "objectID": "slides/01-introduction.html",
+    "href": "slides/01-introduction.html",
+    "title": "MELODEM data workshop",
+    "section": "",
+    "text": "knitr::opts_chunk$set(echo = FALSE, \n                      message = FALSE,\n                      warning = FALSE,\n                      dpi = 300,\n                      cache = TRUE,\n                      fig.height = 6,\n                      fig.align = 'center')"
   }
 ]

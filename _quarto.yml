@@ -11,9 +11,9 @@ website:
   description: "This workshop provides an introduction to oblique and causal random forests. Oblique random forests are used for dementia risk prediction and causal random forests are used to identify heterogeneity in the association between APOE4 and dementia."
   open-graph: true
   twitter-card: false
-  # site-url: https://workshops.tidymodels.org
-  # repo-url: https://github.com/tidymodels/workshops
-  # repo-actions: [edit, issue]
+  site-url: https://bcjaeger.github.io/melodem-apoe4-het/
+  repo-url: https://github.com/bcjaeger/melodem-apoe4-het
+  repo-actions: [edit, issue]
   favicon: "favicon.ico"
 
   navbar:
