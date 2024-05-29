@@ -1,7 +1,8 @@
 ---
 format:
   html:
-    toc: false
+    toc: true
+    toc-location: right
 ---
 
 ## Welcome
