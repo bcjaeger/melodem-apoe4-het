@@ -1,8 +1,8 @@
 
 
-data_prepare <- function(cohort_name, ...){
+data_prepare <- function(file_name, ...){
 
-  output <- data_load(cohort_name) %>%
+  output <- data_load(file_name) %>%
     data_clean() %>%
     data_derive() %>%
     data_select() %>%

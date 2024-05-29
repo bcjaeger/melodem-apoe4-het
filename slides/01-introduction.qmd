@@ -158,12 +158,88 @@ create_from_github("bcjaeger/melodem-apoe4-het",
 
 ## Your turn
 
-1. Open `_targets.R` in the `melodem-apoe4-het` project and skim it.
+1. Open `_targets.R` in the `melodem-apoe4-het` project.
 1. Run `tar_glimpse()` to inspect the pipeline.
 1. Run `tar_make()` to make the pipeline.
 
 Red sticky note if you encounter an error
 
 Green sticky note when you have successfully made the pipeline
+
+## Working together, separately.
+
+Why do we need all the bells and whistles?
+
+- Management of multiple datasets (`targets`)
+
+- Coordinating analyses over these datasets (`targets`)
+
+- Large amount of code from multiple authors (GitHub)
+
+- Collaborative discussions in public makes better science (GitHub)
+
+## Start with data management
+
+In the `_targets.R` file: 
+
+::: columns
+::: {.column width="50%"}
+
+```{r, eval = FALSE, echo = TRUE}
+
+file_sim_1_tar <- tar_target(
+  file_sim_1,
+  command = "data/sim_1-raw.csv",
+  format = 'file'
+)
+
+data_sim_1_tar <- tar_target(
+  data_sim_1,
+  data_prepare(file_sim_1, 
+               age_range = c(55, 80))
+)
+
+```
+
+:::
+
+::: {.column width="50%"}
+
+![](diagram/targets-vis-data_sim_1.png){width=90%}
+
+:::
+:::
+
+This will be done with your data, too!
+
+---
+
+## Your turn 
+
+We are going to add your data to the pipeline, carefully.
+
+1. Think of a name and label for your data.
+
+    + Example name: regards
+    
+    + Example label: Reasons for Geographic and Racial Differences in Stroke
+
+Verify you have no uncommited changes:
+
+```{git, echo = TRUE, eval = FALSE}
+git status
+```
+
+1. Create a new branch with git:
+
+```{git, echo = TRUE, eval = FALSE}
+git branch -b regards
+```
+
+
+
+
+
+
 
 

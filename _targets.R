@@ -15,6 +15,7 @@ tar_option_set(
     "tidyverse",  # general data management
     "tidymodels", # general data management
     "data.table", # general data management
+    "haven",      # reading sas files
     "magrittr",   # pipes!
     "glue",       # string management
     "grf",        # causal random forests
@@ -41,8 +42,6 @@ assert_data_safety()
 
 # Globals -----------------------------------------------------------------
 
-age_range <- c(55, 80)
-
 manuscript_version <- 1
 
 # Individual cohort targets -----------------------------------------------
@@ -55,8 +54,7 @@ file_sim_1_tar <- tar_target(
 
 data_sim_1_tar <- tar_target(
   data_sim_1,
-  data_prepare(cohort_name = 'sim_1',
-               age_range = age_range)
+  data_prepare(file_sim_1, age_range = c(55, 80))
 )
 
 file_sim_2_tar <- tar_target(
@@ -67,8 +65,7 @@ file_sim_2_tar <- tar_target(
 
 data_sim_2_tar <- tar_target(
   data_sim_2,
-  data_prepare(cohort_name = 'sim_2',
-               age_range = age_range)
+  data_prepare(file_sim_2, age_range = c(55, 80))
 )
 
 # real data cohorts (to be uncommented during exercise)
@@ -128,7 +125,9 @@ manuscript_tar <- tar_render(
 # Finalize targets --------------------------------------------------------
 
 targets <- list(
+  file_sim_1_tar,
   data_sim_1_tar,
+  file_sim_2_tar,
   data_sim_2_tar,
   data_pooled_tar,
   bm_risk_tar,

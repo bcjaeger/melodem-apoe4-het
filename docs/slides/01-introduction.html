@@ -518,12 +518,61 @@ Byron C. Jaeger, PhD
 <section id="your-turn" class="slide level2">
 <h2>Your turn</h2>
 <ol type="1">
-<li>Open <code>_targets.R</code> in the <code>melodem-apoe4-het</code> project and skim it.</li>
+<li>Open <code>_targets.R</code> in the <code>melodem-apoe4-het</code> project.</li>
 <li>Run <code>tar_glimpse()</code> to inspect the pipeline.</li>
 <li>Run <code>tar_make()</code> to make the pipeline.</li>
 </ol>
 <p>Red sticky note if you encounter an error</p>
 <p>Green sticky note when you have successfully made the pipeline</p>
+</section>
+<section id="working-together-separately." class="slide level2">
+<h2>Working together, separately.</h2>
+<p>Why do we need all the bells and whistles?</p>
+<ul>
+<li><p>Management of multiple datasets (<code>targets</code>)</p></li>
+<li><p>Coordinating analyses over these datasets (<code>targets</code>)</p></li>
+<li><p>Large amount of code from multiple authors (GitHub)</p></li>
+<li><p>Collaborative discussions in public makes better science (GitHub)</p></li>
+</ul>
+</section>
+<section id="start-with-data-management" class="slide level2">
+<h2>Start with data management</h2>
+<p>In the <code>_targets.R</code> file:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-3_23e2a2543754b50199fd30959160533f">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>file_sim_1_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  file_sim_1,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="at">command =</span> <span class="st">"data/sim_1-raw.csv"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="at">format =</span> <span class="st">'file'</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a>data_sim_1_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  data_sim_1,</span>
+<span id="cb3-9"><a href="#cb3-9"></a>  <span class="fu">data_prepare</span>(file_sim_1, </span>
+<span id="cb3-10"><a href="#cb3-10"></a>               <span class="at">age_range =</span> <span class="fu">c</span>(<span class="dv">55</span>, <span class="dv">80</span>))</span>
+<span id="cb3-11"><a href="#cb3-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="diagram/targets-vis-data_sim_1.png" style="width:90.0%"></p>
+</div>
+</div>
+<p>This will be done with your data, too!</p>
+</section>
+<section id="your-turn-1" class="slide level2">
+<h2>Your turn</h2>
+<p>We are going to add your data to the pipeline, carefully.</p>
+<ol type="1">
+<li><p>Think of a name and label for your data.</p>
+<ul>
+<li><p>Example name: regards</p></li>
+<li><p>Example label: Reasons for Geographic and Racial Differences in Stroke</p></li>
+</ul></li>
+<li><p>Create a new branch with git:</p></li>
+</ol>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-4_333857d2c6d4a5f6c6a700bd64673f37">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource git number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href="#cb4-1"></a>git branch -b regards</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 <div class="footer footer-default">
 <p>Slides available at <a href="https://byronjaeger.com/talk" class="uri">https://byronjaeger.com/talk</a></p>

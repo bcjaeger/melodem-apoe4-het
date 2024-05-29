@@ -1,23 +1,27 @@
 
 
+data_load <- function(file_path){
 
-data_load <- function(cohort_name = 'sim_1'){
+  file_name <- file_path %>%
+    str_split('/', simplify = TRUE) %>%
+    last()
 
-  if(cohort_name %in% c('sim_1', 'sim_2')){
-    fname <- glue("data/{cohort_name}-raw.csv")
-  } else {
-    fname <- glue("data/sensitive/{cohort_name}-raw.csv")
+  cohort_name <- file_name %>%
+    str_remove("-raw.*$")
+
+  file_type <- file_name %>%
+    str_remove(paste(cohort_name, 'raw', sep = '-'))
+
+  if(!file_type %in% c('.csv', '.sas7bdat')){
+    stop("file type ", file_type, " not supported. Can you convert your file",
+         " to a .csv or .sas7bdat type?", call. = FALSE)
   }
 
   cohort_label <- getOption('cohorts')[cohort_name] %||% cohort_name
 
-  if(!file.exists(fname)){
-    stop(glue("{fname} not found - did you save \\
-              your data in data/sensitive and name it \\
-              {cohort_name}-raw.csv?"))
-  }
-
-  data_input <- read_csv(fname)
+  data_input <- switch(file_type,
+                       '.csv' = read_csv(file_path),
+                       '.sas7bdat' = read_sas(file_path))
 
   output <- structure(
     .Data = list(

@@ -53,7 +53,7 @@
     "href": "slides/01-introduction.html#your-turn",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project and skim it.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nRed sticky note if you encounter an error\nGreen sticky note when you have successfully made the pipeline\n\n\nSlides available at https://byronjaeger.com/talk"
+    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nRed sticky note if you encounter an error\nGreen sticky note when you have successfully made the pipeline"
   },
   {
     "objectID": "index.html",
@@ -103,5 +103,26 @@
     "title": "Methods in longitudinal dementia research workshop",
     "section": "Reuse and licensing",
     "text": "Reuse and licensing\n\nUnless otherwise noted (i.e. not an original creation and reused from another source), these educational materials are licensed under Creative Commons Attribution CC BY-SA 4.0."
+  },
+  {
+    "objectID": "slides/01-introduction.html#working-together-separately.",
+    "href": "slides/01-introduction.html#working-together-separately.",
+    "title": "MELODEM data workshop",
+    "section": "Working together, separately.",
+    "text": "Working together, separately.\nWhy do we need all the bells and whistles?\n\nManagement of multiple datasets (targets)\nCoordinating analyses over these datasets (targets)\nLarge amount of code from multiple authors (GitHub)\nCollaborative discussions in public makes better science (GitHub)"
+  },
+  {
+    "objectID": "slides/01-introduction.html#start-with-data-management",
+    "href": "slides/01-introduction.html#start-with-data-management",
+    "title": "MELODEM data workshop",
+    "section": "Start with data management",
+    "text": "Start with data management\nIn the _targets.R file:\n\n\n\nfile_sim_1_tar &lt;- tar_target(\n  file_sim_1,\n  command = \"data/sim_1-raw.csv\",\n  format = 'file'\n)\n\ndata_sim_1_tar &lt;- tar_target(\n  data_sim_1,\n  data_prepare(file_sim_1, \n               age_range = c(55, 80))\n)\n\n\n\n\n\nThis will be done with your data, too!"
+  },
+  {
+    "objectID": "slides/01-introduction.html#your-turn-1",
+    "href": "slides/01-introduction.html#your-turn-1",
+    "title": "MELODEM data workshop",
+    "section": "Your turn",
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nThink of a name and label for your data.\n\nExample name: regards\nExample label: Reasons for Geographic and Racial Differences in Stroke\n\nCreate a new branch with git:\n\n\ngit branch -b regards\n\n\n\nSlides available at https://byronjaeger.com/talk"
   }
 ]
