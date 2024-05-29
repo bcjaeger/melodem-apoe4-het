@@ -218,25 +218,58 @@ This will be done with your data, too!
 
 We are going to add your data to the pipeline, carefully.
 
-1. Think of a name and label for your data.
+1. Think of a **name** and **label** for your data.
 
     + Example name: regards
     
     + Example label: Reasons for Geographic and Racial Differences in Stroke
 
-Verify you have no uncommited changes:
+2. Save a copy of your data in `data/sensitive`. The name of your file should be `name-raw.csv` or `name-raw.sas7bdat`, where `name` is your data's name. E.g., `regards-raw.csv`
+
+## Your turn 
+
+We are going to add your data to the pipeline, carefully.
+
+3. Switch from the R console to the terminal.
+
+4. Verify you have no uncommitted changes:
 
 ```{git, echo = TRUE, eval = FALSE}
 git status
 ```
 
-1. Create a new branch with git:
+Should return "nothing to commit, working tree clean"
+
+5. Create a new branch with git:
 
 ```{git, echo = TRUE, eval = FALSE}
 git branch -b regards
 ```
 
+## Your turn 
 
+We are going to add your data to the pipeline, carefully.
+
+6. Modify the code below in `_targets.R`, replacing `x` with the name of your data.
+
+```{r, echo=TRUE, eval=FALSE}
+
+# real data cohorts (to be uncommented during exercise)
+
+file_x_tar <- tar_target(               # <--- replace x with your data's name
+  file_x,                               # <--- replace x with your data's name
+  command = "data/sensitive/x-raw.csv", # <--- replace x with your data's name
+  format = 'file'
+)
+
+data_x_tar <- tar_target(         # <--- replace x with your data's name
+  data_x,                         # <--- replace x with your data's name
+  data_prepare(cohort_name = 'x') # <--- replace x with your data's name
+)
+
+```
+
+7. run `tar_make()` in the R console. 
 
 
 

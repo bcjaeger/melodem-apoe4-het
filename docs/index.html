@@ -155,6 +155,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>These are the materials for the MEthods in LOngitudinal DEMentia (<a href="http://www.melodem.org/">MELODEM</a>) workshops offered at Château de Bellinglise, France, July 2024.</p>
 <p>The workshop focuses on the use of random forests to predict dementia risk and identify heterogeneity in the association between APOE4 and dementia risk. This website hosts the materials for the workshop and the corresponding GitHub repository (todo: add link here) includes additional materials for manuscript development.</p>
 </section>
+<section id="data-set-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="data-set-requirements">Data set requirements</h2>
+<p>Data sets <strong>must</strong> have the following characteristics:</p>
+<ul>
+<li>a right-censored time-to-dementia outcome.</li>
+<li>data on APOE4 (any vs none, at minimum).</li>
+<li>data on age and sex.</li>
+<li>You personally are able to access it from the venue in France (e.g., Wifi, hard drive)</li>
+</ul>
+<p>If the dataset doesn’t meet all of these criteria, it will not be eligible for the workshop analysis.</p>
+<p>For efficiency during the workshop, please ensure the names of the required variables are as follows:</p>
+<ul>
+<li>Time to dementia should be named ‘time’ and should be numeric time in years from baseline assessment to the time of censoring, death, or dementia, whichever occurred first.</li>
+<li>Dementia status should be named ‘status’ and should take values of 0 or 1, with 1 occurring if and only if dementia occurred before censoring and death.</li>
+<li>Apoe4 should be named ‘apoe4’ and should have values of ‘carrier’ vs.&nbsp;‘non_carrier’. Keep this binary for the sake of using it in causal random forests.</li>
+<li>Age should be named ‘age’ and should be numeric with age in years.</li>
+<li>Sex should be named ‘sex’ and should include values of ‘male’ or ‘female’. This does not need to be binary if your data have a large sample (i.e., &gt; 250 observations with &gt;10 dementia events) of people who do not identify in either of those two categories</li>
+</ul>
+<p>Data sets <em>should</em> have as many predictors of dementia risk possible. Predictors would include any variable that</p>
+<ul>
+<li>May be associated with dementia risk</li>
+<li>May be associated with APOE4 status</li>
+<li>Is not an effect of dementia or cognitive impairment</li>
+<li>May explain heterogeneity in the association of APOE4 with dementia risk.</li>
+</ul>
+<p>Data sets need not have an exhaustive set of predictors, but any predictors <em>must</em> be measured before or at the start of follow-up for the right-censored dementia outcome. Because the analysis will be exploratory and focus on the identifying heterogeneity in the association of APOE4 with incident dementia, we encourage everyone to include as many valid predictors from their data as feasible. A few examples include (but are not limited to):</p>
+<ul>
+<li>education,</li>
+<li>race/ethnicity,</li>
+<li>smoking history,</li>
+<li>mid-life htn,</li>
+<li>mid-life obesity,</li>
+<li>htn drugs and statins,</li>
+<li>SES,</li>
+<li>diabetes,</li>
+<li>renal disease,</li>
+<li>atrial fibrillation,</li>
+<li>cardiovascular disease,</li>
+<li>depression,</li>
+<li>head trauma,</li>
+<li>insomnia,</li>
+<li>orthostatic hypotension,</li>
+<li>family history of cognitive impairment,</li>
+<li>family history of Alzheimer’s Disease</li>
+</ul>
+</section>
 <section id="preparation" class="level2">
 <h2 class="anchored" data-anchor-id="preparation">Preparation</h2>
 <p>Please join the workshop with a computer that has the following installed (all available for free):</p>
@@ -165,14 +211,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>The following R packages, which you can install from the R console:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install the packages for the workshop</span></span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for the workshop</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"bonsai"</span>, <span class="st">"doParallel"</span>, <span class="st">"embed"</span>, <span class="st">"finetune"</span>, <span class="st">"lightgbm"</span>, <span class="st">"lme4"</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"plumber"</span>, <span class="st">"probably"</span>, <span class="st">"ranger"</span>, <span class="st">"rpart"</span>, <span class="st">"rpart.plot"</span>, <span class="st">"rules"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"splines2"</span>, <span class="st">"stacks"</span>, <span class="st">"text2vec"</span>, <span class="st">"textrecipes"</span>, <span class="st">"tidymodels"</span>, </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"vetiver"</span>, <span class="st">"remotes"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"tidymodels"</span>, <span class="st">"data.table"</span>, <span class="st">"haven"</span>, <span class="st">"magrittr"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"glue"</span>, <span class="st">"grf"</span>, <span class="st">"aorsf"</span>, <span class="st">"glmnet"</span>, <span class="st">"xgboost"</span>, <span class="st">"randomForestSRC"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"party"</span>, <span class="st">"riskRegression"</span>, <span class="st">"survival"</span>, <span class="st">"officer"</span>, <span class="st">"flextable"</span>, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"table.glue"</span>, <span class="st">"gtsummary"</span>)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># A few more packages may be added - this list isn't final yet.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you’re a Windows user and encounter an error message during installation noting a missing Rtools installation, install Rtools using the installer linked <a href="https://cran.r-project.org/bin/windows/Rtools/">here</a>.</p>
 <section id="github" class="level3">
@@ -199,9 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>These slides are designed to use with live teaching and are published for workshop participants’ convenience. They are not meant as standalone learning materials.</p>
 <section id="day-1-oblique-and-causal-random-forests" class="level3">
 <h3 class="anchored" data-anchor-id="day-1-oblique-and-causal-random-forests">Day 1: Oblique and causal random forests</h3>
-<ol type="1">
-<li><a href="slides/01-introduction.html" target="_blank">Introduction</a></li>
-</ol>
+<!-- 1. [Introduction](slides/01-introduction.html){target="_blank"} -->
 </section>
 <section id="day-2-collaborative-analysis-and-manuscript-planning" class="level3">
 <h3 class="anchored" data-anchor-id="day-2-collaborative-analysis-and-manuscript-planning">Day 2: Collaborative analysis and manuscript planning</h3>
@@ -219,10 +265,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- -   [Advanced: Model deployment](slides/extras-vetiver.html){target="_blank"} -->
 <!-- There's also a page for [slide annotations](slides/annotations.html){target="_blank"}; these are extra notes for selected slides. -->
 </section>
-</section>
-<section id="code" class="level2">
-<h2 class="anchored" data-anchor-id="code">Code</h2>
-<!-- Quarto files for working along [are available on GitHub](https://github.com/tidymodels/workshops/tree/main/classwork). (Don't worry if you haven't used Quarto before; it will feel familiar to R Markdown users.) -->
 </section>
 
 

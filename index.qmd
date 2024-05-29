@@ -10,6 +10,54 @@ These are the materials for the MEthods in LOngitudinal DEMentia ([MELODEM](http
 
 The workshop focuses on the use of random forests to predict dementia risk and identify heterogeneity in the association between APOE4 and dementia risk. This website hosts the materials for the workshop and the corresponding GitHub repository (todo: add link here) includes additional materials for manuscript development.
 
+## Data set requirements
+
+Data sets **must** have the following characteristics:
+
+- a right-censored time-to-dementia outcome.
+- data on APOE4 (any vs none, at minimum).
+- data on age and sex.
+- You personally are able to access it from the venue in France (e.g., Wifi, hard drive) 
+
+If the dataset doesn’t meet all of these criteria, it will not be eligible for the workshop analysis.
+
+For efficiency during the workshop, please ensure the names of the required variables are as follows: 
+
+- Time to dementia should be named ‘time’ and should be numeric time in years from baseline assessment to the time of censoring, death, or dementia, whichever occurred first.
+- Dementia status should be named ‘status’ and should take values of 0 or 1, with 1 occurring if and only if dementia occurred before censoring and death.
+- Apoe4 should be named ‘apoe4’ and should have values of ‘carrier’ vs. ‘non_carrier’. Keep this binary for the sake of using it in causal random forests.
+- Age should be named ‘age’ and should be numeric with age in years.
+- Sex should be named ‘sex’ and should include values of ‘male’ or ‘female’. This does not need to be binary if your data have a large sample (i.e., > 250 observations with >10 dementia events) of people who do not identify in either of those two categories
+
+Data sets *should* have as many predictors of dementia risk possible. Predictors would include any variable that 
+
+- May be associated with dementia risk 
+- May be associated with APOE4 status
+- Is not an effect of dementia or cognitive impairment 
+- May explain heterogeneity in the association of APOE4 with dementia risk.
+
+Data sets need not have an exhaustive set of predictors, but any predictors *must* be measured before or at the start of follow-up for the right-censored dementia outcome. Because the analysis will be exploratory and focus on the identifying heterogeneity in the association of APOE4 with incident dementia, we encourage everyone to include as many valid predictors from their data as feasible. A few examples include (but are not limited to):
+
+- education, 
+- race/ethnicity, 
+- smoking history, 
+- mid-life htn, 
+- mid-life obesity, 
+- htn drugs and statins,
+- SES,
+- diabetes,
+- renal disease,
+- atrial fibrillation, 
+- cardiovascular disease, 
+- depression, 
+- head trauma, 
+- insomnia, 
+- orthostatic hypotension, 
+- family history of cognitive impairment,
+- family history of Alzheimer’s Disease
+
+
+
 ## Preparation
 
 Please join the workshop with a computer that has the following installed (all available for free):
@@ -24,12 +72,14 @@ Please join the workshop with a computer that has the following installed (all a
 #| eval: false
 #| echo: true
 
-# Install the packages for the workshop
+# Install required packages for the workshop
 pkgs <- 
-  c("bonsai", "doParallel", "embed", "finetune", "lightgbm", "lme4",
-    "plumber", "probably", "ranger", "rpart", "rpart.plot", "rules",
-    "splines2", "stacks", "text2vec", "textrecipes", "tidymodels", 
-    "vetiver", "remotes")
+  c("tidyverse", "tidymodels", "data.table", "haven", "magrittr",
+    "glue", "grf", "aorsf", "glmnet", "xgboost", "randomForestSRC",
+    "party", "riskRegression", "survival", "officer", "flextable", 
+    "table.glue", "gtsummary")
+
+# A few more packages may be added - this list isn't final yet.
 
 install.packages(pkgs)
 ```
@@ -59,7 +109,7 @@ These slides are designed to use with live teaching and are published for worksh
 
 ### Day 1: Oblique and causal random forests
 
-1. [Introduction](slides/01-introduction.html){target="_blank"}
+<!-- 1. [Introduction](slides/01-introduction.html){target="_blank"} -->
 
 ### Day 2: Collaborative analysis and manuscript planning
 
@@ -80,10 +130,6 @@ These slides are designed to use with live teaching and are published for worksh
 
 
 <!-- There's also a page for [slide annotations](slides/annotations.html){target="_blank"}; these are extra notes for selected slides. -->
-
-## Code
-
-<!-- Quarto files for working along [are available on GitHub](https://github.com/tidymodels/workshops/tree/main/classwork). (Don't worry if you haven't used Quarto before; it will feel familiar to R Markdown users.) -->
 
 ## Acknowledgments {.appendix}
 
