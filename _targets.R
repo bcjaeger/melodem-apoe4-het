@@ -5,6 +5,7 @@
 # these need to be loaded when the pipeline starts
 library(targets)
 library(tarchetypes)
+library(magrittr)
 library(tibble)
 library(glue)
 library(here)
@@ -39,10 +40,11 @@ lapply(list.files("./R", full.names = TRUE), source)
 
 assert_data_safety()
 
-
 # Globals -----------------------------------------------------------------
 
 manuscript_version <- 1
+
+include_benchmark <- TRUE
 
 # Individual cohort targets -----------------------------------------------
 
@@ -68,18 +70,8 @@ data_sim_2_tar <- tar_target(
   data_prepare(file_sim_2, age_range = c(55, 80))
 )
 
-# real data cohorts (to be uncommented during exercise)
+# real data cohorts (to be added as an exercise)
 
-# file_x_tar <- tar_target(
-#   file_x,
-#   command = "data/sensitive/x-raw.csv",
-#   format = 'file'
-# )
-#
-# data_x_tar <- tar_target(
-#   data_x,
-#   data_prepare(cohort_name = 'x')
-# )
 
 # combining cohorts ----
 
@@ -130,16 +122,17 @@ targets <- list(
   file_sim_2_tar,
   data_sim_2_tar,
   data_pooled_tar,
-  bm_risk_tar,
-  bm_risk_all_tar,
   manuscript_tar
 )
+
+if(include_benchmark) targets %<>% c(bm_risk_tar,
+                                     bm_risk_all_tar)
 
 # hook not needed for tar_make() but is for tar_make_future().
 tar_hook_before(
   targets = targets,
   hook = {
-    # code run before each target
+    # code run (quietly) before each target
     lapply(list.files("./R", full.names = TRUE), source)
     source("conflicts.R")
     labels <- make_labels()

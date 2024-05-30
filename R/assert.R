@@ -9,6 +9,10 @@
 #' @export
 assert_data_safety <- function() {
 
+  if(!dir.exists('data/sensitive')){
+    dir.create('data/sensitive/')
+  }
+
   files_expected = c("sim_1-raw.csv",
                      "sim_2-raw.csv")
 

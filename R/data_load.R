@@ -3,7 +3,7 @@
 data_load <- function(file_path){
 
   file_name <- file_path %>%
-    str_split('/', simplify = TRUE) %>%
+    str_split_1('/') %>%
     last()
 
   cohort_name <- file_name %>%
