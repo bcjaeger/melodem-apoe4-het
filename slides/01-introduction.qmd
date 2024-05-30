@@ -254,26 +254,48 @@ We are going to add your data to the pipeline, carefully.
 
 ```{r, echo=TRUE, eval=FALSE}
 
-# real data cohorts (to be uncommented during exercise)
+# real data cohort
 
-file_x_tar <- tar_target(               # <--- replace x with your data's name
-  file_x,                               # <--- replace x with your data's name
-  command = "data/sensitive/x-raw.csv", # <--- replace x with your data's name
+file_x_tar <- tar_target(               # <--- replace x with your data name
+  file_x,                               # <--- replace x with your data name
+  command = "data/sensitive/x-raw.csv", # <--- replace x with your data name
   format = 'file'
 )
 
-data_x_tar <- tar_target(         # <--- replace x with your data's name
-  data_x,                         # <--- replace x with your data's name
-  data_prepare(cohort_name = 'x') # <--- replace x with your data's name
+data_x_tar <- tar_target(         # <--- replace x with your data name
+  data_x,                         # <--- replace x with your data name
+  data_prepare(cohort_name = 'x') # <--- replace x with your data name
 )
+
+# don't forget to add these targets to the targets list!
 
 ```
 
 7. run `tar_make()` in the R console. 
 
+## Your turn
 
+We are going to add your data to the pipeline, carefully.
 
+You should now be able to load and print your data target by running:
 
+```{r, echo=TRUE, eval=FALSE}
+
+# Im using the simulated data, but you should use your own
+tar_load(data_sim_1)
+
+print(data_sim_1)
+
+```
+
+```{r}
+withr::with_dir(
+  here::here(),
+  targets::tar_load(data_sim_1)
+)
+
+data_sim_1
+```
 
 
 

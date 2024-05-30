@@ -39,4 +39,3 @@ data_load <- function(file_path){
 
 
 
-

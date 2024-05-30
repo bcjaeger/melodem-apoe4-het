@@ -595,23 +595,67 @@ Byron C. Jaeger, PhD
 <ol start="6" type="1">
 <li>Modify the code below in <code>_targets.R</code>, replacing <code>x</code> with the name of your data.</li>
 </ol>
-<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-6_46e4610ac11d8c57279da4d479749dfa">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># real data cohorts (to be uncommented during exercise)</span></span>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-6_d5929792d2f5b7f8606a669e4a2e1ed7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># real data cohort</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a>file_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(               <span class="co"># &lt;--- replace x with your data's name</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>  file_x,                               <span class="co"># &lt;--- replace x with your data's name</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">command =</span> <span class="st">"data/sensitive/x-raw.csv"</span>, <span class="co"># &lt;--- replace x with your data's name</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>file_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(               <span class="co"># &lt;--- replace x with your data name</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>  file_x,                               <span class="co"># &lt;--- replace x with your data name</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">command =</span> <span class="st">"data/sensitive/x-raw.csv"</span>, <span class="co"># &lt;--- replace x with your data name</span></span>
 <span id="cb6-6"><a href="#cb6-6"></a>  <span class="at">format =</span> <span class="st">'file'</span></span>
 <span id="cb6-7"><a href="#cb6-7"></a>)</span>
 <span id="cb6-8"><a href="#cb6-8"></a></span>
-<span id="cb6-9"><a href="#cb6-9"></a>data_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(         <span class="co"># &lt;--- replace x with your data's name</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a>  data_x,                         <span class="co"># &lt;--- replace x with your data's name</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>  <span class="fu">data_prepare</span>(<span class="at">cohort_name =</span> <span class="st">'x'</span>) <span class="co"># &lt;--- replace x with your data's name</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-9"><a href="#cb6-9"></a>data_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(         <span class="co"># &lt;--- replace x with your data name</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>  data_x,                         <span class="co"># &lt;--- replace x with your data name</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>  <span class="fu">data_prepare</span>(<span class="at">cohort_name =</span> <span class="st">'x'</span>) <span class="co"># &lt;--- replace x with your data name</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>)</span>
+<span id="cb6-13"><a href="#cb6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co"># don't forget to add these targets to the targets list!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="7" type="1">
 <li>run <code>tar_make()</code> in the R console.</li>
 </ol>
+</section>
+<section id="your-turn-4" class="slide level2">
+<h2>Your turn</h2>
+<p>We are going to add your data to the pipeline, carefully.</p>
+<p>You should now be able to load and print your data target by running:</p>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-7_bee9ef3d1bc9309bd8b9ec64e61f8d65">
+<div class="cell-output cell-output-stdout">
+<pre><code>$values
+          time status    apoe4    sex      age biomarker_1 biomarker_2
+         &lt;num&gt;  &lt;int&gt;   &lt;fctr&gt; &lt;fctr&gt;    &lt;num&gt;       &lt;num&gt;       &lt;num&gt;
+  1: 3.7506123      0   normal female 66.27077  0.74731375 -0.74236839
+  2: 5.3167502      0 elevated female 65.51047 -0.56219488 -0.05134715
+  3: 5.6038076      0   normal   male 71.41878  0.01334597 -0.18433741
+  4: 2.0543598      0 elevated female 59.47485  0.79510234 -1.32408422
+  5: 5.7348479      0   normal female 58.47673 -0.29311302  0.19057088
+ ---                                                                  
+970: 1.1282494      0 elevated   male 68.48209  0.53282137  0.01593973
+971: 0.9051774      0   normal   male 62.12660 -0.55844364 -0.75512177
+972: 0.8827469      1 elevated   male 69.60501 -2.21147198 -0.30159205
+973: 3.1671329      1 elevated female 58.55714  1.05844645  0.50371917
+974: 2.5920184      0 elevated female 65.22391 -0.77325900  1.33985894
+1 variable(s) not shown: [biomarker_3 &lt;num&gt;]
+
+$exclusions
+# A tibble: 2 × 2
+  label              n_obs
+  &lt;glue&gt;             &lt;int&gt;
+1 sim_1 participants  1000
+2 Aged 55-80 years     974
+
+attr(,"class")
+[1] "sim_1"        "melodem_data"
+attr(,"label")
+[1] "sim_1"</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-8_5580cfdfe6c7c1804d156a07071f7483">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># im using the simulated data, but you should use your own</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">tar_load</span>(data_sim_1)</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">print</span>(data_sim_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 <div class="footer footer-default">
 <p>Slides available at <a href="https://byronjaeger.com/talk" class="uri">https://byronjaeger.com/talk</a></p>
