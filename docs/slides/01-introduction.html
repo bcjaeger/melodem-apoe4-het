@@ -482,33 +482,66 @@ Byron C. Jaeger, PhD
 <h1>Part 1: Introduction and data management</h1>
 
 </section>
+<section id="whole-game" class="slide level2">
+<h2>Whole game</h2>
+<p>First, you <strong>pull</strong> code down from the GitHub repo.</p>
+
+<img data-src="diagram/intro-whole-game-1.svg" class="r-stretch"></section>
+<section id="whole-game-1" class="slide level2">
+<h2>Whole game</h2>
+<p>Next, you <strong>commit</strong> code and summary results. <em>No data!</em></p>
+
+<img data-src="diagram/intro-whole-game-2.svg" class="r-stretch"></section>
+<section id="whole-game-2" class="slide level2">
+<h2>Whole game</h2>
+<p>Last, you <strong>push</strong> your code and summary results to the GitHub repo.</p>
+
+<img data-src="diagram/intro-whole-game-3.svg" class="r-stretch"></section>
+<section id="why-github" class="slide level2">
+<h2>Why GitHub?</h2>
+<p>So we can work together, separately!</p>
+<ul>
+<li><p>Store and coordinate code from multiple authors</p></li>
+<li><p>Public facing team science</p></li>
+<li><p>Free website for our work (i.e., this workshop).</p></li>
+</ul>
+</section>
 <section id="set-up-r-packages" class="slide level2">
 <h2>Set-up R packages</h2>
 <p>Make sure we all have up-to-date versions of these R packages:</p>
-<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/installs_10f5e6852ef3eec57a0fbac783bbf665">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Install the packages for the workshop</span></span>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/installs_1b2cd510bd76bf937c3d2051a96cae90">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Install required packages for the workshop</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>pkgs <span class="ot">&lt;-</span> </span>
-<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">c</span>(<span class="st">"bonsai"</span>, <span class="st">"doParallel"</span>, <span class="st">"embed"</span>, <span class="st">"finetune"</span>, <span class="st">"lightgbm"</span>, <span class="st">"lme4"</span>,</span>
-<span id="cb1-4"><a href="#cb1-4"></a>    <span class="st">"plumber"</span>, <span class="st">"probably"</span>, <span class="st">"ranger"</span>, <span class="st">"rpart"</span>, <span class="st">"rpart.plot"</span>, <span class="st">"rules"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5"></a>    <span class="st">"splines2"</span>, <span class="st">"stacks"</span>, <span class="st">"text2vec"</span>, <span class="st">"textrecipes"</span>, <span class="st">"tidymodels"</span>, </span>
-<span id="cb1-6"><a href="#cb1-6"></a>    <span class="st">"vetiver"</span>, <span class="st">"remotes"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"tidymodels"</span>, <span class="st">"data.table"</span>, <span class="st">"haven"</span>, <span class="st">"magrittr"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    <span class="st">"glue"</span>, <span class="st">"grf"</span>, <span class="st">"aorsf"</span>, <span class="st">"glmnet"</span>, <span class="st">"xgboost"</span>, <span class="st">"randomForestSRC"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5"></a>    <span class="st">"party"</span>, <span class="st">"riskRegression"</span>, <span class="st">"survival"</span>, <span class="st">"officer"</span>, <span class="st">"flextable"</span>, </span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="st">"table.glue"</span>, <span class="st">"gtsummary"</span>, <span class="st">"usethis"</span>, <span class="st">"cli"</span>)</span>
 <span id="cb1-7"><a href="#cb1-7"></a></span>
 <span id="cb1-8"><a href="#cb1-8"></a><span class="fu">install.packages</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="set-up-github" class="slide level2">
-<h2>Set-up GitHub</h2>
-<p>Make sure we all have GitHub account with personal access token (PAT) stored in Rstudio</p>
+<section id="pull" class="slide level2">
+<h2>Pull!</h2>
+<p>Make sure you have a GitHub account with personal access token (PAT) stored in Rstudio</p>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ol type="1">
 <li>Open Rstudio</li>
-<li>Copy/paste code below, adjust <code>destdir</code>, and run</li>
+<li>Copy/paste the code on this slide into an R script</li>
+<li><strong>Important</strong>: adjust <code>destdir</code></li>
+<li>Run</li>
 </ol>
-<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-2_95d79552d1c7ebbe201a0f3a717378d7">
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-2_2b3f7f03b65769661952463a14660cce">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(usethis)</span>
 <span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">create_from_github</span>(<span class="st">"bcjaeger/melodem-apoe4-het"</span>,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>                   <span class="at">destdir =</span> <span class="st">"path/of/your/choice"</span>, </span>
-<span id="cb2-5"><a href="#cb2-5"></a>                   <span class="at">fork =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">create_from_github</span>(</span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="st">"bcjaeger/melodem-apoe4-het"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="at">destdir =</span> <span class="st">"path/of/choice"</span>, </span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="at">fork =</span> <span class="cn">TRUE</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </div>
 </section>
 <section id="introducing-targets" class="slide level2">
@@ -522,17 +555,10 @@ Byron C. Jaeger, PhD
 <li>Run <code>tar_glimpse()</code> to inspect the pipeline.</li>
 <li>Run <code>tar_make()</code> to make the pipeline.</li>
 </ol>
-<p>Red sticky note if you encounter an error</p>
-<p>Green sticky note when you have successfully made the pipeline</p>
-</section>
-<section id="working-together-separately." class="slide level2">
-<h2>Working together, separately.</h2>
-<p>Why do we need all the bells and whistles?</p>
+<p>While you’re working,</p>
 <ul>
-<li><p>Management of multiple datasets (<code>targets</code>)</p></li>
-<li><p>Coordinating analyses over these datasets (<code>targets</code>)</p></li>
-<li><p>Large amount of code from multiple authors (GitHub)</p></li>
-<li><p>Collaborative discussions in public makes better science (GitHub)</p></li>
+<li><p>Place red sticky note on the back of your laptop if you want help.</p></li>
+<li><p>Place green sticky note on the back of your laptop when you finish.</p></li>
 </ul>
 </section>
 <section id="start-with-data-management" class="slide level2">
@@ -554,7 +580,7 @@ Byron C. Jaeger, PhD
 <span id="cb3-11"><a href="#cb3-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
-<p><img data-src="diagram/targets-vis-data_sim_1.png" style="width:90.0%"></p>
+<p><img data-src="diagram/targets-vis-data_sim_1.svg" style="width:90.0%"></p>
 </div>
 </div>
 <p>This will be done with your data, too!</p>
@@ -563,10 +589,9 @@ Byron C. Jaeger, PhD
 <h2>Your turn</h2>
 <p>We are going to add your data to the pipeline, carefully.</p>
 <ol type="1">
-<li><p>Think of a <strong>name</strong> and <strong>label</strong> for your data.</p>
+<li><p>Think of a <strong>name</strong> for your data.</p>
 <ul>
-<li><p>Example name: regards</p></li>
-<li><p>Example label: Reasons for Geographic and Racial Differences in Stroke</p></li>
+<li>Example name: regards</li>
 </ul></li>
 <li><p>Save a copy of your data in <code>data/sensitive</code>. The name of your file should be <code>name-raw.csv</code> or <code>name-raw.sas7bdat</code>, where <code>name</code> is your data’s name. E.g., <code>regards-raw.csv</code></p></li>
 </ol>
@@ -592,73 +617,230 @@ Byron C. Jaeger, PhD
 <section id="your-turn-3" class="slide level2">
 <h2>Your turn</h2>
 <p>We are going to add your data to the pipeline, carefully.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ol start="6" type="1">
-<li>Modify the code below in <code>_targets.R</code>, replacing <code>x</code> with the name of your data.</li>
+<li><p>Modify the code beside in <code>_targets.R</code>, replacing <code>x</code> with the name of your data.</p></li>
+<li><p>Run <code>tar_make()</code> in the R console.</p></li>
+<li><p>run <code>tar_load(data_x)</code>, where <code>x</code> is your data name, and print it</p></li>
 </ol>
-<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-6_d5929792d2f5b7f8606a669e4a2e1ed7">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># real data cohort</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a>file_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(               <span class="co"># &lt;--- replace x with your data name</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>  file_x,                               <span class="co"># &lt;--- replace x with your data name</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">command =</span> <span class="st">"data/sensitive/x-raw.csv"</span>, <span class="co"># &lt;--- replace x with your data name</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>  <span class="at">format =</span> <span class="st">'file'</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>)</span>
-<span id="cb6-8"><a href="#cb6-8"></a></span>
-<span id="cb6-9"><a href="#cb6-9"></a>data_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(         <span class="co"># &lt;--- replace x with your data name</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a>  data_x,                         <span class="co"># &lt;--- replace x with your data name</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>  <span class="fu">data_prepare</span>(<span class="at">cohort_name =</span> <span class="st">'x'</span>) <span class="co"># &lt;--- replace x with your data name</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a>)</span>
-<span id="cb6-13"><a href="#cb6-13"></a></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co"># don't forget to add these targets to the targets list!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-6_d65302e2d753aa48c5e01ac4eb0e02dd">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>file_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(               </span>
+<span id="cb6-2"><a href="#cb6-2"></a>  file_x,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="at">command =</span> <span class="st">"data/sensitive/x-raw.csv"</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="at">format =</span> <span class="st">"file"</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a>data_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(</span>
+<span id="cb6-8"><a href="#cb6-8"></a>  data_x,</span>
+<span id="cb6-9"><a href="#cb6-9"></a>  <span class="fu">data_prepare</span>(<span class="at">cohort_name =</span> <span class="st">"x"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10"></a>)</span>
+<span id="cb6-11"><a href="#cb6-11"></a></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co"># don't forget to add these targets</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co"># to the targets list at the bottom!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol start="7" type="1">
-<li>run <code>tar_make()</code> in the R console.</li>
-</ol>
+</div>
+</div>
 </section>
 <section id="your-turn-4" class="slide level2">
 <h2>Your turn</h2>
 <p>We are going to add your data to the pipeline, carefully.</p>
-<p>You should now be able to load and print your data target by running:</p>
-<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-7_bee9ef3d1bc9309bd8b9ec64e61f8d65">
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-7_7afdd751a7f77603ec51b23abe1d50e7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>data_sim_1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-8_25bf53049b63afa4758054a58c8a9ce0">
 <div class="cell-output cell-output-stdout">
-<pre><code>$values
-          time status    apoe4    sex      age biomarker_1 biomarker_2
-         &lt;num&gt;  &lt;int&gt;   &lt;fctr&gt; &lt;fctr&gt;    &lt;num&gt;       &lt;num&gt;       &lt;num&gt;
-  1: 3.7506123      0   normal female 66.27077  0.74731375 -0.74236839
-  2: 5.3167502      0 elevated female 65.51047 -0.56219488 -0.05134715
-  3: 5.6038076      0   normal   male 71.41878  0.01334597 -0.18433741
-  4: 2.0543598      0 elevated female 59.47485  0.79510234 -1.32408422
-  5: 5.7348479      0   normal female 58.47673 -0.29311302  0.19057088
- ---                                                                  
-970: 1.1282494      0 elevated   male 68.48209  0.53282137  0.01593973
-971: 0.9051774      0   normal   male 62.12660 -0.55844364 -0.75512177
-972: 0.8827469      1 elevated   male 69.60501 -2.21147198 -0.30159205
-973: 3.1671329      1 elevated female 58.55714  1.05844645  0.50371917
-974: 2.5920184      0 elevated female 65.22391 -0.77325900  1.33985894
-1 variable(s) not shown: [biomarker_3 &lt;num&gt;]
+<pre><code>------------------------------------- sim_1 ------------------------------------- 
+# A tibble: 974 × 8
+   time status apoe4    sex      age biomarker_1 biomarker_2 biomarker_3
+  &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+1  3.75      0 normal   female  66.3      0.747      -0.742       -1.71 
+2  5.32      0 elevated female  65.5     -0.562      -0.0513       0.546
+3  5.60      0 normal   male    71.4      0.0133     -0.184        0.826
+4  2.05      0 elevated female  59.5      0.795      -1.32        -1.28 
+5  5.73      0 normal   female  58.5     -0.293       0.191        2.54 
+# ℹ 969 more rows
 
-$exclusions
+ ----------------------------------  exclusions  ---------------------------------- 
 # A tibble: 2 × 2
   label              n_obs
   &lt;glue&gt;             &lt;int&gt;
 1 sim_1 participants  1000
-2 Aged 55-80 years     974
-
-attr(,"class")
-[1] "sim_1"        "melodem_data"
-attr(,"label")
-[1] "sim_1"</code></pre>
+2 Aged 55-80 years     974</code></pre>
 </div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-8_5580cfdfe6c7c1804d156a07071f7483">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># im using the simulated data, but you should use your own</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">tar_load</span>(data_sim_1)</span>
-<span id="cb8-3"><a href="#cb8-3"></a></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">print</span>(data_sim_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="data-management" class="slide level2">
+<h2>Data management</h2>
+<p>We used <code>data_prepare()</code> to make this object.</p>
+<p>Let’s check out what <code>data_prepare</code> does.</p>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-9_aabd90503e9ec94b826c3a1febc80f81">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>data_prepare <span class="ot">&lt;-</span> <span class="cf">function</span>(file_name, ...){</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  output <span class="ot">&lt;-</span> <span class="fu">data_load</span>(file_name) <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="fu">data_clean</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="fu">data_derive</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="fu">data_select</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>    <span class="fu">data_exclude</span>(...)</span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="fu">check_names</span>(output<span class="sc">$</span>values,</span>
+<span id="cb9-10"><a href="#cb9-10"></a>              <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"sex"</span>, <span class="st">"apoe4"</span>, <span class="st">"time"</span>, <span class="st">"status"</span>))</span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a>  output</span>
+<span id="cb9-13"><a href="#cb9-13"></a></span>
+<span id="cb9-14"><a href="#cb9-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="data-management-1" class="slide level2">
+<h2>Data management</h2>
+<p>We used <code>data_prepare()</code> to make this object.</p>
+<p>Let’s check out what <code>data_prepare</code> does. First, it loads the data</p>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-10_2c2b6b25f69827c29613066fb31032c6">
+<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>data_prepare <span class="ot">&lt;-</span> <span class="cf">function</span>(file_name, ...){</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  output <span class="ot">&lt;-</span> <span class="fu">data_load</span>(file_name) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="fu">data_clean</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>    <span class="fu">data_derive</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="fu">data_select</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="fu">data_exclude</span>(...)</span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a>  <span class="fu">check_names</span>(output<span class="sc">$</span>values,</span>
+<span id="cb10-10"><a href="#cb10-10"></a>              <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"sex"</span>, <span class="st">"apoe4"</span>, <span class="st">"time"</span>, <span class="st">"status"</span>))</span>
+<span id="cb10-11"><a href="#cb10-11"></a></span>
+<span id="cb10-12"><a href="#cb10-12"></a>  output</span>
+<span id="cb10-13"><a href="#cb10-13"></a></span>
+<span id="cb10-14"><a href="#cb10-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-management-2" class="slide level2">
+<h2>Data management</h2>
+<p>Let’s check out <code>data_load()</code>.</p>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-11_e057e988b417c80836cf88324bf81593">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>data_load <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="co"># ... file management code not shown ...</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>  </span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">structure</span>(</span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="at">.Data =</span> <span class="fu">list</span>(</span>
+<span id="cb11-7"><a href="#cb11-7"></a>      <span class="at">values =</span> data_input,</span>
+<span id="cb11-8"><a href="#cb11-8"></a>      <span class="at">exclusions =</span> <span class="fu">tibble</span>(<span class="at">label =</span> <span class="fu">glue</span>(<span class="st">"{cohort_name} participants"</span>),</span>
+<span id="cb11-9"><a href="#cb11-9"></a>                          <span class="at">n_obs =</span> <span class="fu">nrow</span>(data_input))</span>
+<span id="cb11-10"><a href="#cb11-10"></a>    ),</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    <span class="at">class =</span> <span class="fu">c</span>(cohort_name, <span class="st">'melodem_data'</span>),</span>
+<span id="cb11-12"><a href="#cb11-12"></a>    <span class="at">label =</span> cohort_label</span>
+<span id="cb11-13"><a href="#cb11-13"></a>  )</span>
+<span id="cb11-14"><a href="#cb11-14"></a>  </span>
+<span id="cb11-15"><a href="#cb11-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-management-3" class="slide level2">
+<h2>Data management</h2>
+<p>Let’s check out <code>data_load()</code>. The object returned from this function includes data and a preliminary exclusion table.</p>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-12_d1a187af43b1a1315e6d6bdedb334e99">
+<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="7-9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>data_load <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="co"># ... file management code not shown ...</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  </span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">structure</span>(</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="at">.Data =</span> <span class="fu">list</span>(</span>
+<span id="cb12-7"><a href="#cb12-7"></a>      <span class="at">values =</span> data_input,</span>
+<span id="cb12-8"><a href="#cb12-8"></a>      <span class="at">exclusions =</span> <span class="fu">tibble</span>(<span class="at">label =</span> <span class="fu">glue</span>(<span class="st">"{cohort_name} participants"</span>),</span>
+<span id="cb12-9"><a href="#cb12-9"></a>                          <span class="at">n_obs =</span> <span class="fu">nrow</span>(data_input))</span>
+<span id="cb12-10"><a href="#cb12-10"></a>    ),</span>
+<span id="cb12-11"><a href="#cb12-11"></a>    <span class="at">class =</span> <span class="fu">c</span>(cohort_name, <span class="st">'melodem_data'</span>),</span>
+<span id="cb12-12"><a href="#cb12-12"></a>    <span class="at">label =</span> cohort_label</span>
+<span id="cb12-13"><a href="#cb12-13"></a>  )</span>
+<span id="cb12-14"><a href="#cb12-14"></a>  </span>
+<span id="cb12-15"><a href="#cb12-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-management-4" class="slide level2">
+<h2>Data management</h2>
+<p>The object returned also has customized class based on the dataset. The output also belongs to a broader class called <code>melodem_data</code></p>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-13_df931ee8ea2c108c057d9a38ec300da7">
+<div class="sourceCode cell-code" id="cb13" data-code-line-numbers="11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>data_load <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path){</span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="co"># ... file management code not shown ...</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>  </span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">structure</span>(</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="at">.Data =</span> <span class="fu">list</span>(</span>
+<span id="cb13-7"><a href="#cb13-7"></a>      <span class="at">values =</span> data_input,</span>
+<span id="cb13-8"><a href="#cb13-8"></a>      <span class="at">exclusions =</span> <span class="fu">tibble</span>(<span class="at">label =</span> <span class="fu">glue</span>(<span class="st">"{cohort_name} participants"</span>),</span>
+<span id="cb13-9"><a href="#cb13-9"></a>                          <span class="at">n_obs =</span> <span class="fu">nrow</span>(data_input))</span>
+<span id="cb13-10"><a href="#cb13-10"></a>    ),</span>
+<span id="cb13-11"><a href="#cb13-11"></a>    <span class="at">class =</span> <span class="fu">c</span>(cohort_name, <span class="st">'melodem_data'</span>),</span>
+<span id="cb13-12"><a href="#cb13-12"></a>    <span class="at">label =</span> cohort_label</span>
+<span id="cb13-13"><a href="#cb13-13"></a>  )</span>
+<span id="cb13-14"><a href="#cb13-14"></a>  </span>
+<span id="cb13-15"><a href="#cb13-15"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="why" class="slide level2">
+<h2>Why?</h2>
+<p>Each dataset is unique, and some may require customized preparation:</p>
+<ul>
+<li><p>Different elements need to be <em>cleaned</em>.</p></li>
+<li><p>Different variables need to be <em>derived</em>.</p></li>
+<li><p>Different variables may be <em>selected</em>.</p></li>
+<li><p>Different <em>exclusions</em> may be applied.</p></li>
+</ul>
+<p><code>data_load</code> makes its output have a customized class based on the name of the dataset so that <strong>you, the owner of the data</strong>, are in control of these steps that may be uniquely defined for your data.</p>
+</section>
+<section id="how" class="slide level2">
+<h2>How?</h2>
+<p>R’s <em>generic function</em> system. Generic functions (e.g., <code>plot()</code>) dispatch different methods depending on the type of input object.</p>
+<p><br></p>
+<p>Here’s a look at the generic function for cleaning an object of class <code>sim_1</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-14_cce72a269660d54316c10d30c4685291">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>data_clean.sim_1 <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
+<span id="cb14-2"><a href="#cb14-2"></a>  dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(data<span class="sc">$</span>values)</span>
+<span id="cb14-3"><a href="#cb14-3"></a>  dt[, age <span class="sc">:</span><span class="er">=</span> age <span class="sc">*</span> <span class="dv">5</span> <span class="sc">+</span> <span class="dv">65</span>]</span>
+<span id="cb14-4"><a href="#cb14-4"></a>  dt[, sex <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(sex <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)]</span>
+<span id="cb14-5"><a href="#cb14-5"></a>  dt[, sex <span class="sc">:</span><span class="er">=</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb14-6"><a href="#cb14-6"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>))]</span>
+<span id="cb14-7"><a href="#cb14-7"></a>  data<span class="sc">$</span>values <span class="ot">&lt;-</span> dt</span>
+<span id="cb14-8"><a href="#cb14-8"></a>  data</span>
+<span id="cb14-9"><a href="#cb14-9"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="how-1" class="slide level2">
+<h2>How?</h2>
+<p>R’s <em>generic function</em> system. Generic functions (e.g., <code>plot()</code>) dispatch different methods depending on the type of input object.</p>
+<p><br></p>
+<p>Here’s the generic function for cleaning an object of class <code>melodem_data</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="01-introduction_cache/revealjs/unnamed-chunk-15_3d5853c163373384439ef888599a731d">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>data_clean.melodem_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a>  data</span>
+<span id="cb15-4"><a href="#cb15-4"></a></span>
+<span id="cb15-5"><a href="#cb15-5"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="your-data" class="slide level2">
+<h2>Your data</h2>
+<ul>
+<li><p>Your data’s first class is the name you picked, e.g., <code>regards</code>, and second class is <code>melodem_data</code>. Verify by running <code>class()</code></p></li>
+<li><p>When you run <code>data_clean()</code> with, e.g., the <code>regards</code> data,</p>
+<ul>
+<li>R will first look for a function called <code>data_clean.regards</code></li>
+<li>If it doesn’t exist, R runs <code>data_clean.melodem_data</code></li>
+</ul></li>
+</ul>
+<p>TLDR: If you don’t write a specific function for <code>data_clean</code>, <code>data_derive</code>, etc. for your data, then these functions will not do anything to your data.</p>
+</section>
+<section id="your-turn-5" class="slide level2">
+<h2>Your turn</h2>
+<p>For the rest of this session,</p>
+<ul>
+<li><p>Implement specific <code>data_clean</code>, <code>data_derive</code>, <code>data_select</code>, and <code>data_exclude</code> for your data.</p></li>
+<li><p>If you already did these operations before the workshop, move the code you used into the functions above.</p></li>
+<li><p>If you finish early, help someone else!</p></li>
+</ul>
+<p>At a minimum, make sure your data have time/status for dementia, apoe4, age, and sex, so that you will be able to use your data for the rest of the workshop.</p>
 
 <div class="footer footer-default">
-<p>Slides available at <a href="https://byronjaeger.com/talk" class="uri">https://byronjaeger.com/talk</a></p>
+<p>Slides available at <a href="https://bcjaeger.github.io/melodem-apoe4-het/" class="uri">https://bcjaeger.github.io/melodem-apoe4-het/</a></p>
 </div>
 </section></section>
     </div>

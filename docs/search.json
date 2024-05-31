@@ -32,14 +32,14 @@
     "href": "slides/01-introduction.html#set-up-r-packages",
     "title": "MELODEM data workshop",
     "section": "Set-up R packages",
-    "text": "Set-up R packages\nMake sure we all have up-to-date versions of these R packages:\n\n# Install the packages for the workshop\npkgs &lt;- \n  c(\"bonsai\", \"doParallel\", \"embed\", \"finetune\", \"lightgbm\", \"lme4\",\n    \"plumber\", \"probably\", \"ranger\", \"rpart\", \"rpart.plot\", \"rules\",\n    \"splines2\", \"stacks\", \"text2vec\", \"textrecipes\", \"tidymodels\", \n    \"vetiver\", \"remotes\")\n\ninstall.packages(pkgs)"
+    "text": "Set-up R packages\nMake sure we all have up-to-date versions of these R packages:\n\n# Install required packages for the workshop\npkgs &lt;- \n  c(\"tidyverse\", \"tidymodels\", \"data.table\", \"haven\", \"magrittr\",\n    \"glue\", \"grf\", \"aorsf\", \"glmnet\", \"xgboost\", \"randomForestSRC\",\n    \"party\", \"riskRegression\", \"survival\", \"officer\", \"flextable\", \n    \"table.glue\", \"gtsummary\", \"usethis\", \"cli\")\n\ninstall.packages(pkgs)"
   },
   {
     "objectID": "slides/01-introduction.html#set-up-github",
     "href": "slides/01-introduction.html#set-up-github",
     "title": "MELODEM data workshop",
     "section": "Set-up GitHub",
-    "text": "Set-up GitHub\nMake sure we all have GitHub account with personal access token (PAT) stored in Rstudio\n\nOpen Rstudio\nCopy/paste code below, adjust destdir, and run\n\n\nlibrary(usethis)\n\ncreate_from_github(\"bcjaeger/melodem-apoe4-het\",\n                   destdir = \"path/of/your/choice\", \n                   fork = TRUE)"
+    "text": "Set-up GitHub\nMake sure we all have GitHub account with personal access token (PAT) stored in Rstudio\n\n\n\nOpen Rstudio\nCopy/paste the code on this slide into an R script\nImportant: adjust destdir\nRun\n\n\n\nlibrary(usethis)\n\ncreate_from_github(\n  \"bcjaeger/melodem-apoe4-het\",\n  destdir = \"path/of/choice\", \n  fork = TRUE\n)"
   },
   {
     "objectID": "slides/01-introduction.html#introducing-targets",
@@ -53,7 +53,7 @@
     "href": "slides/01-introduction.html#your-turn",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nRed sticky note if you encounter an error\nGreen sticky note when you have successfully made the pipeline"
+    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nWhile you’re working,\n\nPlace red sticky note on the back of your laptop if you want help.\nPlace green sticky note on the back of your laptop when you finish."
   },
   {
     "objectID": "slides/01-introduction.html#working-together-separately.",
@@ -74,7 +74,7 @@
     "href": "slides/01-introduction.html#your-turn-1",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nThink of a name and label for your data.\n\nExample name: regards\nExample label: Reasons for Geographic and Racial Differences in Stroke\n\nSave a copy of your data in data/sensitive. The name of your file should be name-raw.csv or name-raw.sas7bdat, where name is your data’s name. E.g., regards-raw.csv"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nThink of a name for your data.\n\nExample name: regards\n\nSave a copy of your data in data/sensitive. The name of your file should be name-raw.csv or name-raw.sas7bdat, where name is your data’s name. E.g., regards-raw.csv"
   },
   {
     "objectID": "slides/01-introduction.html#your-turn-2",
@@ -88,7 +88,7 @@
     "href": "slides/01-introduction.html#your-turn-3",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nModify the code below in _targets.R, replacing x with the name of your data.\n\n\n# real data cohort\n\nfile_x_tar &lt;- tar_target(               # &lt;--- replace x with your data name\n  file_x,                               # &lt;--- replace x with your data name\n  command = \"data/sensitive/x-raw.csv\", # &lt;--- replace x with your data name\n  format = 'file'\n)\n\ndata_x_tar &lt;- tar_target(         # &lt;--- replace x with your data name\n  data_x,                         # &lt;--- replace x with your data name\n  data_prepare(cohort_name = 'x') # &lt;--- replace x with your data name\n)\n\n# don't forget to add these targets to the targets list!\n\n\nrun tar_make() in the R console."
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\n\n\nModify the code beside in _targets.R, replacing x with the name of your data.\nRun tar_make() in the R console.\nrun tar_load(data_x), where x is your data name, and print it\n\n\n\nfile_x_tar &lt;- tar_target(               \n  file_x,\n  command = \"data/sensitive/x-raw.csv\"\n  format = \"file\"\n)\n\ndata_x_tar &lt;- tar_target(\n  data_x,\n  data_prepare(cohort_name = \"x\")\n)\n\n# don't forget to add these targets\n# to the targets list at the bottom!"
   },
   {
     "objectID": "index.html",
@@ -144,6 +144,118 @@
     "href": "slides/01-introduction.html#your-turn-4",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\nYou should now be able to load and print your data target by running:\n\n\n$values\n          time status    apoe4    sex      age biomarker_1 biomarker_2\n         &lt;num&gt;  &lt;int&gt;   &lt;fctr&gt; &lt;fctr&gt;    &lt;num&gt;       &lt;num&gt;       &lt;num&gt;\n  1: 3.7506123      0   normal female 66.27077  0.74731375 -0.74236839\n  2: 5.3167502      0 elevated female 65.51047 -0.56219488 -0.05134715\n  3: 5.6038076      0   normal   male 71.41878  0.01334597 -0.18433741\n  4: 2.0543598      0 elevated female 59.47485  0.79510234 -1.32408422\n  5: 5.7348479      0   normal female 58.47673 -0.29311302  0.19057088\n ---                                                                  \n970: 1.1282494      0 elevated   male 68.48209  0.53282137  0.01593973\n971: 0.9051774      0   normal   male 62.12660 -0.55844364 -0.75512177\n972: 0.8827469      1 elevated   male 69.60501 -2.21147198 -0.30159205\n973: 3.1671329      1 elevated female 58.55714  1.05844645  0.50371917\n974: 2.5920184      0 elevated female 65.22391 -0.77325900  1.33985894\n1 variable(s) not shown: [biomarker_3 &lt;num&gt;]\n\n$exclusions\n# A tibble: 2 × 2\n  label              n_obs\n  &lt;glue&gt;             &lt;int&gt;\n1 sim_1 participants  1000\n2 Aged 55-80 years     974\n\nattr(,\"class\")\n[1] \"sim_1\"        \"melodem_data\"\nattr(,\"label\")\n[1] \"sim_1\"\n\n\n\n# im using the simulated data, but you should use your own\ntar_load(data_sim_1)\n\nprint(data_sim_1)\n\n\n\nSlides available at https://byronjaeger.com/talk"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\ndata_sim_1\n\n\n\n------------------------------------- sim_1 ------------------------------------- \n# A tibble: 974 × 8\n   time status apoe4    sex      age biomarker_1 biomarker_2 biomarker_3\n  &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;\n1  3.75      0 normal   female  66.3      0.747      -0.742       -1.71 \n2  5.32      0 elevated female  65.5     -0.562      -0.0513       0.546\n3  5.60      0 normal   male    71.4      0.0133     -0.184        0.826\n4  2.05      0 elevated female  59.5      0.795      -1.32        -1.28 \n5  5.73      0 normal   female  58.5     -0.293       0.191        2.54 \n# ℹ 969 more rows\n\n ----------------------------------  exclusions  ---------------------------------- \n# A tibble: 2 × 2\n  label              n_obs\n  &lt;glue&gt;             &lt;int&gt;\n1 sim_1 participants  1000\n2 Aged 55-80 years     974"
+  },
+  {
+    "objectID": "slides/01-introduction.html#data-management",
+    "href": "slides/01-introduction.html#data-management",
+    "title": "MELODEM data workshop",
+    "section": "Data management",
+    "text": "Data management\nWe used data_prepare() to make this object.\nLet’s check out what data_prepare does.\n\ndata_prepare &lt;- function(file_name, ...){\n\n  output &lt;- data_load(file_name) %&gt;%\n    data_clean() %&gt;%\n    data_derive() %&gt;%\n    data_select() %&gt;%\n    data_exclude(...)\n\n  check_names(output$values,\n              c(\"age\", \"sex\", \"apoe4\", \"time\", \"status\"))\n\n  output\n\n}"
+  },
+  {
+    "objectID": "slides/01-introduction.html#data-management-1",
+    "href": "slides/01-introduction.html#data-management-1",
+    "title": "MELODEM data workshop",
+    "section": "Data management",
+    "text": "Data management\nWe used data_prepare() to make this object.\nLet’s check out what data_prepare does. First, it loads the data\n\ndata_prepare &lt;- function(file_name, ...){\n\n  output &lt;- data_load(file_name) %&gt;%\n    data_clean() %&gt;%\n    data_derive() %&gt;%\n    data_select() %&gt;%\n    data_exclude(...)\n\n  check_names(output$values,\n              c(\"age\", \"sex\", \"apoe4\", \"time\", \"status\"))\n\n  output\n\n}"
+  },
+  {
+    "objectID": "slides/01-introduction.html#data-management-2",
+    "href": "slides/01-introduction.html#data-management-2",
+    "title": "MELODEM data workshop",
+    "section": "Data management",
+    "text": "Data management\nLet’s check out data_load().\n\ndata_load &lt;- function(file_path){\n\n    # ... file management code not shown ...\n  \n  structure(\n    .Data = list(\n      values = data_input,\n      exclusions = tibble(label = glue(\"{cohort_name} participants\"),\n                          n_obs = nrow(data_input))\n    ),\n    class = c(cohort_name, 'melodem_data'),\n    label = cohort_label\n  )\n  \n}"
+  },
+  {
+    "objectID": "slides/01-introduction.html#data-management-3",
+    "href": "slides/01-introduction.html#data-management-3",
+    "title": "MELODEM data workshop",
+    "section": "Data management",
+    "text": "Data management\nLet’s check out data_load(). The object returned from this function includes data and a preliminary exclusion table.\n\ndata_load &lt;- function(file_path){\n\n    # ... file management code not shown ...\n  \n  structure(\n    .Data = list(\n      values = data_input,\n      exclusions = tibble(label = glue(\"{cohort_name} participants\"),\n                          n_obs = nrow(data_input))\n    ),\n    class = c(cohort_name, 'melodem_data'),\n    label = cohort_label\n  )\n  \n}"
+  },
+  {
+    "objectID": "slides/01-introduction.html#sowhy-does-this-matter",
+    "href": "slides/01-introduction.html#sowhy-does-this-matter",
+    "title": "MELODEM data workshop",
+    "section": "So…why does this matter?",
+    "text": "So…why does this matter?\nEach dataset is unique, and some may require customized preparation:\n\nDifferent elements need to be cleaned.\nDifferent variables need to be derived.\nDifferent variables may be selected.\nDifferent exclusions may be applied.\n\ndata_load makes its output have a customized class based on the name of the dataset so that you, the owner of the data, are in control of these steps that may be uniquely defined for your data."
+  },
+  {
+    "objectID": "slides/01-introduction.html#whole-game",
+    "href": "slides/01-introduction.html#whole-game",
+    "title": "MELODEM data workshop",
+    "section": "Whole game",
+    "text": "Whole game\nFirst, you pull code down from the GitHub repo."
+  },
+  {
+    "objectID": "slides/01-introduction.html#whole-game-1",
+    "href": "slides/01-introduction.html#whole-game-1",
+    "title": "MELODEM data workshop",
+    "section": "Whole game",
+    "text": "Whole game\nNext, you commit code and summary results. No data!"
+  },
+  {
+    "objectID": "slides/01-introduction.html#whole-game-2",
+    "href": "slides/01-introduction.html#whole-game-2",
+    "title": "MELODEM data workshop",
+    "section": "Whole game",
+    "text": "Whole game\nLast, you push your code and summary results to the GitHub repo."
+  },
+  {
+    "objectID": "slides/01-introduction.html#why-github",
+    "href": "slides/01-introduction.html#why-github",
+    "title": "MELODEM data workshop",
+    "section": "Why GitHub?",
+    "text": "Why GitHub?\nSo we can work together, separately!\n\nStore and coordinate code from multiple authors\nPublic facing team science\nFree website for our work (i.e., this workshop)."
+  },
+  {
+    "objectID": "slides/01-introduction.html#pull",
+    "href": "slides/01-introduction.html#pull",
+    "title": "MELODEM data workshop",
+    "section": "Pull!",
+    "text": "Pull!\nMake sure you have a GitHub account with personal access token (PAT) stored in Rstudio\n\n\n\nOpen Rstudio\nCopy/paste the code on this slide into an R script\nImportant: adjust destdir\nRun\n\n\n\nlibrary(usethis)\n\ncreate_from_github(\n  \"bcjaeger/melodem-apoe4-het\",\n  destdir = \"path/of/choice\", \n  fork = TRUE\n)"
+  },
+  {
+    "objectID": "slides/01-introduction.html#data-management-4",
+    "href": "slides/01-introduction.html#data-management-4",
+    "title": "MELODEM data workshop",
+    "section": "Data management",
+    "text": "Data management\nThe object returned also has customized class based on the dataset. The output also belongs to a broader class called melodem_data\n\ndata_load &lt;- function(file_path){\n\n  # ... file management code not shown ...\n  \n  structure(\n    .Data = list(\n      values = data_input,\n      exclusions = tibble(label = glue(\"{cohort_name} participants\"),\n                          n_obs = nrow(data_input))\n    ),\n    class = c(cohort_name, 'melodem_data'),\n    label = cohort_label\n  )\n  \n}"
+  },
+  {
+    "objectID": "slides/01-introduction.html#why",
+    "href": "slides/01-introduction.html#why",
+    "title": "MELODEM data workshop",
+    "section": "Why?",
+    "text": "Why?\nEach dataset is unique, and some may require customized preparation:\n\nDifferent elements need to be cleaned.\nDifferent variables need to be derived.\nDifferent variables may be selected.\nDifferent exclusions may be applied.\n\ndata_load makes its output have a customized class based on the name of the dataset so that you, the owner of the data, are in control of these steps that may be uniquely defined for your data."
+  },
+  {
+    "objectID": "slides/01-introduction.html#how",
+    "href": "slides/01-introduction.html#how",
+    "title": "MELODEM data workshop",
+    "section": "How?",
+    "text": "How?\nR’s generic function system. Generic functions (e.g., plot()) dispatch different methods depending on the type of input object.\n\nHere’s a look at the generic function for cleaning an object of class sim_1:\n\ndata_clean.sim_1 &lt;- function(data){\n  dt &lt;- as.data.table(data$values)\n  dt[, age := age * 5 + 65]\n  dt[, sex := fifelse(sex &gt; 0, 1, 0)]\n  dt[, sex := factor(sex, levels = c(0, 1),\n                     labels = c(\"male\", \"female\"))]\n  data$values &lt;- dt\n  data\n}"
+  },
+  {
+    "objectID": "slides/01-introduction.html#how-1",
+    "href": "slides/01-introduction.html#how-1",
+    "title": "MELODEM data workshop",
+    "section": "How?",
+    "text": "How?\nR’s generic function system. Generic functions (e.g., plot()) dispatch different methods depending on the type of input object.\n\nHere’s the generic function for cleaning an object of class melodem_data:\n\ndata_clean.melodem_data &lt;- function(data){\n\n  data\n\n}"
+  },
+  {
+    "objectID": "slides/01-introduction.html#your-data",
+    "href": "slides/01-introduction.html#your-data",
+    "title": "MELODEM data workshop",
+    "section": "Your data",
+    "text": "Your data\n\nYour data’s first class is the name you picked, e.g., regards, and second class is melodem_data. Verify by running class()\nWhen you run data_clean() with, e.g., the regards data,\n\nR will first look for a function called data_clean.regards\nIf it doesn’t exist, R runs data_clean.melodem_data\n\n\nTLDR: If you don’t write a specific function for data_clean, data_derive, etc. for your data, then these functions will not do anything to your data."
+  },
+  {
+    "objectID": "slides/01-introduction.html#your-turn-5",
+    "href": "slides/01-introduction.html#your-turn-5",
+    "title": "MELODEM data workshop",
+    "section": "Your turn",
+    "text": "Your turn\nFor the rest of this session,\n\nImplement specific data_clean, data_derive, data_select, and data_exclude for your data.\nIf you already did these operations before the workshop, move the code you used into the functions above.\nIf you finish early, help someone else!\n\nAt a minimum, make sure your data have time/status for dementia, apoe4, age, and sex, so that you will be able to use your data for the rest of the workshop.\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/"
   }
 ]

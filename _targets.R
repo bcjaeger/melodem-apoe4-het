@@ -72,18 +72,6 @@ data_sim_2_tar <- tar_target(
 
 # real data cohorts (to be added as an exercise)
 
-## this tests whether a
-# file_test_tar <- tar_target(
-#   file_test,
-#   command = "data/sensitive/test-raw.csv",
-#   format = 'file'
-# )
-#
-# data_test_tar <- tar_target(
-#   data_test,
-#   data_prepare(file_test)
-# )
-
 # combining cohorts ----
 
 data_pooled_tar <- tar_target(
@@ -132,8 +120,6 @@ targets <- list(
   data_sim_1_tar,
   file_sim_2_tar,
   data_sim_2_tar,
-  file_test_tar,
-  data_test_tar,
   data_pooled_tar,
   manuscript_tar
 )

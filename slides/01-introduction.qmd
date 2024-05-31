@@ -6,7 +6,7 @@ institute: "Wake Forest University School of Medicine"
 format: 
   revealjs:
     slide-number: true
-    footer: Slides available at <https://byronjaeger.com/talk>
+    footer: Slides available at <https://bcjaeger.github.io/melodem-apoe4-het/>
     include-before-body: header.html
     include-after-body: footer-annotations.html
     theme: [default, tidymodels.scss]
@@ -114,6 +114,36 @@ I study risk <br/> prediction + machine learning
 
 # Part 1: Introduction and data management
 
+## Whole game
+
+First, you **pull** code down from the GitHub repo.
+
+![](diagram/intro-whole-game-1.svg)
+
+## Whole game
+
+Next, you **commit** code and summary results. *No data!*
+
+![](diagram/intro-whole-game-2.svg)
+
+## Whole game
+
+Last, you **push** your code and summary results to the GitHub repo.
+
+![](diagram/intro-whole-game-3.svg)
+
+## Why GitHub?
+
+So we can work together, separately!
+
+- Store and coordinate code from multiple authors
+
+- Public facing team science
+
+- Free website for our work (i.e., this workshop).
+
+
+
 ## Set-up R packages
 
 Make sure we all have up-to-date versions of these R packages:
@@ -123,32 +153,44 @@ Make sure we all have up-to-date versions of these R packages:
 #| eval: false
 #| echo: true
 
-# Install the packages for the workshop
+# Install required packages for the workshop
 pkgs <- 
-  c("bonsai", "doParallel", "embed", "finetune", "lightgbm", "lme4",
-    "plumber", "probably", "ranger", "rpart", "rpart.plot", "rules",
-    "splines2", "stacks", "text2vec", "textrecipes", "tidymodels", 
-    "vetiver", "remotes")
+  c("tidyverse", "tidymodels", "data.table", "haven", "magrittr",
+    "glue", "grf", "aorsf", "glmnet", "xgboost", "randomForestSRC",
+    "party", "riskRegression", "survival", "officer", "flextable", 
+    "table.glue", "gtsummary", "usethis", "cli")
 
 install.packages(pkgs)
 ```
 
-## Set-up GitHub
+## Pull!
 
-Make sure we all have GitHub account with personal access token (PAT) stored in Rstudio
+Make sure you have a GitHub account with personal access token (PAT) stored in Rstudio
 
+::: columns
+::: {.column width="50%"}
 1. Open Rstudio
-1. Copy/paste code below, adjust `destdir`, and run
-
+2. Copy/paste the code on this slide into an R script
+3. **Important**: adjust `destdir`
+4. Run
+:::
+::: {.column width="50%"}
 ```{r, eval=FALSE, echo = TRUE}
 
 library(usethis)
 
-create_from_github("bcjaeger/melodem-apoe4-het",
-                   destdir = "path/of/your/choice", 
-                   fork = TRUE)
+create_from_github(
+  "bcjaeger/melodem-apoe4-het",
+  destdir = "path/of/choice", 
+  fork = TRUE
+)
 
 ```
+:::
+:::
+
+
+
 
 ## Introducing `targets`
 
@@ -162,21 +204,11 @@ create_from_github("bcjaeger/melodem-apoe4-het",
 1. Run `tar_glimpse()` to inspect the pipeline.
 1. Run `tar_make()` to make the pipeline.
 
-Red sticky note if you encounter an error
+While you're working,
 
-Green sticky note when you have successfully made the pipeline
+- Place red sticky note on the back of your laptop if you want help.
 
-## Working together, separately.
-
-Why do we need all the bells and whistles?
-
-- Management of multiple datasets (`targets`)
-
-- Coordinating analyses over these datasets (`targets`)
-
-- Large amount of code from multiple authors (GitHub)
-
-- Collaborative discussions in public makes better science (GitHub)
+- Place green sticky note on the back of your laptop when you finish.
 
 ## Start with data management
 
@@ -205,7 +237,7 @@ data_sim_1_tar <- tar_target(
 
 ::: {.column width="50%"}
 
-![](diagram/targets-vis-data_sim_1.png){width=90%}
+![](diagram/targets-vis-data_sim_1.svg){width=90%}
 
 :::
 :::
@@ -218,12 +250,10 @@ This will be done with your data, too!
 
 We are going to add your data to the pipeline, carefully.
 
-1. Think of a **name** and **label** for your data.
+1. Think of a **name** for your data.
 
     + Example name: regards
     
-    + Example label: Reasons for Geographic and Racial Differences in Stroke
-
 2. Save a copy of your data in `data/sensitive`. The name of your file should be `name-raw.csv` or `name-raw.sas7bdat`, where `name` is your data's name. E.g., `regards-raw.csv`
 
 ## Your turn 
@@ -250,52 +280,268 @@ git branch -b regards
 
 We are going to add your data to the pipeline, carefully.
 
-6. Modify the code below in `_targets.R`, replacing `x` with the name of your data.
+::: columns
+
+::: {.column width="50%"}
+
+6. Modify the code beside in `_targets.R`, replacing `x` with the name of your data.
+
+7. Run `tar_make()` in the R console. 
+
+8. run `tar_load(data_x)`, where `x` is your data name, and print it
+
+:::
+
+::: {.column width="50%"}
 
 ```{r, echo=TRUE, eval=FALSE}
 
-# real data cohort
-
-file_x_tar <- tar_target(               # <--- replace x with your data name
-  file_x,                               # <--- replace x with your data name
-  command = "data/sensitive/x-raw.csv", # <--- replace x with your data name
-  format = 'file'
+file_x_tar <- tar_target(               
+  file_x,
+  command = "data/sensitive/x-raw.csv"
+  format = "file"
 )
 
-data_x_tar <- tar_target(         # <--- replace x with your data name
-  data_x,                         # <--- replace x with your data name
-  data_prepare(cohort_name = 'x') # <--- replace x with your data name
+data_x_tar <- tar_target(
+  data_x,
+  data_prepare(cohort_name = "x")
 )
 
-# don't forget to add these targets to the targets list!
+# don't forget to add these targets
+# to the targets list at the bottom!
 
 ```
 
-7. run `tar_make()` in the R console. 
+:::
+:::
 
-## Your turn
+---
+
+## Your turn 
 
 We are going to add your data to the pipeline, carefully.
 
-You should now be able to load and print your data target by running:
-
-```{r, echo=TRUE, eval=FALSE}
-
-# Im using the simulated data, but you should use your own
-tar_load(data_sim_1)
-
-print(data_sim_1)
-
+```{r echo=TRUE, eval=FALSE}
+data_sim_1
 ```
+
 
 ```{r}
 withr::with_dir(
   here::here(),
-  targets::tar_load(data_sim_1)
+  code = {
+    targets::tar_load(data_sim_1)
+    R.utils::sourceDirectory('R') 
+  }
 )
 
 data_sim_1
 ```
 
+## Data management
+
+We used `data_prepare()` to make this object. 
+
+Let's check out what `data_prepare` does.
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+data_prepare <- function(file_name, ...){
+
+  output <- data_load(file_name) %>%
+    data_clean() %>%
+    data_derive() %>%
+    data_select() %>%
+    data_exclude(...)
+
+  check_names(output$values,
+              c("age", "sex", "apoe4", "time", "status"))
+
+  output
+
+}
+```
 
 
+## Data management
+
+We used `data_prepare()` to make this object. 
+
+Let's check out what `data_prepare` does. First, it loads the data
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+#| code-line-numbers: "3"
+data_prepare <- function(file_name, ...){
+
+  output <- data_load(file_name) %>%
+    data_clean() %>%
+    data_derive() %>%
+    data_select() %>%
+    data_exclude(...)
+
+  check_names(output$values,
+              c("age", "sex", "apoe4", "time", "status"))
+
+  output
+
+}
+```
+
+## Data management
+
+Let's check out `data_load()`. 
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+data_load <- function(file_path){
+
+    # ... file management code not shown ...
+  
+  structure(
+    .Data = list(
+      values = data_input,
+      exclusions = tibble(label = glue("{cohort_name} participants"),
+                          n_obs = nrow(data_input))
+    ),
+    class = c(cohort_name, 'melodem_data'),
+    label = cohort_label
+  )
+  
+}
+```
+
+## Data management
+
+Let's check out `data_load()`. The object returned from this function includes data and a preliminary exclusion table.
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+#| code-line-numbers: "7-9"
+data_load <- function(file_path){
+
+    # ... file management code not shown ...
+  
+  structure(
+    .Data = list(
+      values = data_input,
+      exclusions = tibble(label = glue("{cohort_name} participants"),
+                          n_obs = nrow(data_input))
+    ),
+    class = c(cohort_name, 'melodem_data'),
+    label = cohort_label
+  )
+  
+}
+```
+
+## Data management
+
+The object returned also has customized class based on the dataset. The output also belongs to a broader class called `melodem_data`
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+#| code-line-numbers: "11"
+data_load <- function(file_path){
+
+  # ... file management code not shown ...
+  
+  structure(
+    .Data = list(
+      values = data_input,
+      exclusions = tibble(label = glue("{cohort_name} participants"),
+                          n_obs = nrow(data_input))
+    ),
+    class = c(cohort_name, 'melodem_data'),
+    label = cohort_label
+  )
+  
+}
+```
+
+
+---
+
+## Why?
+
+Each dataset is unique, and some may require customized preparation:
+
+- Different elements need to be *cleaned*.
+
+- Different variables need to be *derived*.
+
+- Different variables may be *selected*.
+
+- Different *exclusions* may be applied.
+
+`data_load` makes its output have a customized class based on the name of the dataset so that **you, the owner of the data**, are in control of these steps that may be uniquely defined for your data.
+
+---
+
+## How?
+
+R's *generic function* system. Generic functions (e.g., `plot()`) dispatch different methods depending on the type of input object. 
+
+<br>
+
+Here's a look at the generic function for cleaning an object of class `sim_1`:
+
+```{r, echo=TRUE, eval=FALSE}
+
+data_clean.sim_1 <- function(data){
+  dt <- as.data.table(data$values)
+  dt[, age := age * 5 + 65]
+  dt[, sex := fifelse(sex > 0, 1, 0)]
+  dt[, sex := factor(sex, levels = c(0, 1),
+                     labels = c("male", "female"))]
+  data$values <- dt
+  data
+}
+
+```
+
+## How?
+
+R's *generic function* system. Generic functions (e.g., `plot()`) dispatch different methods depending on the type of input object. 
+
+<br>
+
+Here's the generic function for cleaning an object of class `melodem_data`:
+
+```{r, echo=TRUE}
+
+data_clean.melodem_data <- function(data){
+
+  data
+
+}
+
+```
+
+## Your data
+
+- Your data's first class is the name you picked, e.g., `regards`, and second class is `melodem_data`. Verify by running `class()`
+
+- When you run `data_clean()` with, e.g., the `regards` data,
+
+    + R will first look for a function called `data_clean.regards`
+    + If it doesn't exist, R runs `data_clean.melodem_data`
+
+TLDR: If you don't write a specific function for `data_clean`, `data_derive`, etc. for your data, then these functions will not do anything to your data.
+
+## Your turn
+
+For the rest of this session,
+
+- Implement specific `data_clean`, `data_derive`, `data_select`, and `data_exclude` for your data.
+
+- If you already did these operations before the workshop, move the code you used into the corresponding function.
+
+- If you finish early, help someone else!
+
+At a minimum, make sure your data have time/status for dementia, apoe4, age, and sex, so that you will be able to use your data for the rest of the workshop.
