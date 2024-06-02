@@ -53,7 +53,7 @@
     "href": "slides/01-introduction.html#your-turn",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nWhile you’re working,\n\nPlace red sticky note on the back of your laptop if you want help.\nPlace green sticky note on the back of your laptop when you finish."
+    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun targets::tar_glimpse() to inspect the pipeline.\nRun targets::tar_make() to make the pipeline.\n\nWhile you’re working,\n\nPlace red sticky note on the back of your laptop if you want help.\nPlace green sticky note on the back of your laptop when you finish.\n\n\n\n\n−+\n05:00"
   },
   {
     "objectID": "slides/01-introduction.html#working-together-separately.",
@@ -74,21 +74,21 @@
     "href": "slides/01-introduction.html#your-turn-1",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nThink of a name for your data.\n\nExample name: regards\n\nSave a copy of your data in data/sensitive. The name of your file should be name-raw.csv or name-raw.sas7bdat, where name is your data’s name. E.g., regards-raw.csv"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nThink of a name for your data.\n\nExample name: regards\n\nSave a copy of your data in data/sensitive. The name of your file should be name-raw.csv or name-raw.sas7bdat, where name is your data’s name. E.g., regards-raw.csv\n\n\n\n\n\n−+\n03:00"
   },
   {
     "objectID": "slides/01-introduction.html#your-turn-2",
     "href": "slides/01-introduction.html#your-turn-2",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nSwitch from the R console to the terminal.\nVerify you have no uncommitted changes:\n\n\ngit status\n\nShould return “nothing to commit, working tree clean”\n\nCreate a new branch with git:\n\n\ngit branch -b regards"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nSwitch from the R console to the terminal.\nVerify you have no uncommitted changes:\n\n\ngit status\n\nShould return “nothing to commit, working tree clean”\n\nCreate a new branch with git:\n\n\ngit branch -b regards\n\n\n\n\n−+\n03:00"
   },
   {
     "objectID": "slides/01-introduction.html#your-turn-3",
     "href": "slides/01-introduction.html#your-turn-3",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\n\n\nModify the code beside in _targets.R, replacing x with the name of your data.\nRun tar_make() in the R console.\nrun tar_load(data_x), where x is your data name, and print it\n\n\n\nfile_x_tar &lt;- tar_target(               \n  file_x,\n  command = \"data/sensitive/x-raw.csv\"\n  format = \"file\"\n)\n\ndata_x_tar &lt;- tar_target(\n  data_x,\n  data_prepare(cohort_name = \"x\")\n)\n\n# don't forget to add these targets\n# to the targets list at the bottom!"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\n\n\nModify the code beside in _targets.R, replacing x with the name of your data.\nRun tar_make() in the R console.\nrun tar_load(data_x), where x is your data name, and print it\n\n\n\nfile_x_tar &lt;- tar_target(               \n  file_x,\n  command = \"data/sensitive/x-raw.csv\"\n  format = \"file\"\n)\n\ndata_x_tar &lt;- tar_target(\n  data_x,\n  data_prepare(cohort_name = \"x\")\n)\n\n# don't forget to add these targets\n# to the targets list at the bottom!\n\n\n\n\n\n\n−+\n05:00"
   },
   {
     "objectID": "index.html",
@@ -116,14 +116,14 @@
     "href": "index.html#preparation",
     "title": "Methods in longitudinal dementia research workshop",
     "section": "Preparation",
-    "text": "Preparation\nPlease join the workshop with a computer that has the following installed (all available for free):\n\nA recent version of R, available at https://cran.r-project.org/\nA recent version of RStudio Desktop (RStudio Desktop Open Source License, at least v2022.02), available at https://posit.co/download/rstudio-desktop/\nA recent version of git, available at https://git-scm.com/downloads\nThe following R packages, which you can install from the R console:\n\n\n# Install required packages for the workshop\npkgs &lt;- \n  c(\"tidyverse\", \"tidymodels\", \"data.table\", \"haven\", \"magrittr\",\n    \"glue\", \"grf\", \"aorsf\", \"glmnet\", \"xgboost\", \"randomForestSRC\",\n    \"party\", \"riskRegression\", \"survival\", \"officer\", \"flextable\", \n    \"table.glue\", \"gtsummary\", \"usethis\")\n\n# A few more packages may be added - this list isn't final yet.\n\ninstall.packages(pkgs)\n\nIf you’re a Windows user and encounter an error message during installation noting a missing Rtools installation, install Rtools using the installer linked here.\n\nGitHub\nA major aim of the workshop will be to establish a baseline of collaboration for developing and publishing a manuscript. We will use GitHub to facilitate this.\n\nIf you do not have a GitHub account, please create one here: https://github.com/\nIf you have a GitHub account, make sure you have a personal access token for HTTPS stored in your local Rstudio. Instructions to do this are provided here: https://happygitwithr.com/https-pat\n\n\n\ntargets\nIn addition to using GitHub, we will also use targets to coordinate our workflow. There will be a brief tutorial for targets during the workshop, but getting familiar with this R package before the workshop is highly encouraged. A full textbook on targets is available: https://books.ropensci.org/targets/.\nReading the following sections prior to the workshop will be very helpful:\n\nIntroduction: https://books.ropensci.org/targets/#intro\nA walk through: https://books.ropensci.org/targets/walkthrough.html\nFunction-based workflow: https://books.ropensci.org/targets/functions.html"
+    "text": "Preparation\nPlease join the workshop with a computer that has the following installed (all available for free):\n\nA recent version of R, available at https://cran.r-project.org/\nA recent version of RStudio Desktop (RStudio Desktop Open Source License, at least v2022.02), available at https://posit.co/download/rstudio-desktop/\nA recent version of git, available at https://git-scm.com/downloads\nThe following R packages, which you can install from the R console:\n\n\n# Install required packages for the workshop\npkgs &lt;- \n  c(\"tidyverse\", \"tidymodels\", \"data.table\", \"haven\", \"magrittr\",\n    \"glue\", \"grf\", \"aorsf\", \"glmnet\", \"xgboost\", \"randomForestSRC\",\n    \"party\", \"riskRegression\", \"survival\", \"officer\", \"flextable\", \n    \"table.glue\", \"gtsummary\", \"usethis\", \"cli\", \"ggforce\",\n    \"rpart\", \"rpart.plot\", \"ranger\", \"withr\")\n\n# A few more packages may be added - this list isn't final yet.\n\ninstall.packages(pkgs)\n\nIf you’re a Windows user and encounter an error message during installation noting a missing Rtools installation, install Rtools using the installer linked here.\n\nGitHub\nA major aim of the workshop will be to establish a baseline of collaboration for developing and publishing a manuscript. We will use GitHub to facilitate this.\n\nIf you do not have a GitHub account, please create one here: https://github.com/\nIf you have a GitHub account, make sure you have a personal access token for HTTPS stored in your local Rstudio. Instructions to do this are provided here: https://happygitwithr.com/https-pat\n\n\n\ntargets\nIn addition to using GitHub, we will also use targets to coordinate our workflow. There will be a brief tutorial for targets during the workshop, but getting familiar with this R package before the workshop is highly encouraged. A full textbook on targets is available: https://books.ropensci.org/targets/.\nReading the following sections prior to the workshop will be very helpful:\n\nIntroduction: https://books.ropensci.org/targets/#intro\nA walk through: https://books.ropensci.org/targets/walkthrough.html\nFunction-based workflow: https://books.ropensci.org/targets/functions.html"
   },
   {
     "objectID": "index.html#slides",
     "href": "index.html#slides",
     "title": "Methods in longitudinal dementia research workshop",
     "section": "Slides",
-    "text": "Slides\nThese slides are designed to use with live teaching and are published for workshop participants’ convenience. They are not meant as standalone learning materials.\n\nDay 1: Oblique and causal random forests\n\nIntroduction\n\n\n\nDay 2: Collaborative analysis and manuscript planning"
+    "text": "Slides\nThese slides are designed to use with live teaching and are published for workshop participants’ convenience. They are not meant as standalone learning materials.\n\nDay 1: Oblique and causal random forests\n\nIntroduction\nDecision trees and random forests\n\n\n\nDay 2: Collaborative analysis and manuscript planning"
   },
   {
     "objectID": "index.html#acknowledgments",
@@ -256,6 +256,167 @@
     "href": "slides/01-introduction.html#your-turn-5",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nFor the rest of this session,\n\nImplement specific data_clean, data_derive, data_select, and data_exclude for your data.\nIf you already did these operations before the workshop, move the code you used into the functions above.\nIf you finish early, help someone else!\n\nAt a minimum, make sure your data have time/status for dementia, apoe4, age, and sex, so that you will be able to use your data for the rest of the workshop.\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/"
+    "text": "Your turn\nFor the rest of this session,\n\nImplement specific data_clean, data_derive, data_select, and data_exclude for your data.\nIf you already did these operations before the workshop, move the code you used into the corresponding function.\nIf you finish early, help someone else!\n\nAt a minimum, make sure your data have time/status for dementia, apoe4, age, and sex, so that you will be able to use your data for the rest of the workshop.\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#planting-seeds-for-causal-trees",
+    "href": "slides/02-trees_and_forests.html#planting-seeds-for-causal-trees",
+    "title": "MELODEM data workshop",
+    "section": "Planting seeds for causal trees",
+    "text": "Planting seeds for causal trees\nSuppose we have outcome \\(Y\\) and treatment \\(W\\in\\{0, 1\\}\\).\n\\[\\text{Define }\\tau = E[Y|W=1] - E[Y|W=0],\\]\nIf \\(\\tau\\) can be estimated conditional on a person’s characteristics, then a decision tree could be grown using \\(\\hat\\tau_1 \\mid x_1, \\ldots, \\hat\\tau_n \\mid x_n\\) as an outcome. That tree could predict who benefits from treatment and explain why.\n\nBut how do we get \\(\\hat\\tau_i \\mid x_i\\)? More on this later…"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forests",
+    "href": "slides/02-trees_and_forests.html#random-forests",
+    "title": "MELODEM data workshop",
+    "section": "Random Forests",
+    "text": "Random Forests\nIf we have to make a yes/no decision, who should make it?\n\n\n1 expert who is right 75% of the time\nMajority rule by 5000 independent “weak experts”.\n\nNote: each weak expert is right 51% of the time.\n\nAnswer is weak experts!"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forests-1",
+    "href": "slides/02-trees_and_forests.html#random-forests-1",
+    "title": "MELODEM data workshop",
+    "section": "Random Forests",
+    "text": "Random Forests\nIf we have to make a yes/no decision, who should make it?\n\n1 expert who is right 75% of the time\nMajority rule by 5000 independent “weak experts”.\n\nNote: each weak expert is right 51% of the time.\n\nAnswer is weak experts!\n\nWhy? Weak expert majority is right ~92% of the time\n\n# probability that &gt;2500 weak experts are right\n# = 1 - probability that &lt;=2500 are right\n1 - pbinom(q = 2500, size = 5000, prob = 0.51)\n\n[1] 0.9192858"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forests-2",
+    "href": "slides/02-trees_and_forests.html#random-forests-2",
+    "title": "MELODEM data workshop",
+    "section": "Random Forests",
+    "text": "Random Forests\nThe weak expert approach for decision trees:\n\nGrow each tree with a random subset of the training data.\nEvaluate a random subset of predictors when splitting data.\n\nThese random elements help make the trees more independent while keeping their prediction accuracy better than random guesses."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forests-3",
+    "href": "slides/02-trees_and_forests.html#random-forests-3",
+    "title": "MELODEM data workshop",
+    "section": "Random Forests",
+    "text": "Random Forests\nTo get a prediction from the random forest,\n\npredict the outcome with each tree\ntake the majority vote\n\nIn situations where trees predictions are continuous and you can’t take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree’s predictions."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#axis-based-and-oblique-trees",
+    "href": "slides/02-trees_and_forests.html#axis-based-and-oblique-trees",
+    "title": "MELODEM data workshop",
+    "section": "Axis based and oblique trees",
+    "text": "Axis based and oblique trees\n\nAxis based trees use a single predictor to split data, creating decision boundaries that lie perpendicular to the axis of that predictor.\nOblique trees use a weighted combination of two or more predictors, creating decision boundaries that are neither perpendicular nor parallel to the axes of contributing predictors."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#axis-based-vs-oblique",
+    "href": "slides/02-trees_and_forests.html#axis-based-vs-oblique",
+    "title": "MELODEM data workshop",
+    "section": "Axis based vs oblique",
+    "text": "Axis based vs oblique\n\nLeo Breiman found oblique random forests compared more favorably to boosting than axis based ones.1\nOther benchmarks have found the same result.2 Oblique random forests have high prediction accuracy.3\n\nBreiman L. Random forests. Machine learning. 2001 Oct;45:5-32.Katuwal R, Suganthan PN, Zhang L. Heterogeneous oblique random forest. Pattern Recognition. 2020 Mar 1;99:107078.Menze BH, Kelm BM, Splitthoff DN, Koethe U, Hamprecht FA. On oblique random forests. Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22 2011 (pp. 453-469). Springer Berlin Heidelberg."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#aorsf-benchmark",
+    "href": "slides/02-trees_and_forests.html#aorsf-benchmark",
+    "title": "MELODEM data workshop",
+    "section": "aorsf Benchmark1",
+    "text": "aorsf Benchmark1\nGoal: Test if a fast version of the oblique random survival forest (aorsf) is as good as the original (obliqueRSF).\n\nEvaluated both in 35 risk prediction tasks (21 datasets)\nMeasured computation time, C-statistic and index of prediction accuracy (IPA).\nUsed Bayesian linear mixed models to test for differences in expected C-statistic and IPA.\n\nJaeger BC, Welden S, Lenoir K, Speiser JL, Segar MW, Pandey A, Pajewski NM. Accelerated and interpretable oblique random survival forests. Journal of Computational and Graphical Statistics. 2023 Aug 3:1-6."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nDecision trees are grown by recursively splitting a set of training data."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-1",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-1",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nFor classification, “Gini impurity” measures split quality:\n\\[G = 1 - \\sum_{i = 1}^{K} P(i)^2\\]\n\\(K\\) is no. of classes, \\(P(i)\\) is the probability of class \\(i\\)."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-2",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-2",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nConsider splitting at flipper length of 206.5: Right node:\n\ngini_right &lt;- penguins %&gt;% \n filter(flipper_length_mm&gt;=206.5) %&gt;% \n count(species) %&gt;% \n mutate(p = n / sum(n)) %&gt;% \n summarize(gini = 1 - sum(p^2)) %&gt;% \n pull(gini)\n\ngini_right\n\n[1] 0.107008"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-3",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-3",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nConsider splitting at flipper length of 206.5: Left node:\n\ngini_left &lt;- penguins %&gt;% \n filter(flipper_length_mm&lt;206.5) %&gt;% \n count(species) %&gt;% \n mutate(p = n / sum(n)) %&gt;% \n summarize(gini = 1 - sum(p^2)) %&gt;% \n pull(gini)\n\ngini_left\n\n[1] 0.4289479"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-4",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-4",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nConsider splitting at flipper length of 206.5: Impurity:\n\nsplit_var &lt;- penguins %&gt;% \n  pull(flipper_length_mm)\n\nn_tot &lt;- length(split_var)\nn_right &lt;- sum(split_var &gt;= 206.5)\nn_left &lt;- sum(split_var &lt; 206.5)\n\ngini_right * (n_right / n_tot) + \n  gini_left * (n_left / n_tot)\n\n[1] 0.3080996"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-5",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-5",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nNow we have two potential datasets, or nodes in the tree, that we can split.\nDo we keep going or stop?"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-6",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-6",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nWe may stop tree growth if the node has:\n\nObs &lt; min_obs\nCases &lt; min_cases\nImpurity &lt; min_impurity\nDepth = max_depth"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-7",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-7",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nSuppose\n\nmin_obs = 10\nmin_cases = 2\nmin_impurity = 0.2\nmax_depth = 3\n\nWhich node(s) can we split?"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-8",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-8",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\n\nThe left node can be split.\nThe right node cannot, since impurity on the right is &lt; min_impurity"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#partitions-as-a-tree",
+    "href": "slides/02-trees_and_forests.html#partitions-as-a-tree",
+    "title": "MELODEM data workshop",
+    "section": "Partitions as a tree",
+    "text": "Partitions as a tree\nThe same partitions, visualized as a binary tree."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-9",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-9",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\n\nThe left node can be split.\nAfter splitting the left node, all nodes have impurity &lt; min_impurity.\nIf no more nodes to grow, convert partitioned sets into leaf nodes"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#your-turn",
+    "href": "slides/02-trees_and_forests.html#your-turn",
+    "title": "MELODEM data workshop",
+    "section": "Your turn",
+    "text": "Your turn\nWas this the best possible split? Let’s find out.\n\nOpen classwork/02-trees_and_forests.qmd\nCalculate the total impurity of splitting along bill length of 45 mm.\nReminder: Red sticky note if you’d like help, green sticky note when you are finished.\nHint: the answer is 0.492340868530637\n\n\n\n\n\n−+\n05:00"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-10",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-10",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\n\nWhat is a leaf node?\n\nA leaf node is a terminal node in the tree.\nPredictions for new data are a summary of outcomes from observations in the training data that belong to the same leaf node.\n\n\n\n\nmutate(\n  penguins,\n  node = case_when(\n    flipper_length_mm &gt;= 206.5 ~ 'leaf_1',\n    bill_length_mm &gt;= 43.35 ~ 'leaf_2',\n    TRUE ~ 'leaf_3'\n  )\n) %&gt;% \n  group_by(node) %&gt;% count(species) %&gt;% \n  mutate(n = n / sum(n)) %&gt;% \n  pivot_wider(values_from = n, names_from = species, \n              values_fill = 0)\n\n# A tibble: 3 × 4\n# Groups:   node [3]\n  node   Adelie Chinstrap Gentoo\n  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;\n1 leaf_1 0.016     0.04   0.944 \n2 leaf_2 0.0635    0.921  0.0159\n3 leaf_3 0.966     0.0345 0"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#your-turn-1",
+    "href": "slides/02-trees_and_forests.html#your-turn-1",
+    "title": "MELODEM data workshop",
+    "section": "Your turn",
+    "text": "Your turn\nFit your own decision tree to the penguins data.\n\nOpen classwork/02-trees_and_forests.qmd\nComplete Exercise 2\n\n\n\n\n\n−+\n05:00"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-11",
+    "href": "slides/02-trees_and_forests.html#growing-decision-trees-11",
+    "title": "MELODEM data workshop",
+    "section": "Growing decision trees",
+    "text": "Growing decision trees\nThe same partitions, visualized as a binary tree.\n\nAs a reminder, here is our ‘hand-made’ leaf data\n\n\n\n\n\n\n  \n    \n      \n      Adelie\n      Chinstrap\n      Gentoo\n    \n  \n  \n    leaf_1\n0.02\n0.04\n0.94\n    leaf_2\n0.06\n0.92\n0.02\n    leaf_3\n0.97\n0.03\n0.00"
   }
 ]

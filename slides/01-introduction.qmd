@@ -201,14 +201,18 @@ create_from_github(
 ## Your turn
 
 1. Open `_targets.R` in the `melodem-apoe4-het` project.
-1. Run `tar_glimpse()` to inspect the pipeline.
-1. Run `tar_make()` to make the pipeline.
+1. Run `targets::tar_glimpse()` to inspect the pipeline.
+1. Run `targets::tar_make()` to make the pipeline.
 
 While you're working,
 
 - Place red sticky note on the back of your laptop if you want help.
 
 - Place green sticky note on the back of your laptop when you finish.
+
+```{r ex-1-1}
+countdown::countdown(minutes = 5, id = "ex-1-1")
+```
 
 ## Start with data management
 
@@ -256,6 +260,12 @@ We are going to add your data to the pipeline, carefully.
     
 2. Save a copy of your data in `data/sensitive`. The name of your file should be `name-raw.csv` or `name-raw.sas7bdat`, where `name` is your data's name. E.g., `regards-raw.csv`
 
+. . .
+
+```{r ex-1-2}
+countdown::countdown(minutes = 3, id = "ex-1-2")
+```
+
 ## Your turn 
 
 We are going to add your data to the pipeline, carefully.
@@ -274,6 +284,10 @@ Should return "nothing to commit, working tree clean"
 
 ```{git, echo = TRUE, eval = FALSE}
 git branch -b regards
+```
+
+```{r ex-1-3}
+countdown::countdown(minutes = 3, id = "ex-1-3")
 ```
 
 ## Your turn 
@@ -313,7 +327,13 @@ data_x_tar <- tar_target(
 ```
 
 :::
+
 :::
+
+
+```{r ex-1-4}
+countdown::countdown(minutes = 5, id = "ex-1-4")
+```
 
 ---
 

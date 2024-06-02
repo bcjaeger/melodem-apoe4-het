@@ -1,0 +1,129 @@
+---
+title: "Decision trees and random forests classwork"
+subtitle: "MELODEM data workshop"
+editor_options: 
+  chunk_output_type: console
+---
+
+I recommend restarting R between each slide deck!
+
+## Setup
+
+Setup the same as slides for this module.
+
+```{r, message=FALSE}
+
+library(tidyverse)
+library(palmerpenguins)
+
+penguins <- drop_na(penguins)
+
+```
+
+## Gini index
+
+Compute gini-index on the right child node if `penguins` are split along flipper length of 207
+
+```{r}
+
+gini_right <- penguins %>% 
+ filter(flipper_length_mm>=207) %>% 
+ count(species) %>% 
+ mutate(p = n / sum(n)) %>% 
+ summarize(gini = 1 - sum(p^2)) %>% 
+ pull(gini)
+
+gini_right
+
+```
+
+Now do the left child node
+
+```{r}
+
+gini_left <- penguins %>% 
+ filter(flipper_length_mm<207) %>% 
+ count(species) %>% 
+ mutate(p = n / sum(n)) %>% 
+ summarize(gini = 1 - sum(p^2)) %>% 
+ pull(gini)
+
+gini_left
+
+```
+
+Now calculate the total impurity of the split, which weights the impurity of the right and left child nodes by their sample size:
+
+```{r}
+
+split_var <- penguins %>% 
+  drop_na(flipper_length_mm) %>% 
+  pull(flipper_length_mm)
+
+n_tot <- length(split_var)
+n_right <- sum(split_var >= 207)
+n_left <- sum(split_var < 207)
+
+gini_right * (n_right / n_tot) + 
+  gini_left * (n_left / n_tot)
+
+```
+
+
+## Exercise 1
+
+Calculate the total impurity of splitting along bill length of 45 mm.
+
+```{r}
+
+# Your code goes here. Use the code above to get started.
+
+```
+
+
+**Hint**: the answer is 0.492340868530637
+
+## Decision trees
+
+The `rpart` package can fit standard decision trees for survival, regression, and classification. In my slides, I use this tree:
+
+```{r}
+
+library(rpart)
+
+fit_slides <- rpart(
+  # split variables can be flipper or bill length
+  formula = species ~ flipper_length_mm + bill_length_mm,
+  data = penguins,
+  # the tree can't grow to a depth > 1
+  control = rpart.control(maxdepth = 1)
+)
+
+fit_slides
+
+```
+
+
+## Exercise 2
+
+Fit your own decision tree to the `penguins` data
+
+1. Use `formula = species ~ .` to incorporate all predictors on the right hand side of the formula.
+
+1. Set a maximum depth of the tree using `control = rpart.control(maxdepth = your_choice)`
+
+1. View your decision tree by running `rpart.plot`
+
+```{r}
+
+library(rpart.plot)
+
+# fit <- rpart(formula = ??? 
+#              data = penguins, 
+#              control = ???)
+
+# rpart.plot(fit)
+
+```
+
+

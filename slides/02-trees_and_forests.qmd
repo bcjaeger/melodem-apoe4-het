@@ -1,0 +1,724 @@
+---
+title: "MELODEM data workshop"
+subtitle: "Decision trees and random forests"
+author: "Byron C. Jaeger, PhD"
+institute: "Wake Forest University School of Medicine"
+format: 
+  revealjs:
+    slide-number: true
+    footer: Slides available at <https://bcjaeger.github.io/melodem-apoe4-het/>
+    include-before-body: header.html
+    include-after-body: footer-annotations.html
+    theme: [default, tidymodels.scss]
+    width: 1280
+    height: 720
+---
+
+```{r setup, cache=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      dpi = 300,
+                      cache = TRUE,
+                      fig.height = 6.5,
+                      fig.align = 'center')
+
+library(tidyverse)
+library(palmerpenguins)
+
+penguins <- drop_na(penguins)
+
+withr::with_dir(
+  new = here::here(),
+  targets::tar_load(penguin_figs)
+)
+
+```
+
+---
+
+![](img/penguins.png){width=100%}
+
+:::footer
+Data were collected and made available by [Dr. Kristen Gorman](https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php) and the Palmer Station, a member of the [Long Term Ecological Research Network](https://lternet.edu/).
+:::
+
+
+---
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+Decision trees are grown by recursively splitting a set of training data.
+
+:::
+
+:::{.column width="59%"}
+
+```{r penguin-fig-demo, fig.height=8, out.width='100%'}
+penguin_figs$demo
+```
+
+:::
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+For classification, "Gini impurity" measures split quality: 
+
+$$G = 1 - \sum_{i = 1}^{K} P(i)^2$$
+
+$K$ is no. of classes, $P(i)$ is the probability of class $i$.
+
+:::
+
+:::{.column width="59%"}
+
+```{r gini, fig.height=8, out.width='100%'}
+penguin_figs$demo
+```
+
+:::
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+Consider splitting at flipper length of 206.5: **Right node**: 
+
+```{r echo=TRUE}
+
+gini_right <- penguins %>% 
+ filter(flipper_length_mm>=206.5) %>% 
+ count(species) %>% 
+ mutate(p = n / sum(n)) %>% 
+ summarize(gini = 1 - sum(p^2)) %>% 
+ pull(gini)
+
+gini_right
+
+```
+
+:::
+
+:::{.column width="59%"}
+
+```{r penguin-fig-axis-1, fig.height=8, out.width='100%'}
+penguin_figs$axis_1
+```
+
+:::
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+Consider splitting at flipper length of 206.5: **Left node**: 
+
+```{r echo=TRUE}
+
+gini_left <- penguins %>% 
+ filter(flipper_length_mm<206.5) %>% 
+ count(species) %>% 
+ mutate(p = n / sum(n)) %>% 
+ summarize(gini = 1 - sum(p^2)) %>% 
+ pull(gini)
+
+gini_left
+
+```
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=8, out.width='100%'}
+penguin_figs$axis_1
+```
+
+:::
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+Consider splitting at flipper length of 206.5: **Impurity**: 
+```{r echo=TRUE}
+
+split_var <- penguins %>% 
+  pull(flipper_length_mm)
+
+n_tot <- length(split_var)
+n_right <- sum(split_var >= 206.5)
+n_left <- sum(split_var < 206.5)
+
+gini_right * (n_right / n_tot) + 
+  gini_left * (n_left / n_tot)
+
+
+```
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=8, out.width='100%'}
+penguin_figs$axis_1
+```
+
+:::
+
+## Your turn
+
+Was this the best possible split? Let's find out.
+
+- Open `classwork/02-trees_and_forests.qmd`
+
+- Calculate the total impurity of splitting along bill length of 45 mm.
+
+- **Reminder**: Red sticky note if you'd like help, green sticky note when you are finished.
+
+- **Hint**: the answer is 0.492340868530637
+
+. . .
+
+```{r ex-1}
+#| echo: false
+countdown::countdown(minutes = 5, id = "ex-1")
+```
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+Now we have two potential datasets, or **nodes** in the tree, that we can split. 
+
+Do we keep going or stop?
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=8, out.width='100%'}
+
+
+penguin_figs$axis_1 + 
+  annotate(geom = 'text', 
+           x = 188,
+           y = 65, 
+           size = 6,
+           label = "Split these data?") + 
+    annotate(geom = 'text', 
+           x = 220,
+           y = 65, 
+           size = 6,
+           label = "Or these data?") 
+
+```
+
+:::
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+We may stop tree growth if the node has:
+
+1. Obs < `min_obs`
+
+2. Cases < `min_cases`
+
+3. Impurity < `min_impurity`
+
+4. Depth = `max_depth`
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=8, out.width='100%'}
+
+stats <- penguins %>% 
+  split(.$flipper_length_mm < 206.5) %>% 
+  map(
+    ~ c(N = nrow(.x), 
+        n = sum(.x == "Adelie"),
+        I = ifelse(nrow(.x) == n_right,
+                   gini_right,
+                   gini_left))
+  )
+
+lab_left <- paste(
+  names(stats[[2]]),
+  table.glue::table_value(stats[[2]]),
+  sep = '='
+) %>% 
+  paste(collapse = ', ') %>% 
+  paste("Split these data?\n", .)
+
+lab_right <- paste(
+  names(stats[[1]]),
+  table.glue::table_value(stats[[1]]),
+  sep = '='
+) %>% 
+  paste(collapse = ', ') %>% 
+  paste("Or these data?\n", .)
+
+penguin_figs$axis_1 + 
+  annotate(geom = 'text', 
+           x = 188,
+           y = 65, 
+           size = 6,
+           label = lab_left) + 
+    annotate(geom = 'text', 
+           x = 220,
+           y = 65, 
+           size = 6,
+           label = lab_right) 
+
+```
+
+:::
+
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+Suppose 
+
+- `min_obs` = 10
+- `min_cases` = 2 
+- `min_impurity` = 0.2
+- `max_depth` = 3
+
+Which node(s) can we split?
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=8, out.width='100%'}
+
+penguin_figs$axis_1 + 
+  annotate(geom = 'text', 
+           x = 188,
+           y = 65, 
+           size = 6,
+           label = lab_left) + 
+    annotate(geom = 'text', 
+           x = 220,
+           y = 65, 
+           size = 6,
+           label = lab_right) 
+  
+```
+
+:::
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+- The left node can be split.
+
+- The right node cannot, since impurity on the right is < `min_impurity`
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=8, out.width='100%'}
+
+penguin_figs$axis_2
+  
+```
+
+:::
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+- The left node can be split.
+
+- After splitting the left node, all nodes have impurity < `min_impurity`.
+
+- If no more nodes to grow, convert partitioned sets into **leaf nodes**
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=8, out.width='100%'}
+
+penguin_figs$axis_2
+  
+```
+
+:::
+
+## Growing decision trees
+
+:::{.column width="40%"}
+
+What is a leaf node?
+
+- A **leaf node** is a terminal node in the tree. 
+
+- Predictions for new data are a summary of outcomes from observations in the training data that belong to the same leaf node.
+
+:::
+
+:::{.column width="59%"}
+```{r echo=TRUE}
+mutate(
+  penguins,
+  node = case_when(
+    flipper_length_mm >= 206.5 ~ 'leaf_1',
+    bill_length_mm >= 43.35 ~ 'leaf_2',
+    TRUE ~ 'leaf_3'
+  )
+) %>% 
+  group_by(node) %>% count(species) %>% 
+  mutate(n = n / sum(n)) %>% 
+  pivot_wider(values_from = n, names_from = species, 
+              values_fill = 0)
+
+
+```
+:::
+
+## Your turn
+
+Fit your own decision tree to the `penguins` data.
+
+- Open `classwork/02-trees_and_forests.qmd`
+
+- Complete Exercise 2
+
+. . .
+
+```{r ex-2}
+#| echo: false
+countdown::countdown(minutes = 5, id = "ex-2")
+```
+
+
+## Growing decision trees
+
+The same partitions, visualized as a binary tree.
+
+:::{.column width="40%"}
+
+As a reminder, here is our 'hand-made' leaf data
+
+```{r}
+mutate(
+  penguins,
+  node = case_when(
+    flipper_length_mm >= 206.5 ~ 'leaf_1',
+    bill_length_mm >= 43.35 ~ 'leaf_2',
+    TRUE ~ 'leaf_3'
+  )
+) %>% 
+  group_by(node) %>% count(species) %>% 
+  mutate(n = n / sum(n)) %>% 
+  pivot_wider(values_from = n, names_from = species, 
+              values_fill = 0) %>% 
+  ungroup() %>% 
+  mutate(across(c(Adelie, Chinstrap, Gentoo),
+                ~round(.x, digits = 2))) %>% 
+  gt::gt(rowname_col = 'node') %>% 
+  gt::tab_options(table.font.size = "85%")
+
+```
+:::
+
+:::{.column width="59%"}
+```{r penguin-tree, fig.align='center', out.width='100%'}
+
+knitr::include_graphics('img/rpart_plot_classif.png')
+
+```
+:::
+
+## Planting seeds for causal trees
+
+Suppose we have outcome $Y$ and treatment $W\in\{0, 1\}$.
+
+$$\text{Define }\tau = E[Y|W=1] - E[Y|W=0],$$
+
+If $\tau$ can be estimated conditional on a person's characteristics, then a decision tree could be grown using $\hat\tau_1 \mid x_1, \ldots, \hat\tau_n \mid x_n$ as an outcome. That tree could predict who benefits from treatment and explain why.
+
+<br>
+
+But how do we get $\hat\tau_i \mid x_i$? More on this later...
+
+---
+
+## Random Forests
+
+If we have to make a yes/no decision, who should make it? 
+
+::: {.incremental}
+
+- 1 expert who is right 75% of the time
+
+- Majority rule by 5000 **independent** "weak experts".
+
+    + Note: each weak expert is right **51%** of the time.
+
+- Answer is weak experts! 
+
+:::
+
+## Random Forests
+
+If we have to make a yes/no decision, who should make it? 
+
+
+- 1 expert who is right 75% of the time
+
+- Majority rule by 5000 **independent** "weak experts".
+
+    + Note: each weak expert is right **51%** of the time.
+
+- Answer is weak experts! 
+
+Why? Weak expert majority is right ~92% of the time
+
+```{r weak-vs-expert, echo=TRUE}
+# probability that >2500 weak experts are right
+# = 1 - probability that <=2500 are right
+1 - pbinom(q = 2500, size = 5000, prob = 0.51)
+```
+
+## Random Forests
+
+The weak expert approach for decision trees:
+
+- Grow each tree with a random subset of the training data.
+
+- Evaluate a random subset of predictors when splitting data.
+
+These random elements help make the trees more independent while keeping their prediction accuracy better than random guesses.
+
+## Random Forests
+
+To get a prediction from the random forest, 
+
+- predict the outcome with each tree
+
+- take the majority vote
+
+In situations where trees predictions are continuous and you can't take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree's predictions.
+
+---
+
+:::{.column width="20%"}
+
+Aggregating randomized trees gives the classic random forest
+
+:::
+
+:::{.column width="79%"}
+
+```{r penguin-fig-axis-traditional, fig.width=7.5}
+penguin_figs$axis_2 + ggplot2::ggtitle("1 traditional tree")
+```
+
+:::
+
+---
+
+:::{.column width="20%"}
+
+Aggregating randomized trees gives the classic random forest
+
+:::
+
+:::{.column width="79%"}
+
+```{r penguin-fig-axis-random-1, fig.width=7.5}
+penguin_figs$axis_3a + ggplot2::ggtitle("1 randomized tree")
+```
+
+:::
+
+---
+
+:::{.column width="20%"}
+
+Aggregating randomized trees gives the classic random forest
+
+:::
+
+:::{.column width="79%"}
+
+```{r penguin-fig-axis-random-5, fig.width=7.5}
+penguin_figs$axis_3b + ggplot2::ggtitle("5 randomized trees")
+```
+
+:::
+
+---
+
+:::{.column width="20%"}
+
+Aggregating randomized trees gives the classic random forest
+
+:::
+
+:::{.column width="79%"}
+
+```{r, fig.width=7.5}
+penguin_figs$axis_3c + ggplot2::ggtitle("100 randomized trees")
+```
+
+:::
+
+---
+
+:::{.column width="20%"}
+
+Aggregating randomized trees gives the classic random forest
+
+:::
+
+:::{.column width="79%"}
+
+```{r, fig.width=7.5}
+penguin_figs$axis_3d + ggplot2::ggtitle("500 randomized trees")
+```
+
+:::
+
+---
+
+
+
+## Axis based and oblique trees
+
+- Axis based trees use a single predictor to split data, creating decision boundaries that lie perpendicular to the axis of that predictor.
+
+- Oblique trees use a weighted combination of two or more predictors, creating decision boundaries that are neither perpendicular nor parallel to the axes of contributing predictors.
+
+---
+
+:::{.column width="20%"}
+
+First, split mostly by bill length
+
+:::
+
+:::{.column width="79%"}
+
+```{r, fig.width=7.5}
+penguin_figs$oblique_1
+```
+
+:::
+
+---
+
+:::{.column width="20%"}
+
+First, split mostly by bill length
+
+<br/>
+
+Second, make a triangle for the gentoo.
+
+:::
+
+:::{.column width="79%"}
+
+```{r, fig.width=7.5}
+penguin_figs$oblique_2
+```
+
+:::
+
+---
+
+:::{.column width="20%"}
+
+Aggregating randomized trees gives the *oblique* random forest
+
+:::
+
+:::{.column width="79%"}
+
+```{r, fig.width=7.5}
+penguin_figs$oblique_3
+```
+
+:::
+
+---
+
+:::{.column width="20%"}
+
+Surprisingly different!
+
+:::
+
+:::{.column width="79%"}
+
+```{r, fig.width=7.5}
+penguin_figs$axis_3d
+```
+
+:::
+
+## Axis based vs oblique
+
+- Leo Breiman found oblique random forests compared more favorably to boosting than axis based ones.^[Breiman L. [Random forests](https://link.springer.com/article/10.1023/a:1010933404324). Machine learning. 2001 Oct;45:5-32.]
+
+- Other benchmarks have found the same result.^[Katuwal R, Suganthan PN, Zhang L. Heterogeneous oblique random forest. Pattern Recognition. 2020 Mar 1;99:107078.] Oblique random forests have high prediction accuracy.^[Menze BH, Kelm BM, Splitthoff DN, Koethe U, Hamprecht FA. On oblique random forests. Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22 2011 (pp. 453-469). Springer Berlin Heidelberg.]
+
+
+---
+
+Yet, everyone uses axis-based random forests. Here's why:
+
+```{r, cache=FALSE, fig.height=6}
+# bm_figs$time$slide_one
+```
+
+
+---
+
+![](img/meme_slow_R.jpg){width=100% fig-align="center"}
+
+# `aorsf`<br/>accelerated oblique random survival forest
+
+## `aorsf` Benchmark^[Jaeger BC, Welden S, Lenoir K, Speiser JL, Segar MW, Pandey A, Pajewski NM. [Accelerated and interpretable oblique random survival forests](https://www.tandfonline.com/doi/full/10.1080/10618600.2023.2231048). Journal of Computational and Graphical Statistics. 2023 Aug 3:1-6.]
+
+**Goal**: Test if a fast version of the oblique random survival forest ([`aorsf`](https://docs.ropensci.org/aorsf/)) is as good as the original (`obliqueRSF`).
+
+- Evaluated both in 35 risk prediction tasks (21 datasets)
+
+- Measured computation time, C-statistic and index of prediction accuracy (IPA).
+
+- Used Bayesian linear mixed models to test for differences in expected C-statistic and IPA.
+
+---
+
+You can use oblique random forests now!
+
+```{r, cache=FALSE, fig.height=6}
+# bm_figs$time$slide_two
+```
+
+---
+
+And making them fast didn't break their predictions
+
+```{r}
+# bm_figs$eval$`C-statistic`
+```

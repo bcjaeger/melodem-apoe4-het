@@ -26,7 +26,10 @@ tar_option_set(
     "randomForestSRC", # axis based random forests
     "party",           # conditional inference forests
     "riskRegression",  # evaluates prediction accuracy
-    "survival"         # provides the Surv() function
+    "survival",        # provides the Surv() function
+    "ggforce",
+    "rpart",
+    "ranger"
   )
 )
 
@@ -45,6 +48,11 @@ assert_data_safety()
 manuscript_version <- 1
 
 include_benchmark <- TRUE
+
+
+# slides targets ----------------------------------------------------------
+
+penguin_figs_tar <- tar_target(penguin_figs, viz_penguins())
 
 # Individual cohort targets -----------------------------------------------
 
@@ -116,6 +124,7 @@ manuscript_tar <- tar_render(
 # Finalize targets --------------------------------------------------------
 
 targets <- list(
+  penguin_figs_tar,
   file_sim_1_tar,
   data_sim_1_tar,
   file_sim_2_tar,
