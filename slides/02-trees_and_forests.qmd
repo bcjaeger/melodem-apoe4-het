@@ -14,14 +14,15 @@ format:
     height: 720
 ---
 
-```{r setup, cache=FALSE}
+```{r setup, cache=FALSE, include=FALSE}
 
 knitr::opts_chunk$set(echo = FALSE, 
                       message = FALSE,
                       warning = FALSE,
                       dpi = 300,
                       cache = TRUE,
-                      fig.height = 6.5,
+                      fig.height = 7.25,
+                      out.width = '100%',
                       fig.align = 'center')
 
 library(tidyverse)
@@ -57,7 +58,7 @@ Decision trees are grown by recursively splitting a set of training data.
 
 :::{.column width="59%"}
 
-```{r penguin-fig-demo, fig.height=8, out.width='100%'}
+```{r penguin-fig-demo,  }
 penguin_figs$demo
 ```
 
@@ -77,7 +78,7 @@ $K$ is no. of classes, $P(i)$ is the probability of class $i$.
 
 :::{.column width="59%"}
 
-```{r gini, fig.height=8, out.width='100%'}
+```{r gini,  }
 penguin_figs$demo
 ```
 
@@ -106,7 +107,7 @@ gini_right
 
 :::{.column width="59%"}
 
-```{r penguin-fig-axis-1, fig.height=8, out.width='100%'}
+```{r penguin-fig-axis-1,  }
 penguin_figs$axis_1
 ```
 
@@ -135,7 +136,7 @@ gini_left
 
 :::{.column width="59%"}
 
-```{r fig.height=8, out.width='100%'}
+```{r}
 penguin_figs$axis_1
 ```
 
@@ -165,7 +166,7 @@ gini_right * (n_right / n_tot) +
 
 :::{.column width="59%"}
 
-```{r fig.height=8, out.width='100%'}
+```{r}
 penguin_figs$axis_1
 ```
 
@@ -187,7 +188,7 @@ Was this the best possible split? Let's find out.
 
 ```{r ex-1}
 #| echo: false
-countdown::countdown(minutes = 5, id = "ex-1")
+# countdown::countdown(minutes = 5, id = "ex-1")
 ```
 
 ## Growing decision trees
@@ -202,7 +203,7 @@ Do we keep going or stop?
 
 :::{.column width="59%"}
 
-```{r fig.height=8, out.width='100%'}
+```{r}
 
 
 penguin_figs$axis_1 + 
@@ -239,7 +240,7 @@ We may stop tree growth if the node has:
 
 :::{.column width="59%"}
 
-```{r fig.height=8, out.width='100%'}
+```{r}
 
 stats <- penguins %>% 
   split(.$flipper_length_mm < 206.5) %>% 
@@ -301,7 +302,7 @@ Which node(s) can we split?
 
 :::{.column width="59%"}
 
-```{r fig.height=8, out.width='100%'}
+```{r}
 
 penguin_figs$axis_1 + 
   annotate(geom = 'text', 
@@ -331,7 +332,7 @@ penguin_figs$axis_1 +
 
 :::{.column width="59%"}
 
-```{r fig.height=8, out.width='100%'}
+```{r}
 
 penguin_figs$axis_2
   
@@ -353,7 +354,7 @@ penguin_figs$axis_2
 
 :::{.column width="59%"}
 
-```{r fig.height=8, out.width='100%'}
+```{r}
 
 penguin_figs$axis_2
   
@@ -369,7 +370,7 @@ What is a leaf node?
 
 - A **leaf node** is a terminal node in the tree. 
 
-- Predictions for new data are a summary of outcomes from observations in the training data that belong to the same leaf node.
+- Predictions for new data are stored in leaf nodes.
 
 :::
 
@@ -404,7 +405,7 @@ Fit your own decision tree to the `penguins` data.
 
 ```{r ex-2}
 #| echo: false
-countdown::countdown(minutes = 5, id = "ex-2")
+# countdown::countdown(minutes = 5, id = "ex-2")
 ```
 
 
@@ -439,7 +440,7 @@ mutate(
 :::
 
 :::{.column width="59%"}
-```{r penguin-tree, fig.align='center', out.width='100%'}
+```{r penguin-tree, fig.align='center'}
 
 knitr::include_graphics('img/rpart_plot_classif.png')
 
@@ -503,6 +504,9 @@ The weak expert approach for decision trees:
 
 - Grow each tree with a random subset of the training data.
 
+    + "In-bag" means in the random subset
+    + "Out-of-bag" means not in the subset
+
 - Evaluate a random subset of predictors when splitting data.
 
 These random elements help make the trees more independent while keeping their prediction accuracy better than random guesses.
@@ -517,89 +521,157 @@ To get a prediction from the random forest,
 
 In situations where trees predictions are continuous and you can't take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree's predictions.
 
----
+## Random Forests
 
-:::{.column width="20%"}
+:::{.column width="30%"}
 
 Aggregating randomized trees gives the classic random forest
 
 :::
 
-:::{.column width="79%"}
+:::{.column width="69%"}
 
-```{r penguin-fig-axis-traditional, fig.width=7.5}
+```{r penguin-fig-axis-traditional}
 penguin_figs$axis_2 + ggplot2::ggtitle("1 traditional tree")
 ```
 
 :::
 
----
+## Random Forests
 
-:::{.column width="20%"}
-
-Aggregating randomized trees gives the classic random forest
-
-:::
-
-:::{.column width="79%"}
-
-```{r penguin-fig-axis-random-1, fig.width=7.5}
-penguin_figs$axis_3a + ggplot2::ggtitle("1 randomized tree")
-```
-
-:::
-
----
-
-:::{.column width="20%"}
+:::{.column width="30%"}
 
 Aggregating randomized trees gives the classic random forest
 
 :::
 
-:::{.column width="79%"}
+:::{.column width="69%"}
 
-```{r penguin-fig-axis-random-5, fig.width=7.5}
-penguin_figs$axis_3b + ggplot2::ggtitle("5 randomized trees")
-```
-
-:::
-
----
-
-:::{.column width="20%"}
-
-Aggregating randomized trees gives the classic random forest
-
-:::
-
-:::{.column width="79%"}
-
-```{r, fig.width=7.5}
+```{r}
 penguin_figs$axis_3c + ggplot2::ggtitle("100 randomized trees")
 ```
 
 :::
 
----
+## Random Forests
 
-:::{.column width="20%"}
+:::{.column width="30%"}
 
 Aggregating randomized trees gives the classic random forest
 
 :::
 
-:::{.column width="79%"}
+:::{.column width="69%"}
 
-```{r, fig.width=7.5}
+```{r}
 penguin_figs$axis_3d + ggplot2::ggtitle("500 randomized trees")
 ```
 
 :::
 
----
+## Out-of-bag predictions
+
+![](diagram/trees-oobag-1.svg)
+
+##  Out-of-bag predictions
+
+![](diagram/trees-oobag-2.svg)
+
+## Out-of-bag predictions
+
+![](diagram/trees-oobag-3.svg)
+
+## Out-of-bag predictions
+
+![](diagram/trees-oobag-4.svg)
+
+## Out-of-bag predictions
+
+![](diagram/trees-oobag-5.svg)
+
+## Out-of-bag predictions
+
+Final out-of-bag predictions:
+
+$$\frac{\text{out-of-bag predictions}}{\text{out-of-bag denominator}}$$
+
+- With conventional bootstrap sampling, each observation has about a 36.8% chance of being out-of-bag for each tree.
+
+- Out-of-bag predictions give an unbiased view of the forest's prediction on new data
+
+- This allows for variable importance estimates and (we'll see this later) valid inference in causal forests.
+
+## Variable importance
+
+:::{.column width="30%"}
+First compute out-of-bag prediction accuracy.
+
+In this case, classification accuracy is 96%
+:::
 
 
+:::{.column width="69%"}
+```{r}
+penguin_figs$axis_3d
+```
+:::
+
+## Variable importance
+
+:::{.column width="30%"}
+Next, permute the values of a given variable
+
+See how one value of flipper length is permuted in the figure?
+:::
+
+
+:::{.column width="69%"}
+```{r}
+penguin_figs$vi_1
+```
+:::
+
+## Variable importance
+
+:::{.column width="30%"}
+Next, permute the values of a given variable
+
+Now they are *all* permuted, and out-of-bag classification accuracy is now 61%
+:::
+
+
+:::{.column width="69%"}
+```{r}
+penguin_figs$vi_flipper
+```
+:::
+
+## Variable importance
+
+:::{.column width="30%"}
+Rinse and repeat for all variables.
+
+For bill length, out-of-bag classification accuracy is reduced to 63%
+:::
+
+
+:::{.column width="69%"}
+```{r}
+penguin_figs$vi_bill
+```
+:::
+
+## Variable importance
+
+Once all variables have been through this process:
+
+$$\text{Variable importance} = \text{initial accuracy} - \text{permuted accuracy}$$
+
+- Flipper length: 0.96 - 0.61 = 0.35
+
+- Bill length: 0.96 - 0.63 = 0.33
+
+$\Rightarrow$ flippers more important than bills for species prediction.
 
 ## Axis based and oblique trees
 
@@ -609,15 +681,15 @@ penguin_figs$axis_3d + ggplot2::ggtitle("500 randomized trees")
 
 ---
 
-:::{.column width="20%"}
+:::{.column width="30%"}
 
 First, split mostly by bill length
 
 :::
 
-:::{.column width="79%"}
+:::{.column width="69%"}
 
-```{r, fig.width=7.5}
+```{r}
 penguin_figs$oblique_1
 ```
 
@@ -625,7 +697,7 @@ penguin_figs$oblique_1
 
 ---
 
-:::{.column width="20%"}
+:::{.column width="30%"}
 
 First, split mostly by bill length
 
@@ -635,9 +707,9 @@ Second, make a triangle for the gentoo.
 
 :::
 
-:::{.column width="79%"}
+:::{.column width="69%"}
 
-```{r, fig.width=7.5}
+```{r}
 penguin_figs$oblique_2
 ```
 
@@ -645,15 +717,15 @@ penguin_figs$oblique_2
 
 ---
 
-:::{.column width="20%"}
+:::{.column width="30%"}
 
 Aggregating randomized trees gives the *oblique* random forest
 
 :::
 
-:::{.column width="79%"}
+:::{.column width="69%"}
 
-```{r, fig.width=7.5}
+```{r}
 penguin_figs$oblique_3
 ```
 
@@ -661,15 +733,15 @@ penguin_figs$oblique_3
 
 ---
 
-:::{.column width="20%"}
+:::{.column width="30%"}
 
 Surprisingly different!
 
 :::
 
-:::{.column width="79%"}
+:::{.column width="69%"}
 
-```{r, fig.width=7.5}
+```{r}
 penguin_figs$axis_3d
 ```
 
@@ -686,7 +758,7 @@ penguin_figs$axis_3d
 
 Yet, everyone uses axis-based random forests. Here's why:
 
-```{r, cache=FALSE, fig.height=6}
+```{r, cache=FALSE}
 # bm_figs$time$slide_one
 ```
 
@@ -711,7 +783,7 @@ Yet, everyone uses axis-based random forests. Here's why:
 
 You can use oblique random forests now!
 
-```{r, cache=FALSE, fig.height=6}
+```{r, cache=FALSE}
 # bm_figs$time$slide_two
 ```
 

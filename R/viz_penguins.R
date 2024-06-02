@@ -125,6 +125,35 @@ viz_penguins <- function() {
                                title = '',
                                grid = grid)
 
+  penguins_permute_1_flipper <- penguins
+
+  penguins_permute_1_flipper$flipper_length_mm[
+    which.max(penguins_permute_1_flipper$bill_length_mm)
+  ] <- 200
+
+  penguins_permute_flipper <- penguins_permute_bill <- penguins
+
+  penguins_permute_flipper <- penguins_permute_flipper %>%
+    mutate(flipper_length_mm = sample(flipper_length_mm, size = n()))
+
+  penguins_permute_bill <- penguins_permute_bill %>%
+    mutate(bill_length_mm = sample(bill_length_mm, size = n()))
+
+  p3d_1 <- plot_decision_surface(penguins_permute_1_flipper,
+                                 predictions = pred_3d,
+                                 title = '',
+                                 grid = grid)
+
+  p3d_2 <- plot_decision_surface(penguins_permute_flipper,
+                                 predictions = pred_3d,
+                                 title = '',
+                                 grid = grid)
+
+  p3d_3 <- plot_decision_surface(penguins_permute_bill,
+                                 predictions = pred_3d,
+                                 title = '',
+                                 grid = grid)
+
   p4 <- plot_decision_surface(penguins,
                               predictions = pred_4,
                               title = '',
@@ -147,6 +176,9 @@ viz_penguins <- function() {
        axis_3b = p3b,
        axis_3c = p3c,
        axis_3d = p3d,
+       vi_1 = p3d_1,
+       vi_flipper = p3d_2,
+       vi_bill = p3d_3,
        oblique_1 = p4,
        oblique_2 = p5,
        oblique_3 = p6)
@@ -165,7 +197,7 @@ plot_decision_surface <- function(penguins, predictions, title, grid){
                           Gentoo)) %>%
     group_by(flipper_length_mm, bill_length_mm) %>%
     arrange(desc(value)) %>%
-    slice(1)
+    dplyr::slice(1)
 
   cols <- c(Adelie = "darkorange",
             Chinstrap = "purple",

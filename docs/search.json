@@ -284,7 +284,7 @@
     "href": "slides/02-trees_and_forests.html#random-forests-2",
     "title": "MELODEM data workshop",
     "section": "Random Forests",
-    "text": "Random Forests\nThe weak expert approach for decision trees:\n\nGrow each tree with a random subset of the training data.\nEvaluate a random subset of predictors when splitting data.\n\nThese random elements help make the trees more independent while keeping their prediction accuracy better than random guesses."
+    "text": "Random Forests\nThe weak expert approach for decision trees:\n\nGrow each tree with a random subset of the training data.\n\n“In-bag” means in the random subset\n“Out-of-bag” means not in the subset\n\nEvaluate a random subset of predictors when splitting data.\n\nThese random elements help make the trees more independent while keeping their prediction accuracy better than random guesses."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#random-forests-3",
@@ -396,21 +396,21 @@
     "href": "slides/02-trees_and_forests.html#your-turn",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWas this the best possible split? Let’s find out.\n\nOpen classwork/02-trees_and_forests.qmd\nCalculate the total impurity of splitting along bill length of 45 mm.\nReminder: Red sticky note if you’d like help, green sticky note when you are finished.\nHint: the answer is 0.492340868530637\n\n\n\n\n\n−+\n05:00"
+    "text": "Your turn\nWas this the best possible split? Let’s find out.\n\nOpen classwork/02-trees_and_forests.qmd\nCalculate the total impurity of splitting along bill length of 45 mm.\nReminder: Red sticky note if you’d like help, green sticky note when you are finished.\nHint: the answer is 0.492340868530637"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-10",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-10",
     "title": "MELODEM data workshop",
     "section": "Growing decision trees",
-    "text": "Growing decision trees\n\nWhat is a leaf node?\n\nA leaf node is a terminal node in the tree.\nPredictions for new data are a summary of outcomes from observations in the training data that belong to the same leaf node.\n\n\n\n\nmutate(\n  penguins,\n  node = case_when(\n    flipper_length_mm &gt;= 206.5 ~ 'leaf_1',\n    bill_length_mm &gt;= 43.35 ~ 'leaf_2',\n    TRUE ~ 'leaf_3'\n  )\n) %&gt;% \n  group_by(node) %&gt;% count(species) %&gt;% \n  mutate(n = n / sum(n)) %&gt;% \n  pivot_wider(values_from = n, names_from = species, \n              values_fill = 0)\n\n# A tibble: 3 × 4\n# Groups:   node [3]\n  node   Adelie Chinstrap Gentoo\n  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;\n1 leaf_1 0.016     0.04   0.944 \n2 leaf_2 0.0635    0.921  0.0159\n3 leaf_3 0.966     0.0345 0"
+    "text": "Growing decision trees\n\nWhat is a leaf node?\n\nA leaf node is a terminal node in the tree.\nPredictions for new data are stored in leaf nodes.\n\n\n\n\nmutate(\n  penguins,\n  node = case_when(\n    flipper_length_mm &gt;= 206.5 ~ 'leaf_1',\n    bill_length_mm &gt;= 43.35 ~ 'leaf_2',\n    TRUE ~ 'leaf_3'\n  )\n) %&gt;% \n  group_by(node) %&gt;% count(species) %&gt;% \n  mutate(n = n / sum(n)) %&gt;% \n  pivot_wider(values_from = n, names_from = species, \n              values_fill = 0)\n\n# A tibble: 3 × 4\n# Groups:   node [3]\n  node   Adelie Chinstrap Gentoo\n  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;\n1 leaf_1 0.016     0.04   0.944 \n2 leaf_2 0.0635    0.921  0.0159\n3 leaf_3 0.966     0.0345 0"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#your-turn-1",
     "href": "slides/02-trees_and_forests.html#your-turn-1",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nFit your own decision tree to the penguins data.\n\nOpen classwork/02-trees_and_forests.qmd\nComplete Exercise 2\n\n\n\n\n\n−+\n05:00"
+    "text": "Your turn\nFit your own decision tree to the penguins data.\n\nOpen classwork/02-trees_and_forests.qmd\nComplete Exercise 2"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-11",
@@ -418,5 +418,159 @@
     "title": "MELODEM data workshop",
     "section": "Growing decision trees",
     "text": "Growing decision trees\nThe same partitions, visualized as a binary tree.\n\nAs a reminder, here is our ‘hand-made’ leaf data\n\n\n\n\n\n\n  \n    \n      \n      Adelie\n      Chinstrap\n      Gentoo\n    \n  \n  \n    leaf_1\n0.02\n0.04\n0.94\n    leaf_2\n0.06\n0.92\n0.02\n    leaf_3\n0.97\n0.03\n0.00"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html",
+    "href": "slides/02-trees_and_forests.html",
+    "title": "MELODEM data workshop",
+    "section": "",
+    "text": "knitr::opts_chunk$set(echo = FALSE, \n                      message = FALSE,\n                      warning = FALSE,\n                      dpi = 300,\n                      cache = TRUE,\n                      fig.height = 6.5,\n                      fig.align = 'center')\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.1.4     ✔ readr     2.1.5\n✔ forcats   1.0.0     ✔ stringr   1.5.1\n✔ ggplot2   3.5.1     ✔ tibble    3.2.1\n✔ lubridate 1.9.3     ✔ tidyr     1.3.1\n✔ purrr     1.0.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nlibrary(palmerpenguins)\n\npenguins &lt;- drop_na(penguins)\n\nwithr::with_dir(\n  new = here::here(),\n  targets::tar_load(penguin_figs)\n)"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#footnotes",
+    "href": "slides/02-trees_and_forests.html#footnotes",
+    "title": "MELODEM data workshop",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nBreiman L. Random forests. Machine learning. 2001 Oct;45:5-32.↩︎\nKatuwal R, Suganthan PN, Zhang L. Heterogeneous oblique random forest. Pattern Recognition. 2020 Mar 1;99:107078.↩︎\nMenze BH, Kelm BM, Splitthoff DN, Koethe U, Hamprecht FA. On oblique random forests. Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22 2011 (pp. 453-469). Springer Berlin Heidelberg.↩︎\nJaeger BC, Welden S, Lenoir K, Speiser JL, Segar MW, Pandey A, Pajewski NM. Accelerated and interpretable oblique random survival forests. Journal of Computational and Graphical Statistics. 2023 Aug 3:1-6.↩︎"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag",
+    "href": "slides/02-trees_and_forests.html#out-of-bag",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag",
+    "text": "Out-of-bag\nOut of bag predictions are helpful for estimation and inference"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-1",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-1",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag",
+    "text": "Out-of-bag"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-2",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-2",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag",
+    "text": "Out-of-bag"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-3",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-3",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag",
+    "text": "Out-of-bag"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-4",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-4",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag",
+    "text": "Out-of-bag"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-predictions",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag predictions",
+    "text": "Out-of-bag predictions"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-1",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-1",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag predictions",
+    "text": "Out-of-bag predictions"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-2",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-2",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag predictions",
+    "text": "Out-of-bag predictions"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-3",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-3",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag predictions",
+    "text": "Out-of-bag predictions"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-4",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-4",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag predictions",
+    "text": "Out-of-bag predictions"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-5",
+    "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-5",
+    "title": "MELODEM data workshop",
+    "section": "Out-of-bag predictions",
+    "text": "Out-of-bag predictions\nFinal out-of-bag predictions:\n\\[\\frac{\\text{out-of-bag predictions}}{\\text{out-of-bag denominator}}\\]\n\nWith conventional bootstrap sampling, each observation has about a 36.8% chance of being out-of-bag for each tree.\nOut-of-bag predictions give an unbiased view of the forest’s prediction on new data\nThis allows for variable importance estimates and (we’ll see this later) valid inference in causal forests."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#variable-importance",
+    "href": "slides/02-trees_and_forests.html#variable-importance",
+    "title": "MELODEM data workshop",
+    "section": "Variable importance",
+    "text": "Variable importance\n\nFirst compute out-of-bag prediction accuracy.\nIn this case, classification accuracy is 96%"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#variable-importance-1",
+    "href": "slides/02-trees_and_forests.html#variable-importance-1",
+    "title": "MELODEM data workshop",
+    "section": "Variable importance",
+    "text": "Variable importance\n\nNext, permute the values of a given variable\nSee how one value of flipper length is permuted in the figure?"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#variable-importance-2",
+    "href": "slides/02-trees_and_forests.html#variable-importance-2",
+    "title": "MELODEM data workshop",
+    "section": "Variable importance",
+    "text": "Variable importance\n\nNext, permute the values of a given variable\nNow they are all permuted, and out-of-bag classification accuracy is now 61%"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#variable-importance-3",
+    "href": "slides/02-trees_and_forests.html#variable-importance-3",
+    "title": "MELODEM data workshop",
+    "section": "Variable importance",
+    "text": "Variable importance\n\nRinse and repeat for all variables.\nFor bill length, out-of-bag classification accuracy is reduced to 63%"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#variable-importance-4",
+    "href": "slides/02-trees_and_forests.html#variable-importance-4",
+    "title": "MELODEM data workshop",
+    "section": "Variable importance",
+    "text": "Variable importance\nOnce all variables have been through this process:\n\\[\\text{Variable importance} = \\text{initial accuracy} - \\text{permuted accuracy}\\]\n\nFlipper length: 0.96 - 0.61 = 0.35\nBill length: 0.96 - 0.63 = 0.33\n\n\\(\\Rightarrow\\) flippers more important than bills for species prediction."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forests-4",
+    "href": "slides/02-trees_and_forests.html#random-forests-4",
+    "title": "MELODEM data workshop",
+    "section": "Random Forests",
+    "text": "Random Forests\n\nAggregating randomized trees gives the classic random forest"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forests-5",
+    "href": "slides/02-trees_and_forests.html#random-forests-5",
+    "title": "MELODEM data workshop",
+    "section": "Random Forests",
+    "text": "Random Forests\n\nAggregating randomized trees gives the classic random forest"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forests-6",
+    "href": "slides/02-trees_and_forests.html#random-forests-6",
+    "title": "MELODEM data workshop",
+    "section": "Random Forests",
+    "text": "Random Forests\n\nAggregating randomized trees gives the classic random forest"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forests-7",
+    "href": "slides/02-trees_and_forests.html#random-forests-7",
+    "title": "MELODEM data workshop",
+    "section": "Random Forests",
+    "text": "Random Forests\n\nAggregating randomized trees gives the classic random forest"
   }
 ]
