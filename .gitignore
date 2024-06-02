@@ -60,4 +60,8 @@ data/sensitive/
 .DS_Store
 /_site/
 
+# ignore classwork output
+classwork/*.html
+classwork/*_files
+
 
