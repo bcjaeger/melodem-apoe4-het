@@ -26,6 +26,7 @@ aorsf_pred <- function(object, test, pred_horizon){
 
   res <- predict(object$fit,
                  new_data = test,
+                 pred_type = "risk",
                  pred_horizon = pred_horizon)
 
   end_time <- Sys.time()
