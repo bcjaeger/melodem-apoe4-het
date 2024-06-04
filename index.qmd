@@ -79,7 +79,7 @@ pkgs <-
     "glue", "grf", "aorsf", "glmnet", "xgboost", "randomForestSRC",
     "party", "riskRegression", "survival", "officer", "flextable", 
     "table.glue", "gtsummary", "usethis", "cli", "ggforce",
-    "rpart", "rpart.plot", "ranger", "withr")
+    "rpart", "rpart.plot", "ranger", "withr", "gt")
 
 # A few more packages may be added - this list isn't final yet.
 

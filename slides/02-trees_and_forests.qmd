@@ -1,6 +1,6 @@
 ---
-title: "MELODEM data workshop"
-subtitle: "Decision trees and random forests"
+title: "Decision trees and random forests"
+subtitle: "MELODEM data workshop"
 author: "Byron C. Jaeger, PhD"
 institute: "Wake Forest University School of Medicine"
 format: 
@@ -37,6 +37,26 @@ withr::with_dir(
 
 ```
 
+## Overview
+
+- Decision trees
+
+    + Growing trees
+    
+    + Leaf nodes
+
+- Random Forests
+
+    + Out-of-bag predictions
+    
+    + Variable importance
+    
+- Axis-based and oblique
+
+    + Benchmarks
+    
+    + Software
+
 ---
 
 ![](img/penguins.png){width=100%}
@@ -45,6 +65,7 @@ withr::with_dir(
 Data were collected and made available by [Dr. Kristen Gorman](https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php) and the Palmer Station, a member of the [Long Term Ecological Research Network](https://lternet.edu/).
 :::
 
+# Decision trees
 
 ---
 
@@ -64,7 +85,7 @@ penguin_figs$demo
 
 :::
 
-## Growing decision trees
+## Gini impurity
 
 :::{.column width="40%"}
 
@@ -84,7 +105,7 @@ penguin_figs$demo
 
 :::
 
-## Growing decision trees
+## First split: right node
 
 :::{.column width="40%"}
 
@@ -113,7 +134,7 @@ penguin_figs$axis_1
 
 :::
 
-## Growing decision trees
+## First split: left node
 
 :::{.column width="40%"}
 
@@ -142,7 +163,7 @@ penguin_figs$axis_1
 
 :::
 
-## Growing decision trees
+## First split: total impurity
 
 :::{.column width="40%"}
 
@@ -191,7 +212,7 @@ Was this the best possible split? Let's find out.
 # countdown::countdown(minutes = 5, id = "ex-1")
 ```
 
-## Growing decision trees
+## Keep growing?
 
 :::{.column width="40%"}
 
@@ -222,7 +243,7 @@ penguin_figs$axis_1 +
 
 :::
 
-## Growing decision trees
+## Stopping conditions
 
 :::{.column width="40%"}
 
@@ -285,7 +306,7 @@ penguin_figs$axis_1 +
 :::
 
 
-## Growing decision trees
+## Your turn
 
 :::{.column width="40%"}
 
@@ -320,7 +341,7 @@ penguin_figs$axis_1 +
 
 :::
 
-## Growing decision trees
+## Split the left node
 
 :::{.column width="40%"}
 
@@ -340,7 +361,7 @@ penguin_figs$axis_2
 
 :::
 
-## Growing decision trees
+## Finished growing
 
 :::{.column width="40%"}
 
@@ -362,7 +383,7 @@ penguin_figs$axis_2
 
 :::
 
-## Growing decision trees
+## Leaves?
 
 :::{.column width="40%"}
 
@@ -409,7 +430,7 @@ Fit your own decision tree to the `penguins` data.
 ```
 
 
-## Growing decision trees
+## From partition to flowchart
 
 The same partitions, visualized as a binary tree.
 
@@ -459,9 +480,9 @@ If $\tau$ can be estimated conditional on a person's characteristics, then a dec
 
 But how do we get $\hat\tau_i \mid x_i$? More on this later...
 
----
+# Random forests
 
-## Random Forests
+## Expert of committee?
 
 If we have to make a yes/no decision, who should make it? 
 
@@ -477,7 +498,7 @@ If we have to make a yes/no decision, who should make it?
 
 :::
 
-## Random Forests
+## Why committee?
 
 If we have to make a yes/no decision, who should make it? 
 
@@ -498,7 +519,7 @@ Why? Weak expert majority is right ~92% of the time
 1 - pbinom(q = 2500, size = 5000, prob = 0.51)
 ```
 
-## Random Forests
+## Random forest recipe
 
 The weak expert approach for decision trees:
 
@@ -511,7 +532,7 @@ The weak expert approach for decision trees:
 
 These random elements help make the trees more independent while keeping their prediction accuracy better than random guesses.
 
-## Random Forests
+## Random forest predictions
 
 To get a prediction from the random forest, 
 
@@ -521,7 +542,7 @@ To get a prediction from the random forest,
 
 In situations where trees predictions are continuous and you can't take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree's predictions.
 
-## Random Forests
+## A single tree is okay
 
 :::{.column width="30%"}
 
@@ -537,7 +558,7 @@ penguin_figs$axis_2 + ggplot2::ggtitle("1 traditional tree")
 
 :::
 
-## Random Forests
+## 100 trees is better
 
 :::{.column width="30%"}
 
@@ -553,7 +574,7 @@ penguin_figs$axis_3c + ggplot2::ggtitle("100 randomized trees")
 
 :::
 
-## Random Forests
+## More trees does not mean overfitting
 
 :::{.column width="30%"}
 
@@ -569,23 +590,23 @@ penguin_figs$axis_3d + ggplot2::ggtitle("500 randomized trees")
 
 :::
 
-## Out-of-bag predictions
+## How to get out-of-bag predictions
 
 ![](diagram/trees-oobag-1.svg)
 
-##  Out-of-bag predictions
+## Grow tree \#1
 
 ![](diagram/trees-oobag-2.svg)
 
-## Out-of-bag predictions
+## Store its predictions and denominators
 
 ![](diagram/trees-oobag-3.svg)
 
-## Out-of-bag predictions
+## Now do tree \#2
 
 ![](diagram/trees-oobag-4.svg)
 
-## Out-of-bag predictions
+## Accumulate predictions and denominator
 
 ![](diagram/trees-oobag-5.svg)
 
@@ -673,13 +694,19 @@ $$\text{Variable importance} = \text{initial accuracy} - \text{permuted accuracy
 
 $\Rightarrow$ flippers more important than bills for species prediction.
 
+# Axis based and oblique
+
 ## Axis based and oblique trees
 
-- Axis based trees use a single predictor to split data, creating decision boundaries that lie perpendicular to the axis of that predictor.
+Axis based trees use a single predictor to split data. 
 
-- Oblique trees use a weighted combination of two or more predictors, creating decision boundaries that are neither perpendicular nor parallel to the axes of contributing predictors.
+Oblique trees use a weighted combination of two or more predictors
+
+![](img/axis_versus_oblique.png){fig-align="center"}
 
 ---
+
+## Oblique tree: first split
 
 :::{.column width="30%"}
 
@@ -696,6 +723,8 @@ penguin_figs$oblique_1
 :::
 
 ---
+
+## Oblique tree: second split
 
 :::{.column width="30%"}
 
@@ -717,6 +746,8 @@ penguin_figs$oblique_2
 
 ---
 
+## Oblique random forests
+
 :::{.column width="30%"}
 
 Aggregating randomized trees gives the *oblique* random forest
@@ -733,9 +764,11 @@ penguin_figs$oblique_3
 
 ---
 
+## Surprisingly different!
+
 :::{.column width="30%"}
 
-Surprisingly different!
+Despite very many similarities, axis-based and oblique random forests may give different results.
 
 :::
 
@@ -758,16 +791,14 @@ penguin_figs$axis_3d
 
 Yet, everyone uses axis-based random forests. Here's why:
 
-```{r, cache=FALSE}
-# bm_figs$time$slide_one
-```
+![](img/fig_bm_1.png){width=100% fig-align="center"}
 
 
 ---
 
 ![](img/meme_slow_R.jpg){width=100% fig-align="center"}
 
-# `aorsf`<br/>accelerated oblique random survival forest
+# `aorsf` <br/>accelerated oblique random survival forest
 
 ## `aorsf` Benchmark^[Jaeger BC, Welden S, Lenoir K, Speiser JL, Segar MW, Pandey A, Pajewski NM. [Accelerated and interpretable oblique random survival forests](https://www.tandfonline.com/doi/full/10.1080/10618600.2023.2231048). Journal of Computational and Graphical Statistics. 2023 Aug 3:1-6.]
 
@@ -783,14 +814,9 @@ Yet, everyone uses axis-based random forests. Here's why:
 
 You can use oblique random forests now!
 
-```{r, cache=FALSE}
-# bm_figs$time$slide_two
-```
-
+![](img/fig_bm_2.png){width=100% fig-align="center"}
 ---
 
 And making them fast didn't break their predictions
 
-```{r}
-# bm_figs$eval$`C-statistic`
-```
+![](img/fig_bm_3.png){width=100% fig-align="center"}

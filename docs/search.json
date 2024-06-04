@@ -261,7 +261,7 @@
   {
     "objectID": "slides/02-trees_and_forests.html#planting-seeds-for-causal-trees",
     "href": "slides/02-trees_and_forests.html#planting-seeds-for-causal-trees",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Planting seeds for causal trees",
     "text": "Planting seeds for causal trees\nSuppose we have outcome \\(Y\\) and treatment \\(W\\in\\{0, 1\\}\\).\n\\[\\text{Define }\\tau = E[Y|W=1] - E[Y|W=0],\\]\nIf \\(\\tau\\) can be estimated conditional on a person’s characteristics, then a decision tree could be grown using \\(\\hat\\tau_1 \\mid x_1, \\ldots, \\hat\\tau_n \\mid x_n\\) as an outcome. That tree could predict who benefits from treatment and explain why.\n\nBut how do we get \\(\\hat\\tau_i \\mid x_i\\)? More on this later…"
   },
@@ -275,105 +275,105 @@
   {
     "objectID": "slides/02-trees_and_forests.html#random-forests-1",
     "href": "slides/02-trees_and_forests.html#random-forests-1",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Random Forests",
-    "text": "Random Forests\nIf we have to make a yes/no decision, who should make it?\n\n1 expert who is right 75% of the time\nMajority rule by 5000 independent “weak experts”.\n\nNote: each weak expert is right 51% of the time.\n\nAnswer is weak experts!\n\nWhy? Weak expert majority is right ~92% of the time\n\n# probability that &gt;2500 weak experts are right\n# = 1 - probability that &lt;=2500 are right\n1 - pbinom(q = 2500, size = 5000, prob = 0.51)\n\n[1] 0.9192858"
+    "text": "Random Forests\nIf we have to make a yes/no decision, who should make it?\n\n\n1 expert who is right 75% of the time\nMajority rule by 5000 independent “weak experts”.\n\nNote: each weak expert is right 51% of the time.\n\nAnswer is weak experts!"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#random-forests-2",
     "href": "slides/02-trees_and_forests.html#random-forests-2",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Random Forests",
-    "text": "Random Forests\nThe weak expert approach for decision trees:\n\nGrow each tree with a random subset of the training data.\n\n“In-bag” means in the random subset\n“Out-of-bag” means not in the subset\n\nEvaluate a random subset of predictors when splitting data.\n\nThese random elements help make the trees more independent while keeping their prediction accuracy better than random guesses."
+    "text": "Random Forests\nIf we have to make a yes/no decision, who should make it?\n\n1 expert who is right 75% of the time\nMajority rule by 5000 independent “weak experts”.\n\nNote: each weak expert is right 51% of the time.\n\nAnswer is weak experts!\n\nWhy? Weak expert majority is right ~92% of the time\n\n# probability that &gt;2500 weak experts are right\n# = 1 - probability that &lt;=2500 are right\n1 - pbinom(q = 2500, size = 5000, prob = 0.51)\n\n[1] 0.9192858"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#random-forests-3",
     "href": "slides/02-trees_and_forests.html#random-forests-3",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Random Forests",
-    "text": "Random Forests\nTo get a prediction from the random forest,\n\npredict the outcome with each tree\ntake the majority vote\n\nIn situations where trees predictions are continuous and you can’t take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree’s predictions."
+    "text": "Random Forests\nThe weak expert approach for decision trees:\n\nGrow each tree with a random subset of the training data.\n\n“In-bag” means in the random subset\n“Out-of-bag” means not in the subset\n\nEvaluate a random subset of predictors when splitting data.\n\nThese random elements help make the trees more independent while keeping their prediction accuracy better than random guesses."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#axis-based-and-oblique-trees",
     "href": "slides/02-trees_and_forests.html#axis-based-and-oblique-trees",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Axis based and oblique trees",
-    "text": "Axis based and oblique trees\n\nAxis based trees use a single predictor to split data, creating decision boundaries that lie perpendicular to the axis of that predictor.\nOblique trees use a weighted combination of two or more predictors, creating decision boundaries that are neither perpendicular nor parallel to the axes of contributing predictors."
+    "text": "Axis based and oblique trees\nAxis based trees use a single predictor to split data.\nOblique trees use a weighted combination of two or more predictors"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#axis-based-vs-oblique",
     "href": "slides/02-trees_and_forests.html#axis-based-vs-oblique",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Axis based vs oblique",
     "text": "Axis based vs oblique\n\nLeo Breiman found oblique random forests compared more favorably to boosting than axis based ones.1\nOther benchmarks have found the same result.2 Oblique random forests have high prediction accuracy.3\n\nBreiman L. Random forests. Machine learning. 2001 Oct;45:5-32.Katuwal R, Suganthan PN, Zhang L. Heterogeneous oblique random forest. Pattern Recognition. 2020 Mar 1;99:107078.Menze BH, Kelm BM, Splitthoff DN, Koethe U, Hamprecht FA. On oblique random forests. Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22 2011 (pp. 453-469). Springer Berlin Heidelberg."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#aorsf-benchmark",
     "href": "slides/02-trees_and_forests.html#aorsf-benchmark",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "aorsf Benchmark1",
     "text": "aorsf Benchmark1\nGoal: Test if a fast version of the oblique random survival forest (aorsf) is as good as the original (obliqueRSF).\n\nEvaluated both in 35 risk prediction tasks (21 datasets)\nMeasured computation time, C-statistic and index of prediction accuracy (IPA).\nUsed Bayesian linear mixed models to test for differences in expected C-statistic and IPA.\n\nJaeger BC, Welden S, Lenoir K, Speiser JL, Segar MW, Pandey A, Pajewski NM. Accelerated and interpretable oblique random survival forests. Journal of Computational and Graphical Statistics. 2023 Aug 3:1-6."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nDecision trees are grown by recursively splitting a set of training data."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-1",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-1",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nFor classification, “Gini impurity” measures split quality:\n\\[G = 1 - \\sum_{i = 1}^{K} P(i)^2\\]\n\\(K\\) is no. of classes, \\(P(i)\\) is the probability of class \\(i\\)."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-2",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-2",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nConsider splitting at flipper length of 206.5: Right node:\n\ngini_right &lt;- penguins %&gt;% \n filter(flipper_length_mm&gt;=206.5) %&gt;% \n count(species) %&gt;% \n mutate(p = n / sum(n)) %&gt;% \n summarize(gini = 1 - sum(p^2)) %&gt;% \n pull(gini)\n\ngini_right\n\n[1] 0.107008"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-3",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-3",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nConsider splitting at flipper length of 206.5: Left node:\n\ngini_left &lt;- penguins %&gt;% \n filter(flipper_length_mm&lt;206.5) %&gt;% \n count(species) %&gt;% \n mutate(p = n / sum(n)) %&gt;% \n summarize(gini = 1 - sum(p^2)) %&gt;% \n pull(gini)\n\ngini_left\n\n[1] 0.4289479"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-4",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-4",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nConsider splitting at flipper length of 206.5: Impurity:\n\nsplit_var &lt;- penguins %&gt;% \n  pull(flipper_length_mm)\n\nn_tot &lt;- length(split_var)\nn_right &lt;- sum(split_var &gt;= 206.5)\nn_left &lt;- sum(split_var &lt; 206.5)\n\ngini_right * (n_right / n_tot) + \n  gini_left * (n_left / n_tot)\n\n[1] 0.3080996"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-5",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-5",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nNow we have two potential datasets, or nodes in the tree, that we can split.\nDo we keep going or stop?"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-6",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-6",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nWe may stop tree growth if the node has:\n\nObs &lt; min_obs\nCases &lt; min_cases\nImpurity &lt; min_impurity\nDepth = max_depth"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-7",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-7",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nSuppose\n\nmin_obs = 10\nmin_cases = 2\nmin_impurity = 0.2\nmax_depth = 3\n\nWhich node(s) can we split?"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-8",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-8",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\n\nThe left node can be split.\nThe right node cannot, since impurity on the right is &lt; min_impurity"
   },
@@ -387,35 +387,35 @@
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-9",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-9",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\n\nThe left node can be split.\nAfter splitting the left node, all nodes have impurity &lt; min_impurity.\nIf no more nodes to grow, convert partitioned sets into leaf nodes"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#your-turn",
     "href": "slides/02-trees_and_forests.html#your-turn",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Your turn",
     "text": "Your turn\nWas this the best possible split? Let’s find out.\n\nOpen classwork/02-trees_and_forests.qmd\nCalculate the total impurity of splitting along bill length of 45 mm.\nReminder: Red sticky note if you’d like help, green sticky note when you are finished.\nHint: the answer is 0.492340868530637"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-10",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-10",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\n\nWhat is a leaf node?\n\nA leaf node is a terminal node in the tree.\nPredictions for new data are stored in leaf nodes.\n\n\n\n\nmutate(\n  penguins,\n  node = case_when(\n    flipper_length_mm &gt;= 206.5 ~ 'leaf_1',\n    bill_length_mm &gt;= 43.35 ~ 'leaf_2',\n    TRUE ~ 'leaf_3'\n  )\n) %&gt;% \n  group_by(node) %&gt;% count(species) %&gt;% \n  mutate(n = n / sum(n)) %&gt;% \n  pivot_wider(values_from = n, names_from = species, \n              values_fill = 0)\n\n# A tibble: 3 × 4\n# Groups:   node [3]\n  node   Adelie Chinstrap Gentoo\n  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;\n1 leaf_1 0.016     0.04   0.944 \n2 leaf_2 0.0635    0.921  0.0159\n3 leaf_3 0.966     0.0345 0"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#your-turn-1",
     "href": "slides/02-trees_and_forests.html#your-turn-1",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Your turn",
-    "text": "Your turn\nFit your own decision tree to the penguins data.\n\nOpen classwork/02-trees_and_forests.qmd\nComplete Exercise 2"
+    "text": "Your turn\n\nSuppose\n\nmin_obs = 10\nmin_cases = 2\nmin_impurity = 0.2\nmax_depth = 3\n\nWhich node(s) can we split?"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees-11",
     "href": "slides/02-trees_and_forests.html#growing-decision-trees-11",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Growing decision trees",
     "text": "Growing decision trees\nThe same partitions, visualized as a binary tree.\n\nAs a reminder, here is our ‘hand-made’ leaf data\n\n\n\n\n\n\n  \n    \n      \n      Adelie\n      Chinstrap\n      Gentoo\n    \n  \n  \n    leaf_1\n0.02\n0.04\n0.94\n    leaf_2\n0.06\n0.92\n0.02\n    leaf_3\n0.97\n0.03\n0.00"
   },
@@ -471,106 +471,309 @@
   {
     "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions",
     "href": "slides/02-trees_and_forests.html#out-of-bag-predictions",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Out-of-bag predictions",
-    "text": "Out-of-bag predictions"
+    "text": "Out-of-bag predictions\nFinal out-of-bag predictions:\n\\[\\frac{\\text{out-of-bag predictions}}{\\text{out-of-bag denominator}}\\]\n\nWith conventional bootstrap sampling, each observation has about a 36.8% chance of being out-of-bag for each tree.\nOut-of-bag predictions give an unbiased view of the forest’s prediction on new data\nThis allows for variable importance estimates and (we’ll see this later) valid inference in causal forests."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-1",
     "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-1",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Out-of-bag predictions",
     "text": "Out-of-bag predictions"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-2",
     "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-2",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Out-of-bag predictions",
     "text": "Out-of-bag predictions"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-3",
     "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-3",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Out-of-bag predictions",
     "text": "Out-of-bag predictions"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-4",
     "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-4",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Out-of-bag predictions",
     "text": "Out-of-bag predictions"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#out-of-bag-predictions-5",
     "href": "slides/02-trees_and_forests.html#out-of-bag-predictions-5",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Out-of-bag predictions",
     "text": "Out-of-bag predictions\nFinal out-of-bag predictions:\n\\[\\frac{\\text{out-of-bag predictions}}{\\text{out-of-bag denominator}}\\]\n\nWith conventional bootstrap sampling, each observation has about a 36.8% chance of being out-of-bag for each tree.\nOut-of-bag predictions give an unbiased view of the forest’s prediction on new data\nThis allows for variable importance estimates and (we’ll see this later) valid inference in causal forests."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#variable-importance",
     "href": "slides/02-trees_and_forests.html#variable-importance",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Variable importance",
     "text": "Variable importance\n\nFirst compute out-of-bag prediction accuracy.\nIn this case, classification accuracy is 96%"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#variable-importance-1",
     "href": "slides/02-trees_and_forests.html#variable-importance-1",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Variable importance",
     "text": "Variable importance\n\nNext, permute the values of a given variable\nSee how one value of flipper length is permuted in the figure?"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#variable-importance-2",
     "href": "slides/02-trees_and_forests.html#variable-importance-2",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Variable importance",
     "text": "Variable importance\n\nNext, permute the values of a given variable\nNow they are all permuted, and out-of-bag classification accuracy is now 61%"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#variable-importance-3",
     "href": "slides/02-trees_and_forests.html#variable-importance-3",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Variable importance",
     "text": "Variable importance\n\nRinse and repeat for all variables.\nFor bill length, out-of-bag classification accuracy is reduced to 63%"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#variable-importance-4",
     "href": "slides/02-trees_and_forests.html#variable-importance-4",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Variable importance",
     "text": "Variable importance\nOnce all variables have been through this process:\n\\[\\text{Variable importance} = \\text{initial accuracy} - \\text{permuted accuracy}\\]\n\nFlipper length: 0.96 - 0.61 = 0.35\nBill length: 0.96 - 0.63 = 0.33\n\n\\(\\Rightarrow\\) flippers more important than bills for species prediction."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#random-forests-4",
     "href": "slides/02-trees_and_forests.html#random-forests-4",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Random Forests",
-    "text": "Random Forests\n\nAggregating randomized trees gives the classic random forest"
+    "text": "Random Forests\nTo get a prediction from the random forest,\n\npredict the outcome with each tree\ntake the majority vote\n\nIn situations where trees predictions are continuous and you can’t take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree’s predictions."
   },
   {
     "objectID": "slides/02-trees_and_forests.html#random-forests-5",
     "href": "slides/02-trees_and_forests.html#random-forests-5",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Random Forests",
     "text": "Random Forests\n\nAggregating randomized trees gives the classic random forest"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#random-forests-6",
     "href": "slides/02-trees_and_forests.html#random-forests-6",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Random Forests",
     "text": "Random Forests\n\nAggregating randomized trees gives the classic random forest"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#random-forests-7",
     "href": "slides/02-trees_and_forests.html#random-forests-7",
-    "title": "MELODEM data workshop",
+    "title": "Decision trees and random forests",
     "section": "Random Forests",
     "text": "Random Forests\n\nAggregating randomized trees gives the classic random forest"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#overview",
+    "href": "slides/02-trees_and_forests.html#overview",
+    "title": "Decision trees and random forests",
+    "section": "Overview",
+    "text": "Overview\n\nDecision trees\n\nGrowing trees\nLeaf nodes\n\nRandom Forests\n\nOut-of-bag predictions\nVariable importance\n\nAxis-based and oblique\n\nBenchmarks\nSoftware"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#gini-impurity",
+    "href": "slides/02-trees_and_forests.html#gini-impurity",
+    "title": "Decision trees and random forests",
+    "section": "Gini impurity",
+    "text": "Gini impurity\n\nFor classification, “Gini impurity” measures split quality:\n\\[G = 1 - \\sum_{i = 1}^{K} P(i)^2\\]\n\\(K\\) is no. of classes, \\(P(i)\\) is the probability of class \\(i\\)."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#first-split-right-node",
+    "href": "slides/02-trees_and_forests.html#first-split-right-node",
+    "title": "Decision trees and random forests",
+    "section": "First split: right node",
+    "text": "First split: right node\n\nConsider splitting at flipper length of 206.5: Right node:\n\ngini_right &lt;- penguins %&gt;% \n filter(flipper_length_mm&gt;=206.5) %&gt;% \n count(species) %&gt;% \n mutate(p = n / sum(n)) %&gt;% \n summarize(gini = 1 - sum(p^2)) %&gt;% \n pull(gini)\n\ngini_right\n\n[1] 0.107008"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#first-split-left-node",
+    "href": "slides/02-trees_and_forests.html#first-split-left-node",
+    "title": "Decision trees and random forests",
+    "section": "First split: left node",
+    "text": "First split: left node\n\nConsider splitting at flipper length of 206.5: Left node:\n\ngini_left &lt;- penguins %&gt;% \n filter(flipper_length_mm&lt;206.5) %&gt;% \n count(species) %&gt;% \n mutate(p = n / sum(n)) %&gt;% \n summarize(gini = 1 - sum(p^2)) %&gt;% \n pull(gini)\n\ngini_left\n\n[1] 0.4289479"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#first-split-total-impurity",
+    "href": "slides/02-trees_and_forests.html#first-split-total-impurity",
+    "title": "Decision trees and random forests",
+    "section": "First split: total impurity",
+    "text": "First split: total impurity\n\nConsider splitting at flipper length of 206.5: Impurity:\n\nsplit_var &lt;- penguins %&gt;% \n  pull(flipper_length_mm)\n\nn_tot &lt;- length(split_var)\nn_right &lt;- sum(split_var &gt;= 206.5)\nn_left &lt;- sum(split_var &lt; 206.5)\n\ngini_right * (n_right / n_tot) + \n  gini_left * (n_left / n_tot)\n\n[1] 0.3080996"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#keep-growing",
+    "href": "slides/02-trees_and_forests.html#keep-growing",
+    "title": "Decision trees and random forests",
+    "section": "Keep growing?",
+    "text": "Keep growing?\n\nNow we have two potential datasets, or nodes in the tree, that we can split.\nDo we keep going or stop?"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#stopping-conditions",
+    "href": "slides/02-trees_and_forests.html#stopping-conditions",
+    "title": "Decision trees and random forests",
+    "section": "Stopping conditions",
+    "text": "Stopping conditions\n\nWe may stop tree growth if the node has:\n\nObs &lt; min_obs\nCases &lt; min_cases\nImpurity &lt; min_impurity\nDepth = max_depth"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#split-the-left-node",
+    "href": "slides/02-trees_and_forests.html#split-the-left-node",
+    "title": "Decision trees and random forests",
+    "section": "Split the left node",
+    "text": "Split the left node\n\n\nThe left node can be split.\nThe right node cannot, since impurity on the right is &lt; min_impurity"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#finished-growing",
+    "href": "slides/02-trees_and_forests.html#finished-growing",
+    "title": "Decision trees and random forests",
+    "section": "Finished growing",
+    "text": "Finished growing\n\n\nThe left node can be split.\nAfter splitting the left node, all nodes have impurity &lt; min_impurity.\nIf no more nodes to grow, convert partitioned sets into leaf nodes"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#leaves",
+    "href": "slides/02-trees_and_forests.html#leaves",
+    "title": "Decision trees and random forests",
+    "section": "Leaves?",
+    "text": "Leaves?\n\nWhat is a leaf node?\n\nA leaf node is a terminal node in the tree.\nPredictions for new data are stored in leaf nodes.\n\n\n\n\nmutate(\n  penguins,\n  node = case_when(\n    flipper_length_mm &gt;= 206.5 ~ 'leaf_1',\n    bill_length_mm &gt;= 43.35 ~ 'leaf_2',\n    TRUE ~ 'leaf_3'\n  )\n) %&gt;% \n  group_by(node) %&gt;% count(species) %&gt;% \n  mutate(n = n / sum(n)) %&gt;% \n  pivot_wider(values_from = n, names_from = species, \n              values_fill = 0)\n\n# A tibble: 3 × 4\n# Groups:   node [3]\n  node   Adelie Chinstrap Gentoo\n  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;\n1 leaf_1 0.016     0.04   0.944 \n2 leaf_2 0.0635    0.921  0.0159\n3 leaf_3 0.966     0.0345 0"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#your-turn-2",
+    "href": "slides/02-trees_and_forests.html#your-turn-2",
+    "title": "Decision trees and random forests",
+    "section": "Your turn",
+    "text": "Your turn\nFit your own decision tree to the penguins data.\n\nOpen classwork/02-trees_and_forests.qmd\nComplete Exercise 2"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#from-partition-to-flowchart",
+    "href": "slides/02-trees_and_forests.html#from-partition-to-flowchart",
+    "title": "Decision trees and random forests",
+    "section": "From partition to flowchart",
+    "text": "From partition to flowchart\nThe same partitions, visualized as a binary tree.\n\nAs a reminder, here is our ‘hand-made’ leaf data\n\n\n\n\n\n\n  \n    \n      \n      Adelie\n      Chinstrap\n      Gentoo\n    \n  \n  \n    leaf_1\n0.02\n0.04\n0.94\n    leaf_2\n0.06\n0.92\n0.02\n    leaf_3\n0.97\n0.03\n0.00"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#expert-of-committee",
+    "href": "slides/02-trees_and_forests.html#expert-of-committee",
+    "title": "Decision trees and random forests",
+    "section": "Expert of committee?",
+    "text": "Expert of committee?\nIf we have to make a yes/no decision, who should make it?\n\n\n1 expert who is right 75% of the time\nMajority rule by 5000 independent “weak experts”.\n\nNote: each weak expert is right 51% of the time.\n\nAnswer is weak experts!"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#why-committee",
+    "href": "slides/02-trees_and_forests.html#why-committee",
+    "title": "Decision trees and random forests",
+    "section": "Why committee?",
+    "text": "Why committee?\nIf we have to make a yes/no decision, who should make it?\n\n1 expert who is right 75% of the time\nMajority rule by 5000 independent “weak experts”.\n\nNote: each weak expert is right 51% of the time.\n\nAnswer is weak experts!\n\nWhy? Weak expert majority is right ~92% of the time\n\n# probability that &gt;2500 weak experts are right\n# = 1 - probability that &lt;=2500 are right\n1 - pbinom(q = 2500, size = 5000, prob = 0.51)\n\n[1] 0.9192858"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forest-recipe",
+    "href": "slides/02-trees_and_forests.html#random-forest-recipe",
+    "title": "Decision trees and random forests",
+    "section": "Random forest recipe",
+    "text": "Random forest recipe\nThe weak expert approach for decision trees:\n\nGrow each tree with a random subset of the training data.\n\n“In-bag” means in the random subset\n“Out-of-bag” means not in the subset\n\nEvaluate a random subset of predictors when splitting data.\n\nThese random elements help make the trees more independent while keeping their prediction accuracy better than random guesses."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#random-forest-predictions",
+    "href": "slides/02-trees_and_forests.html#random-forest-predictions",
+    "title": "Decision trees and random forests",
+    "section": "Random forest predictions",
+    "text": "Random forest predictions\nTo get a prediction from the random forest,\n\npredict the outcome with each tree\ntake the majority vote\n\nIn situations where trees predictions are continuous and you can’t take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree’s predictions."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#a-single-tree-is-okay",
+    "href": "slides/02-trees_and_forests.html#a-single-tree-is-okay",
+    "title": "Decision trees and random forests",
+    "section": "A single tree is okay",
+    "text": "A single tree is okay\n\nAggregating randomized trees gives the classic random forest"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#trees-is-better",
+    "href": "slides/02-trees_and_forests.html#trees-is-better",
+    "title": "Decision trees and random forests",
+    "section": "100 trees is better",
+    "text": "100 trees is better\n\nAggregating randomized trees gives the classic random forest"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#more-trees-does-not-mean-overfitting",
+    "href": "slides/02-trees_and_forests.html#more-trees-does-not-mean-overfitting",
+    "title": "Decision trees and random forests",
+    "section": "More trees does not mean overfitting",
+    "text": "More trees does not mean overfitting\n\nAggregating randomized trees gives the classic random forest"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#how-to-get-out-of-bag-predictions",
+    "href": "slides/02-trees_and_forests.html#how-to-get-out-of-bag-predictions",
+    "title": "Decision trees and random forests",
+    "section": "How to get out-of-bag predictions",
+    "text": "How to get out-of-bag predictions"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#grow-tree-1",
+    "href": "slides/02-trees_and_forests.html#grow-tree-1",
+    "title": "Decision trees and random forests",
+    "section": "Grow tree #1",
+    "text": "Grow tree #1"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#store-its-predictions-and-denominators",
+    "href": "slides/02-trees_and_forests.html#store-its-predictions-and-denominators",
+    "title": "Decision trees and random forests",
+    "section": "Store its predictions and denominators",
+    "text": "Store its predictions and denominators"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#now-do-tree-2",
+    "href": "slides/02-trees_and_forests.html#now-do-tree-2",
+    "title": "Decision trees and random forests",
+    "section": "Now do tree #2",
+    "text": "Now do tree #2"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#accumulate-predictions-and-denominator",
+    "href": "slides/02-trees_and_forests.html#accumulate-predictions-and-denominator",
+    "title": "Decision trees and random forests",
+    "section": "Accumulate predictions and denominator",
+    "text": "Accumulate predictions and denominator"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#oblique-tree-first-split",
+    "href": "slides/02-trees_and_forests.html#oblique-tree-first-split",
+    "title": "Decision trees and random forests",
+    "section": "Oblique tree: first split",
+    "text": "Oblique tree: first split\n\nFirst, split mostly by bill length"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#oblique-tree-second-split",
+    "href": "slides/02-trees_and_forests.html#oblique-tree-second-split",
+    "title": "Decision trees and random forests",
+    "section": "Oblique tree: second split",
+    "text": "Oblique tree: second split\n\nFirst, split mostly by bill length\n\nSecond, make a triangle for the gentoo."
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#oblique-random-forests",
+    "href": "slides/02-trees_and_forests.html#oblique-random-forests",
+    "title": "Decision trees and random forests",
+    "section": "Oblique random forests",
+    "text": "Oblique random forests\n\nAggregating randomized trees gives the oblique random forest"
+  },
+  {
+    "objectID": "slides/02-trees_and_forests.html#surprisingly-different",
+    "href": "slides/02-trees_and_forests.html#surprisingly-different",
+    "title": "Decision trees and random forests",
+    "section": "Surprisingly different!",
+    "text": "Surprisingly different!\n\nDespite very many similarities, axis-based and oblique random forests may give different results."
+  },
+  {
+    "objectID": "slides/03-prediction_forests.html#overview",
+    "href": "slides/03-prediction_forests.html#overview",
+    "title": "Develop and evaluate prediction models",
+    "section": "Overview",
+    "text": "Overview\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/"
   }
 ]

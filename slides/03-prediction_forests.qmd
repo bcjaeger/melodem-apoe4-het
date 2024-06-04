@@ -1,0 +1,38 @@
+---
+title: "Develop and evaluate prediction models"
+subtitle: "MELODEM data workshop"
+author: "Byron C. Jaeger, PhD"
+institute: "Wake Forest University School of Medicine"
+format: 
+  revealjs:
+    slide-number: true
+    footer: Slides available at <https://bcjaeger.github.io/melodem-apoe4-het/>
+    include-before-body: header.html
+    include-after-body: footer-annotations.html
+    theme: [default, tidymodels.scss]
+    width: 1280
+    height: 720
+---
+
+```{r setup, cache=FALSE, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      dpi = 300,
+                      cache = TRUE,
+                      fig.height = 7.25,
+                      out.width = '100%',
+                      fig.align = 'center')
+
+
+withr::with_dir(
+  new = here::here(),
+  targets::tar_load(data_sim_1)
+)
+
+```
+
+## Overview
+
+
