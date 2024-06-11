@@ -95,7 +95,26 @@
     code span.va { color: #111111; } /* Variable */
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -733,23 +752,23 @@ Byron C. Jaeger, PhD
 <div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-12_138f6db0faff3e0d3659f2c428e3559c">
 <div class="cell-output-display">
 
-<div id="apnchmibog" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#apnchmibog table {
+<div id="xbbczzkerh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#xbbczzkerh table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#apnchmibog thead, #apnchmibog tbody, #apnchmibog tfoot, #apnchmibog tr, #apnchmibog td, #apnchmibog th {
+#xbbczzkerh thead, #xbbczzkerh tbody, #xbbczzkerh tfoot, #xbbczzkerh tr, #xbbczzkerh td, #xbbczzkerh th {
   border-style: none;
 }
 
-#apnchmibog p {
+#xbbczzkerh p {
   margin: 0;
   padding: 0;
 }
 
-#apnchmibog .gt_table {
+#xbbczzkerh .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -775,12 +794,12 @@ Byron C. Jaeger, PhD
   border-left-color: #D3D3D3;
 }
 
-#apnchmibog .gt_caption {
+#xbbczzkerh .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#apnchmibog .gt_title {
+#xbbczzkerh .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -792,7 +811,7 @@ Byron C. Jaeger, PhD
   border-bottom-width: 0;
 }
 
-#apnchmibog .gt_subtitle {
+#xbbczzkerh .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -804,7 +823,7 @@ Byron C. Jaeger, PhD
   border-top-width: 0;
 }
 
-#apnchmibog .gt_heading {
+#xbbczzkerh .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -816,13 +835,13 @@ Byron C. Jaeger, PhD
   border-right-color: #D3D3D3;
 }
 
-#apnchmibog .gt_bottom_border {
+#xbbczzkerh .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#apnchmibog .gt_col_headings {
+#xbbczzkerh .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -837,7 +856,7 @@ Byron C. Jaeger, PhD
   border-right-color: #D3D3D3;
 }
 
-#apnchmibog .gt_col_heading {
+#xbbczzkerh .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -857,7 +876,7 @@ Byron C. Jaeger, PhD
   overflow-x: hidden;
 }
 
-#apnchmibog .gt_column_spanner_outer {
+#xbbczzkerh .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -869,15 +888,15 @@ Byron C. Jaeger, PhD
   padding-right: 4px;
 }
 
-#apnchmibog .gt_column_spanner_outer:first-child {
+#xbbczzkerh .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#apnchmibog .gt_column_spanner_outer:last-child {
+#xbbczzkerh .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#apnchmibog .gt_column_spanner {
+#xbbczzkerh .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -889,11 +908,11 @@ Byron C. Jaeger, PhD
   width: 100%;
 }
 
-#apnchmibog .gt_spanner_row {
+#xbbczzkerh .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#apnchmibog .gt_group_heading {
+#xbbczzkerh .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -919,7 +938,7 @@ Byron C. Jaeger, PhD
   text-align: left;
 }
 
-#apnchmibog .gt_empty_group_heading {
+#xbbczzkerh .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -934,15 +953,15 @@ Byron C. Jaeger, PhD
   vertical-align: middle;
 }
 
-#apnchmibog .gt_from_md > :first-child {
+#xbbczzkerh .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#apnchmibog .gt_from_md > :last-child {
+#xbbczzkerh .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#apnchmibog .gt_row {
+#xbbczzkerh .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -961,7 +980,7 @@ Byron C. Jaeger, PhD
   overflow-x: hidden;
 }
 
-#apnchmibog .gt_stub {
+#xbbczzkerh .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -974,7 +993,7 @@ Byron C. Jaeger, PhD
   padding-right: 5px;
 }
 
-#apnchmibog .gt_stub_row_group {
+#xbbczzkerh .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -988,15 +1007,15 @@ Byron C. Jaeger, PhD
   vertical-align: top;
 }
 
-#apnchmibog .gt_row_group_first td {
+#xbbczzkerh .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#apnchmibog .gt_row_group_first th {
+#xbbczzkerh .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#apnchmibog .gt_summary_row {
+#xbbczzkerh .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1006,16 +1025,16 @@ Byron C. Jaeger, PhD
   padding-right: 5px;
 }
 
-#apnchmibog .gt_first_summary_row {
+#xbbczzkerh .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#apnchmibog .gt_first_summary_row.thick {
+#xbbczzkerh .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#apnchmibog .gt_last_summary_row {
+#xbbczzkerh .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1025,7 +1044,7 @@ Byron C. Jaeger, PhD
   border-bottom-color: #D3D3D3;
 }
 
-#apnchmibog .gt_grand_summary_row {
+#xbbczzkerh .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1035,7 +1054,7 @@ Byron C. Jaeger, PhD
   padding-right: 5px;
 }
 
-#apnchmibog .gt_first_grand_summary_row {
+#xbbczzkerh .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1045,7 +1064,7 @@ Byron C. Jaeger, PhD
   border-top-color: #D3D3D3;
 }
 
-#apnchmibog .gt_last_grand_summary_row_top {
+#xbbczzkerh .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1055,11 +1074,11 @@ Byron C. Jaeger, PhD
   border-bottom-color: #D3D3D3;
 }
 
-#apnchmibog .gt_striped {
+#xbbczzkerh .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#apnchmibog .gt_table_body {
+#xbbczzkerh .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1068,7 +1087,7 @@ Byron C. Jaeger, PhD
   border-bottom-color: #D3D3D3;
 }
 
-#apnchmibog .gt_footnotes {
+#xbbczzkerh .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1082,7 +1101,7 @@ Byron C. Jaeger, PhD
   border-right-color: #D3D3D3;
 }
 
-#apnchmibog .gt_footnote {
+#xbbczzkerh .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1091,7 +1110,7 @@ Byron C. Jaeger, PhD
   padding-right: 5px;
 }
 
-#apnchmibog .gt_sourcenotes {
+#xbbczzkerh .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1105,7 +1124,7 @@ Byron C. Jaeger, PhD
   border-right-color: #D3D3D3;
 }
 
-#apnchmibog .gt_sourcenote {
+#xbbczzkerh .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1113,63 +1132,63 @@ Byron C. Jaeger, PhD
   padding-right: 5px;
 }
 
-#apnchmibog .gt_left {
+#xbbczzkerh .gt_left {
   text-align: left;
 }
 
-#apnchmibog .gt_center {
+#xbbczzkerh .gt_center {
   text-align: center;
 }
 
-#apnchmibog .gt_right {
+#xbbczzkerh .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#apnchmibog .gt_font_normal {
+#xbbczzkerh .gt_font_normal {
   font-weight: normal;
 }
 
-#apnchmibog .gt_font_bold {
+#xbbczzkerh .gt_font_bold {
   font-weight: bold;
 }
 
-#apnchmibog .gt_font_italic {
+#xbbczzkerh .gt_font_italic {
   font-style: italic;
 }
 
-#apnchmibog .gt_super {
+#xbbczzkerh .gt_super {
   font-size: 65%;
 }
 
-#apnchmibog .gt_footnote_marks {
+#xbbczzkerh .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#apnchmibog .gt_asterisk {
+#xbbczzkerh .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#apnchmibog .gt_indent_1 {
+#xbbczzkerh .gt_indent_1 {
   text-indent: 5px;
 }
 
-#apnchmibog .gt_indent_2 {
+#xbbczzkerh .gt_indent_2 {
   text-indent: 10px;
 }
 
-#apnchmibog .gt_indent_3 {
+#xbbczzkerh .gt_indent_3 {
   text-indent: 15px;
 }
 
-#apnchmibog .gt_indent_4 {
+#xbbczzkerh .gt_indent_4 {
   text-indent: 20px;
 }
 
-#apnchmibog .gt_indent_5 {
+#xbbczzkerh .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1276,6 +1295,26 @@ Byron C. Jaeger, PhD
 </ul>
 <p>These random elements help make the trees more independent while keeping their prediction accuracy better than random guesses.</p>
 </section>
+<section id="a-single-traditional-tree-is-fine" class="slide level2">
+<h2>A single traditional tree is fine</h2>
+
+<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-traditional-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="a-single-randomized-tree-struggles" class="slide level2">
+<h2>A single randomized tree struggles</h2>
+
+<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-random-1-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="five-randomized-trees-do-okay" class="slide level2">
+<h2>Five randomized trees do okay</h2>
+
+<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-random-5-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="randomized-trees-do-great" class="slide level2">
+<h2>100 randomized trees do great</h2>
+
+<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-random-100-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="randomized-trees---no-overfitting" class="slide level2">
+<h2>500 randomized trees - no overfitting!</h2>
+
+<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-random-500-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
 <section id="random-forest-predictions" class="slide level2">
 <h2>Random forest predictions</h2>
 <p>To get a prediction from the random forest,</p>
@@ -1284,57 +1323,6 @@ Byron C. Jaeger, PhD
 <li><p>take the majority vote</p></li>
 </ul>
 <p>In situations where trees predictions are continuous and you can’t take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree’s predictions.</p>
-</section>
-<section id="a-single-tree-is-okay" class="slide level2">
-<h2>A single tree is okay</h2>
-<div class="column" style="width:30%;">
-<p>Aggregating randomized trees gives the classic random forest</p>
-</div>
-<div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/penguin-fig-axis-traditional_023c28b2f8bcf3a84dc48cc3518ec5fd">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-traditional-1.svg" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="trees-is-better" class="slide level2">
-<h2>100 trees is better</h2>
-<div class="column" style="width:30%;">
-<p>Aggregating randomized trees gives the classic random forest</p>
-</div>
-<div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-13_0016b49073aeb477799934308995534f">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-13-1.svg" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="more-trees-does-not-mean-overfitting" class="slide level2">
-<h2>More trees does not mean overfitting</h2>
-<div class="column" style="width:30%;">
-<p>Aggregating randomized trees gives the classic random forest</p>
-</div>
-<div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-14_7201115ba032759849d005fb0879294d">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-14-1.svg" style="width:100.0%"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
 </section>
 <section id="how-to-get-out-of-bag-predictions" class="slide level2">
 <h2>How to get out-of-bag predictions</h2>
@@ -1373,11 +1361,11 @@ Byron C. Jaeger, PhD
 <p>In this case, classification accuracy is 96%</p>
 </div>
 <div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-15_0ba371000685c9177bdf8057fd84a9ea">
+<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-13_afb08f813e3cf7afc04a3828a27608ba">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-15-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-13-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1391,11 +1379,11 @@ Byron C. Jaeger, PhD
 <p>See how one value of flipper length is permuted in the figure?</p>
 </div>
 <div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-16_0a24b2202d4dbea3fdf6ab105a06a128">
+<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-14_05bf4b9478fb114d66bf58acebde94df">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-16-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-14-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1409,11 +1397,11 @@ Byron C. Jaeger, PhD
 <p>Now they are <em>all</em> permuted, and out-of-bag classification accuracy is now 61%</p>
 </div>
 <div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-17_89eb7d60ed8aba004fb09375788f4119">
+<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-15_325b3d248187fc12f6aacf8c4f3dc56b">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-17-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-15-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1427,11 +1415,11 @@ Byron C. Jaeger, PhD
 <p>For bill length, out-of-bag classification accuracy is reduced to 63%</p>
 </div>
 <div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-18_52f07f1a9fdf3c06d1b60efd083fd4e6">
+<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-16_013e03e73220d9ee18d96c7da0c600e3">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-18-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-16-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1465,11 +1453,11 @@ Byron C. Jaeger, PhD
 <p>First, split mostly by bill length</p>
 </div>
 <div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-19_3f81ac915b6126166f0e2e2dd9338a97">
+<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-17_b215c1106a6641866081f801864cd4dd">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-19-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-17-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1484,11 +1472,11 @@ Byron C. Jaeger, PhD
 <p>Second, make a triangle for the gentoo.</p>
 </div>
 <div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-20_04a833d7139983c50b81e79bfd6d5ba2">
+<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-18_2f869d36b62671001a3c63fcd3e76464">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-20-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-18-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1501,11 +1489,11 @@ Byron C. Jaeger, PhD
 <p>Aggregating randomized trees gives the <em>oblique</em> random forest</p>
 </div>
 <div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-21_a921630d6ef7f7db5269423b629da140">
+<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-19_bafcf38b0b18f675832f4c51e2cc7a1c">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-21-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-19-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1518,11 +1506,11 @@ Byron C. Jaeger, PhD
 <p>Despite very many similarities, axis-based and oblique random forests may give different results.</p>
 </div>
 <div class="column" style="width:69%;">
-<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-22_59f722973ab47178c42e08af031532c9">
+<div class="cell" data-layout-align="center" data-hash="02-trees_and_forests_cache/revealjs/unnamed-chunk-20_9118db2255ccf311a84c7f23a1e93c6f">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-22-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-20-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1532,10 +1520,11 @@ Byron C. Jaeger, PhD
 <section id="axis-based-vs-oblique" class="slide level2">
 <h2>Axis based vs oblique</h2>
 <ul>
-<li><p>Leo Breiman found oblique random forests compared more favorably to boosting than axis based ones.<sup>1</sup></p></li>
-<li><p>Other benchmarks have found the same result.<sup>2</sup> Oblique random forests have high prediction accuracy.<sup>3</sup></p></li>
+<li><p><span class="citation" data-cites="breiman2001random">Breiman (<a href="#/references" role="doc-biblioref" onclick="">2001</a>)</span> found oblique random forests compared more favorably to boosting than axis based ones.<sup>1</sup></p></li>
+<li><p><span class="citation" data-cites="menze2011oblique">Menze et al. (<a href="#/references" role="doc-biblioref" onclick="">2011</a>)</span> coined the term ‘oblique’ random forest and introduced variable importance metrics for it.</p></li>
+<li><p>On benchmarking 190 classifiers on 121 public datasets, <span class="citation" data-cites="katuwal2020heterogeneous">Katuwal, Suganthan, and Zhang (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span> found variations on the oblique random forests were the top 3 classifiers.</p></li>
 </ul>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Breiman L. <a href="https://link.springer.com/article/10.1023/a:1010933404324">Random forests</a>. Machine learning. 2001 Oct;45:5-32.</p></li><li id="fn2"><p>Katuwal R, Suganthan PN, Zhang L. Heterogeneous oblique random forest. Pattern Recognition. 2020 Mar 1;99:107078.</p></li><li id="fn3"><p>Menze BH, Kelm BM, Splitthoff DN, Koethe U, Hamprecht FA. On oblique random forests. Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22 2011 (pp.&nbsp;453-469). Springer Berlin Heidelberg.</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Leo Breiman named it “Forest-RC” but it later came to be known as oblique</p></li></ol></aside></section>
 <section class="slide level2">
 
 <p>Yet, everyone uses axis-based random forests. Here’s why:</p>
@@ -1547,18 +1536,18 @@ Byron C. Jaeger, PhD
 <img data-src="img/meme_slow_R.jpg" style="width:100.0%" class="r-stretch quarto-figure-center"></section></section>
 <section>
 <section id="aorsf-accelerated-oblique-random-survival-forest" class="title-slide slide level1 center">
-<h1><code>aorsf</code> <br>accelerated oblique random survival forest</h1>
+<h1><code>aorsf</code> <br>accelerated oblique random (survival) forest</h1>
 
 </section>
 <section id="aorsf-benchmark" class="slide level2">
-<h2><code>aorsf</code> Benchmark<sup>1</sup></h2>
-<p><strong>Goal</strong>: Test if a fast version of the oblique random survival forest (<a href="https://docs.ropensci.org/aorsf/"><code>aorsf</code></a>) is as good as the original (<code>obliqueRSF</code>).</p>
+<h2><code>aorsf</code> Benchmark</h2>
+<p><span class="citation" data-cites="jaeger2024accelerated">Jaeger et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span> tested how a fast version of the oblique random survival forest (<a href="https://docs.ropensci.org/aorsf/"><code>aorsf</code></a>) compared to the original (<code>obliqueRSF</code>). Here’s what we did:</p>
 <ul>
-<li><p>Evaluated both in 35 risk prediction tasks (21 datasets)</p></li>
+<li><p>Evaluated both types of oblique random forests in 35 risk prediction tasks (21 datasets)</p></li>
 <li><p>Measured computation time, C-statistic and index of prediction accuracy (IPA).</p></li>
 <li><p>Used Bayesian linear mixed models to test for differences in expected C-statistic and IPA.</p></li>
 </ul>
-<aside><ol class="aside-footnotes"><li id="fn4"><p>Jaeger BC, Welden S, Lenoir K, Speiser JL, Segar MW, Pandey A, Pajewski NM. <a href="https://www.tandfonline.com/doi/full/10.1080/10618600.2023.2231048">Accelerated and interpretable oblique random survival forests</a>. Journal of Computational and Graphical Statistics. 2023 Aug 3:1-6.</p></li></ol></aside></section>
+</section>
 <section class="slide level2">
 
 <p>You can use oblique random forests now!</p>
@@ -1568,9 +1557,26 @@ Byron C. Jaeger, PhD
 
 <p>And making them fast didn’t break their predictions</p>
 
+<img data-src="img/fig_bm_3.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
 
-<img data-src="img/fig_bm_3.png" style="width:100.0%" class="r-stretch quarto-figure-center"><div class="footer footer-default">
+<div class="footer footer-default">
 <p>Slides available at <a href="https://bcjaeger.github.io/melodem-apoe4-het/" class="uri">https://bcjaeger.github.io/melodem-apoe4-het/</a></p>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-breiman2001random" class="csl-entry" role="listitem">
+Breiman, Leo. 2001. <span>“Random Forests.”</span> <em>Machine Learning</em> 45: 5–32.
+</div>
+<div id="ref-jaeger2024accelerated" class="csl-entry" role="listitem">
+Jaeger, Byron C, Sawyer Welden, Kristin Lenoir, Jaime L Speiser, Matthew W Segar, Ambarish Pandey, and Nicholas M Pajewski. 2024. <span>“Accelerated and Interpretable Oblique Random Survival Forests.”</span> <em>Journal of Computational and Graphical Statistics</em> 33 (1): 192–207.
+</div>
+<div id="ref-katuwal2020heterogeneous" class="csl-entry" role="listitem">
+Katuwal, Rakesh, Ponnuthurai Nagaratnam Suganthan, and Le Zhang. 2020. <span>“Heterogeneous Oblique Random Forest.”</span> <em>Pattern Recognition</em> 99: 107078.
+</div>
+<div id="ref-menze2011oblique" class="csl-entry" role="listitem">
+Menze, Bjoern H, B Michael Kelm, Daniel N Splitthoff, Ullrich Koethe, and Fred A Hamprecht. 2011. <span>“On Oblique Random Forests.”</span> In <em>Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22</em>, 453–69. Springer.
+</div>
 </div>
 </section></section>
 

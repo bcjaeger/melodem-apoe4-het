@@ -6,6 +6,8 @@ project:
     - "!CODE_OF_CONDUCT.md"
   output-dir: docs
 
+bibliography: manuscript/refs.bib
+
 website:
   title: "Methods in longitudinal dementia research workshop"
   description: "This workshop provides an introduction to oblique and causal random forests. Oblique random forests are used for dementia risk prediction and causal random forests are used to identify heterogeneity in the association between APOE4 and dementia."

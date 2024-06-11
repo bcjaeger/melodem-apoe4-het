@@ -27,9 +27,10 @@ tar_option_set(
     "party",           # conditional inference forests
     "riskRegression",  # evaluates prediction accuracy
     "survival",        # provides the Surv() function
-    "ggforce",
-    "rpart",
-    "ranger"
+    "ggforce",         # graphics
+    "rpart",           # decision trees
+    "ranger",          # random forests
+    "butcher"          # manage memory
   )
 )
 
@@ -47,7 +48,7 @@ assert_data_safety()
 
 manuscript_version <- 1
 
-include_benchmark <- TRUE
+include_benchmark <- FALSE
 
 
 # slides targets ----------------------------------------------------------

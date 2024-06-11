@@ -1,0 +1,95 @@
+---
+title: "Causal random forests classwork"
+subtitle: "MELODEM data workshop"
+editor_options: 
+  chunk_output_type: console
+---
+I recommend restarting R between each slide deck!
+
+## Setup
+
+Change `data_sim_1` to be the name of your data.
+
+```{r, message=FALSE}
+
+withr::with_dir(
+  new = here::here(),
+  code = {
+    targets::tar_load_globals()
+    # change data_sim_1 to be the name of your data.
+    tar_load(data_sim_1)
+  }
+)
+
+# change data_sim_1 to be the name of your data.
+data_classwork <- data_sim_1
+
+```
+
+## Fit a causal forest
+
+First, we'll prepare the data by designating `X`, `Y`, `W`, and `D` matrices for the `grf` package. You can review what these inputs are and how they're used  [online](https://grf-labs.github.io/grf/reference/causal_forest.html#arguments) 
+
+```{r}
+
+# helper function for grf data prep 
+data_grf <- data_coerce_grf(data_classwork)
+
+# just a view of the X matrix
+head(data_grf$X)
+
+```
+
+
+Next, you'll pass the data matrices to `causal_survival_forest()`:
+
+```{r}
+
+fit_grf <- causal_survival_forest(
+  X = data_grf$X, # covariates
+  Y = data_grf$Y, # time to event
+  W = data_grf$W, # treatment status
+  D = data_grf$D, # event status
+  # 3-year horizon by default. 
+  # Recommend adjusting to your data's median time-to-event
+  horizon = 3, 
+  # treatment effect will be
+  # measured in terms of the
+  # restricted mean survival time
+  target = 'RMST' 
+)
+
+fit_grf
+
+```
+
+## Average treatment effect
+
+With a fitted `grf` object, you can access a doubly robust average treatment effect (ATE) estimate:
+
+```{r}
+
+average_treatment_effect(fit_grf)
+
+```
+
+This estimate indicates that the difference in estimated survival time of the "treated" group minus the "not treated" group is `r average_treatment_effect(fit_grf)['estimate']`.
+
+- A negative number indicates the survival time of the treated group is lower
+
+- A positive number indicates the survival time of the treated group is higher
+
+In the case of the simulated data, being in the "treatment" group for `apoe4` results in higher risk of the outcome, so a negative ATE makes sense.
+
+**Your turn:** Interpret these results for your data. Do you detect an overall treatment effect?
+
+```{r}
+# hint: here's how to get CI from ATE.
+ate <- average_treatment_effect(fit_grf)
+ate['estimate'] + c(-1, 1) * ate['std.err'] * 1.96
+```
+
+**Re-run your forest with** `target = "survival.probability"` instead of `target = "RMST"`. This will make the average treatment effect be the difference in the probability of being event-free at `horizon` time units after baseline. Re-interpret your average treatment effect - is this result consistent with the result you got using RMST?
+
+## 
+

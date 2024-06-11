@@ -79,7 +79,8 @@ pkgs <-
     "glue", "grf", "aorsf", "glmnet", "xgboost", "randomForestSRC",
     "party", "riskRegression", "survival", "officer", "flextable", 
     "table.glue", "gtsummary", "usethis", "cli", "ggforce",
-    "rpart", "rpart.plot", "ranger", "withr", "gt")
+    "rpart", "rpart.plot", "ranger", "withr", "gt", 'recipes', 
+    'butcher')
 
 # A few more packages may be added - this list isn't final yet.
 
@@ -113,6 +114,8 @@ These slides are designed to use with live teaching and are published for worksh
 
 1. [Introduction](slides/01-introduction.html){target="_blank"}
 2. [Decision trees and random forests](slides/02-trees_and_forests.html){target="_blank"}
+2. [Oblique random forests](slides/03-prediction_forests.html){target="_blank"}
+2. [Causal random forests](slides/04-causal_forests.html){target="_blank"}
 
 ### Day 2: Collaborative analysis and manuscript planning
 

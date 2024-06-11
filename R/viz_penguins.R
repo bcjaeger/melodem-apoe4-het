@@ -38,7 +38,7 @@ viz_penguins <- function() {
                     data = penguins,
                     num.trees = 1,
                     max.depth = 4,
-                    seed = 329,
+                    seed = 3,
                     probability = TRUE)
 
   axis_3b <- ranger(formula = species ~ flipper_length_mm + bill_length_mm,
@@ -76,8 +76,8 @@ viz_penguins <- function() {
                     data = penguins)
 
   grid <- expand_grid(
-    flipper_length_mm = seq(170, 235, len = 150),
-    bill_length_mm = seq(30, 70, len = 150)
+    flipper_length_mm = seq(170, 235, len = 50),
+    bill_length_mm = seq(30, 70, len = 50)
   )
 
   pred_1 <- predict(axis_1, newdata = grid, type = 'prob')
@@ -207,8 +207,7 @@ plot_decision_surface <- function(penguins, predictions, title, grid){
 
   ggplot(class_preds, aes(y = bill_length_mm,
                           x = flipper_length_mm)) +
-    geom_contour_filled(aes(z = 1, fill = name),
-                        alpha = .25) +
+    geom_raster(aes(fill = name), alpha = .3) +
     geom_point(data = penguins,
                size = 3,
                aes(color = species, shape = species),

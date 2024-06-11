@@ -1,5 +1,5 @@
 ---
-title: "Develop and evaluate prediction models"
+title: "Causal random forests"
 subtitle: "MELODEM data workshop"
 author: "Byron C. Jaeger, PhD"
 institute: "Wake Forest University School of Medicine"
@@ -27,20 +27,630 @@ knitr::opts_chunk$set(echo = FALSE,
 
 
 withr::with_dir(
-  new = here::here(),
-  targets::tar_load(data_sim_1)
+  new = here::here(), code = {
+    R.utils::sourceDirectory('R')
+    library(tidyverse)
+    library(tidymodels)
+    library(butcher)
+    library(grf)
+    targets::tar_load(data_sim_1)
+  }
 )
 
 ```
 
 ## Overview
 
-- The causal forest algorithm
+This lecture focuses on the the causal random forest algorithm
 
-    + The role of prediction
-    
-    + Adaptive neighborhoods
+- Residual-on-residual regression
 
-    + Conditional and ranked average treatment effects
-    
+- Causal trees
 
+- Conditional average treatment effect (CATE)
+
+- Random forest adaptive neighborhoods
+
+- Accounting for censoring
+
+- Inference with CATE summaries
+
+# Causal random forest algorithm
+
+## Residual-on-residual regression
+
+Start with the partially linear model:
+
+$$
+Y_i = \tau W_i + f(X_i) + \varepsilon_i
+$$
+Assume: 
+
+- $E[\varepsilon_i | X_i, W_i] = 0$
+
+- untreated outcome is given by unknown function $f$, 
+
+- a treatment assignment shifts the outcome by $\tau$.
+
+
+## How to estimate $\tau$?
+
+Consider the partially linear model:
+
+$$
+Y_i = \tau W_i + f(X_i) + \varepsilon_i 
+$$
+
+How do we estimate $\tau$ when we do not know $f(X_i)$? 
+
+Define:
+
+\begin{align*}
+
+e(x) &= E[W_i | X_i=x] \,\, \text{(Propensity score)} \\
+
+m(x) &= E[Y_i | X_i = x] = f(x) + \tau e(x) \,\,\,\,\, \text{(Cndl. mean of } Y\text{)}
+
+\end{align*}
+
+## Use propensity and conditional mean
+
+Re-express the partial linear model in terms of $e(x)$ and $m(x)$:
+
+\begin{align*}
+
+Y_i &= \tau W_i + f(X_i) + \varepsilon_i, \,  \\
+
+Y_i - \tau e (x) &= \tau W_i + f(X_i) - \tau e(x) + \varepsilon_i, \, \\
+
+Y_i - f(X_i) - \tau e (x) &= \tau W_i - \tau e (x) + \varepsilon_i, \, \\
+
+Y_i - m(x) &= \tau (W_i - e(x)) + \varepsilon_i, \, \\
+
+\end{align*}
+
+$\tau$ can be estimated with residual-on-residual regression [@robinson1988root]. 
+
+**How?** Plug in flexible estimates of $m(x)$ and $e(x)$
+
+## Re-write as a linear model
+
+More formally, 
+
+$$
+\hat{\tau} := \text{lm}\Biggl( Y_i - \hat m^{(-i)}(X_i) \sim W_i - \hat e^{(-i)}(X_i)\Biggr).
+$$
+
+- Superscript $^i$ denotes cross-fit estimates [@debiased_ML_Chernozhukov]. 
+
+- Cross-fitting: estimate something, e.g., $e(x)$, using cross-validation. 
+
+- Why? removes bias from over-fitting.
+
+## Example
+
+:::{.column width="45%"}
+
+Suppose $Y_i = \tau W_i + f(X_i) + \epsilon_i$
+
+- $\tau$ is 1/2
+- $W_i$ is randomized treatment
+- $f(X_i) = |X_i|$
+- $X_i$ is a continuous covariate
+
+By defn, $E[W_i] = 1/2$ (why?). 
+
+:::
+
+:::{.column width="53%"}
+
+```{r echo=TRUE}
+
+# Set up for const tau example
+
+set.seed(1)
+tau_truth <- 1/2
+n <- 1000
+
+# randomized treatment
+W <- rbinom(n = n, size = 1, prob = 1/2)
+
+# continuous covariate
+X <- rnorm(n = n)
+
+# outcome 
+Y <- tau_truth * W + abs(X) + rnorm(n)
+
+data <- data.frame(Y=Y, X=X, W=W)
+
+```
+
+:::
+
+## Example done wrong
+
+:::{.column width="45%"}
+
+First we'll do it the wrong way.
+
+- Fit a **classical** model to estimate conditional mean of $Y$.
+
+- Compute residuals and run Robinson's regression.
+
+- What'd we do wrong?
+
+:::
+
+:::{.column width="53%"}
+
+```{r, echo=TRUE}
+
+library(glue)
+library(ggplot2)
+
+fit_cmean <- lm(Y ~ X, data = data)
+
+m_x <- predict(fit_cmean, new_data = data)
+
+resid_y <- Y - m_x
+resid_w <- W - 1/2
+
+tau_fit <- lm(resid_y ~ resid_w) 
+
+glue("True tau is {tau_truth}, \\
+      estimated tau is {coef(tau_fit)[2]}")
+
+
+```
+
+:::
+
+## Conditional mean predictions...
+
+```{r, fig.width = 6, fig.height = 6}
+
+mse <- round(mean((m_x - Y)^2), 2)
+
+ggplot(data = data.frame(predicted = m_x, observed = Y)) + 
+  aes(x = predicted, y = observed) + 
+  geom_point() + 
+  geom_smooth() + 
+  labs(title = glue("Linear model predictions: MSE = {mse}"))
+
+
+```
+
+## Example done wrong, take 2
+
+:::{.column width="45%"}
+
+The model for conditional mean was under-specified.
+
+- Fit a **flexible** model to estimate conditional mean of $Y$.
+
+- Compute residuals and run Robinson's regression.
+
+- What'd we do wrong?
+
+:::
+
+:::{.column width="53%"}
+
+```{r, echo=TRUE}
+
+library(aorsf)
+library(glue)
+
+fit_cmean <- orsf(Y ~ X, data = data)
+
+m_x <- predict(fit_cmean, new_data = data)
+
+resid_y <- Y - m_x
+resid_w <- W - 1/2
+
+tau_fit <- lm(resid_y ~ resid_w) 
+
+glue("True tau is {tau_truth}, \\
+      estimated tau is {coef(tau_fit)[2]}")
+
+
+```
+
+:::
+
+## Example done right
+
+:::{.column width="45%"}
+
+We forgot about cross-fitting!
+
+- Fit a flexible model to estimate conditional mean of $Y$.
+
+- Use **out-of-bag predictions**.
+
+- Compute residuals and run Robinson's regression.
+
+:::
+
+:::{.column width="53%"}
+
+```{r, echo=TRUE}
+
+m_x_oobag <- predict(fit_cmean, oobag = TRUE)
+
+resid_y <- Y - m_x_oobag
+resid_w <- W - 1/2
+
+tau_fit <- lm(resid_y ~ resid_w) 
+
+glue("True tau is {tau_truth}, \\
+      estimated tau is {coef(tau_fit)[2]}")
+
+
+```
+
+:::
+
+## Conditional mean predictions
+
+```{r, fig.width=12, fig.height=6}
+
+p1 <- ggplot(data = data.frame(predicted = m_x, 
+                               observed = Y)) + 
+  aes(x = predicted, y = observed) + 
+  geom_point() + 
+  geom_smooth()
+
+p2 <- ggplot(data = data.frame(predicted = m_x_oobag, 
+                               observed = Y)) + 
+  aes(x = predicted, y = observed) + 
+  geom_point() + 
+  geom_smooth()
+
+library(table.glue)
+
+library(patchwork)
+
+(p1 + labs(title=table_glue("In-bag predictions: MSE = {mean((m_x - Y)^2)}"))) + 
+  (p2 + labs(title=table_glue("Out-of-bag predictions: MSE = {mean((m_x_oobag - Y)^2)}"))) + 
+  plot_layout(axes = 'collect')
+
+```
+
+## Causal trees
+
+Causal trees are much like standard decision trees, but they maximize
+
+$$n_L \cdot n_R \cdot (\hat{\tau}_L-\hat{\tau}_R)^2$$
+
+where residual-on-residual regression is used to estimate $\hat{\tau}_L$ and $\hat{\tau}_R$
+
+- `grf` estimates $\hat \tau$ *once* in the parent node and uses "influence functions" to approximate how $\hat\tau$ would change if an observation moved from one child node to the other [@wager2018estimation]. 
+
+- Predictions from leaves are $E[Y|W=1] - E[Y|W=0]$
+
+
+## Causal trees contd.
+
+Causal trees are grown using "honesty" and "subsampling" [@wager2018estimation]. 
+
+- **Honesty**: For each training observation $i$, $Y_i$ is used for ONE of the following:
+
+    + Estimate the treatment effect for leaf nodes.
+
+    + Decide splitting values for non-leaf nodes.
+
+- **Subsampling**: While Breiman's random forest used bootstrap resampling with replacement, causal trees use a random subset sampled without replacement. 
+
+## Conditional average treatment effect
+
+Relaxing the assumption of a constant treatment:
+
+$$
+Y_i = \color{red}{\tau(X_i)} W_i + f(X_i) + \varepsilon_i, \, 
+$$
+
+where $\color{red}{\tau(X_i)}$ is the conditional average treatment (CATE). If we had a neighborhood $\mathcal{N}(x)$ where $\tau$ was constant, then we could do residual-on-residual regression in the neighborhood:
+
+$$
+\hat\tau_i(x) := lm\Biggl( Y_i - \hat m^{(-i)}(X_i) \sim W_i - \hat e^{(-i)}(X_i), \color{red}{w = 1\{X_i \in \mathcal{N}(x) \}}\Biggr),
+$$
+
+## Random forests define neighborhoods
+
+Suppose we fit a $B$ regression trees to a training set of size $n$. 
+
+We want to compute a prediction $p$ for a new observation $x$:
+
+\begin{equation*}
+\begin{split}
+& p = \sum_{i=1}^{n} \frac{1}{B} \sum_{b=1}^{B} Y_i \frac{1\{Xi \in L_b(x)\}} {|L_b(x)|}
+\end{split}
+\end{equation*}
+
+- $L_b(x)$ indicates the leaf node that $x$ falls into for tree $b$
+
+- The inner sum is the mean of outcomes in the same leaf as $x$
+
+## Re-express the prediction sums
+
+Pull $Y_i$ out of the sum that depends on $b$:
+
+\begin{equation*}
+\begin{split}
+p &= \sum_{i=1}^{n} \frac{1}{B} \sum_{b=1}^{B} Y_i \frac{1\{Xi \in L_b(x)\}} {|L_b(x)|} \\
+&= \sum_{i=1}^{n} Y_i \sum_{b=1}^{B} \frac{1\{Xi \in L_b(x)\}} {B \cdot |L_b(x)|} \\
+& = \sum_{i=1}^{n} Y_i \color{blue}{\alpha_i(x)},
+\end{split}
+\end{equation*}
+
+- $\alpha_i(x) \propto$ no. of times observation $i$ lands in the same leaf as $x$
+
+## Plug weights in to `lm`
+
+Instead of defining neighborhood boundaries, weight by similarity:
+
+$$
+\hat\tau_i(x) := \text{lm}\Biggl( Y_i - \hat m^{(-i)}(X_i) \sim W_i - \hat e^{(-i)}(X_i), w = \color{blue}{\alpha_i(x)} \Biggr).
+$$
+This forest-localized version of Robinson's regression gives asymptotic guarantees for estimation and inference [@wager2018estimation]:
+
+1. Pointwise consistency for the true treatment effect.
+
+2. Asymptotically Gaussian and centered sampling distribution.
+
+## Three main components 
+
+The procedure to estimate $\hat\tau_i$ has three pieces:
+
+$$
+\hat\tau_i(x) := \text{lm}\Biggl( Y_i - \color{green}{\hat m^{(-i)}(X_i)} \sim W_i - \color{red}{\hat e^{(-i)}(X_i)}, w = \color{blue}{\alpha_i(x)} \Biggr).
+$$
+
+1. $\color{green}{\hat m^{(-i)}(X_i)}$ is a flexible, cross-fit estimate for $E[Y|X]$
+
+2. $\color{red}{\hat e^{(-i)}(X_i)}$ is a flexible, cross-fit estimate for $E[W|X]$
+
+3. $\color{blue}{\alpha_i(x)}$ are the similarity weights from a causal random forest
+
+## The causal survival forest
+
+Assume the survival setting:
+
+\begin{equation}
+  Y_i =
+    \begin{cases}
+      T_i & \text{if } \, T_i \leq C_i \\
+      C_i & \text{otherwise}
+    \end{cases}
+\end{equation}
+
+Where $T_i$ is time to event and ($C_i$) is time to censoring. Define
+
+\begin{equation}
+D_i =
+    \begin{cases}
+      1 & \text{if } \, T_i \leq C_i \\
+      0 & \text{otherwise.}
+    \end{cases}
+\end{equation}
+
+## Observed time versus true time
+
+:::{.column width="39%"}
+
+Event times are obscured by
+
+- censoring
+
+- end of follow-up, i.e., $h$
+
+:::
+
+:::{.column width="60%"}
+
+```{r fig.width=4, fig.height=4, out.width='80%'}
+
+n <- 1e6
+failure.time <- rexp(n, rate = 0.1)
+censor.time <- runif(n, 0, 12)
+Y <- pmin(failure.time, censor.time)
+D <- as.integer(failure.time <= censor.time)
+cc <- (D==1)
+
+dens.cens <- with(density(failure.time), data.frame(x, y))
+dens.obs <- with(density(Y[cc]), data.frame(x, y))
+df <- rbind(dens.cens, dens.obs)
+
+gg_data <- df
+
+gg_data$distribution <-
+  c(rep("Time to event", 
+        nrow(dens.cens)), 
+    rep("Observed time", 
+        nrow(dens.obs)))
+
+gg_data$distribution <-
+  factor(gg_data$distribution,
+         levels = c("Time to event", "Observed time"))
+
+ggplot(gg_data) +
+  aes(x = x,
+      y = y,
+      ymin = 0,
+      ymax = y,
+      fill = distribution) + 
+  geom_line() +
+  geom_ribbon(alpha = 0.5) +
+  geom_vline(xintercept = 10) +
+  xlab("Time") +
+  ylab("Density") +
+  labs(fill = "Distribution") +
+  xlim(c(0, 30)) +
+  scale_fill_manual(values = c("#F8766D", "#00BFC4")) +
+  theme_classic() +
+  theme(legend.position = 'inside',
+        legend.position.inside = c(.8, .8))
+```
+
+:::
+
+## Observed time versus true time
+
+:::{.column width="39%"}
+
+Event times are obscured by
+
+- censoring
+
+- end of follow-up, i.e., $h$
+
+Estimate restricted mean survival time (RMST): $E \left[ \text{min}(T, h) \right]$. See @cui2023estimating for more details on adjustment for censoring.
+
+:::
+
+:::{.column width="60%"}
+
+```{r fig.width=4, fig.height=4, out.width='80%'}
+
+dens.obs <- subset(dens.obs, x <= 10)
+gg_data <- rbind(dens.cens, dens.obs)
+
+gg_data$distribution <- c(rep("Time to event", nrow(dens.cens)), rep("Observed time", nrow(dens.obs)))
+gg_data$distribution[gg_data$x >= 10] <- "Truncate"
+gg_data$distribution <- factor(gg_data$distribution, levels = c("Time to event", "Observed time", "Truncate"))
+
+ggplot(gg_data) +
+  aes(x = x, 
+      y = y, 
+      ymin = 0, 
+      ymax = y, 
+      fill = distribution,
+      alpha = distribution) + 
+  geom_line() +
+  geom_ribbon(alpha = 0.5) +
+  geom_vline(xintercept = 10) +
+  xlab("Time") +
+  ylab("Density") +
+  labs(fill = "Distribution") +
+  xlim(c(0, 30)) +
+  scale_fill_manual(values = c("#F8766D", "#00BFC4", "#818181")) +
+  scale_alpha_discrete(range = c(0.5, 1, 0.5)) +
+  annotate(geom = 'text', x = 13, y = 0.05, color = 'black', hjust = -0.1,
+           label = 'treat as observed\ncensor at h=10') +
+  annotate("segment", x = 13, xend = 10, y = 0.05, yend = 0.05,
+           arrow = arrow(type = "closed", length = unit(0.02, "npc"))) +
+  theme_classic() +
+  guides(alpha = 'none') +
+  theme(legend.position = 'inside',
+        legend.position.inside = c(.8, .8))
+
+```
+
+:::
+
+## Treatment effects for survival
+
+Two treatment effects can be estimated conditional on $h$.
+
+- RMST
+$$\tau(x) = E[\min(T(1), h) - \min(T(0), h) \, | X = x],$$
+- Survival probability:
+$$\tau(x) = P[T(1) > h \, | X = x] - P[T(0) > h \, | X = x].$$
+$T(1)$ and $T(0)$ are treated and untreated event times, respectively.
+
+## Summaries of CATEs
+
+You could compute average treatment effect (ATE) as the mean of CATEs:
+
+$$\hat\tau = \frac{1}{n}\sum_{i=1}^n \hat\tau_i(x)$$
+But the augmented inverse probability weighted ATE is better:
+
+$$
+\hat \tau_{AIPW} = \frac{1}{n} \sum_{i=1}^{n}\left( \overbrace{\tau(X_i)}^{\text{Initial estimate}} + \overbrace{\frac{W_i - e(X_i)}{e(X_i)[1 - e(X_i)]}}^{\text{debiasing weight}} \cdot \overbrace{\left(Y_i - \mu(X_i, W_i)\right)}^{\text{residual}} \right)
+$$
+
+## Summaries of CATEs contd.
+
+For simplicity, re-write the augmented inverse probability ATE as
+
+$$\hat\tau = \frac{1}{n}\sum_{i=1}^n \hat\Gamma_i(x),$$
+With a vector of these $\Gamma_i$'s, define:
+
+
+- Average treatment effect (ATE) = `mean(gamma)`
+
+- Best linear projection (BLP) = `lm(gamma ~ X)`
+
+# Causal random forest applications
+
+## Set up
+
+First, we'll prepare the data:
+
+```{r, eval=FALSE, echo=TRUE}
+
+# loads packages and R functions
+targets::tar_load_globals()
+
+# loads a specific target
+tar_load(data_sim_1)
+```
+
+Second, coerce data to `grf` format: 
+
+```{r, echo = TRUE}
+
+# helper function for grf data prep 
+data_grf <- data_coerce_grf(data_sim_1)
+
+# just a view of the X matrix
+head(data_grf$X)
+
+```
+
+## Fitting the forest
+
+Third, fit the causal forest: 
+
+```{r, echo = TRUE}
+
+fit_grf <- causal_survival_forest(
+  X = data_grf$X, # covariates
+  Y = data_grf$Y, # time to event
+  W = data_grf$W, # treatment status
+  D = data_grf$D, # event status
+  horizon = 3, # 3-year horizon
+  # treatment effect will be
+  # measured in terms of the
+  # restricted mean survival time
+  target = 'RMST' 
+)
+
+fit_grf
+
+```
+
+## Get $\Gamma$ scores
+
+Remember the $\Gamma_i$'s that provide conditional estimates of $\tau$? Let's get them.
+
+```{r, echo = TRUE}
+
+# pull the augmented CATEs from the fitted grf object
+gammas <- get_scores(fit_grf)
+
+```
+
+- With `gammas`, we can compute ATE manually
+```{r, echo=TRUE}
+mean(gammas) 
+```
+
+- Verify this is what the `grf` function gives
+```{r, echo=TRUE} 
+average_treatment_effect(fit_grf)
+```
+
+
+## References

@@ -30,8 +30,8 @@ data_derive.sim_1 <- data_derive.sim_2 <- function(data){
                        prob = apoe4_prob)]
 
   dt[, event_time := rexp(.N,
-                          rate = apoe4 * abs(biomarker_1) / 10 +
-                            abs(biomarker_2) / 10)]
+                          rate = apoe4 * abs(biomarker_1) / 5 +
+                            abs(biomarker_2) / 5)]
 
   dt[, apoe4 := factor(apoe4,
                        levels = c(0, 1),

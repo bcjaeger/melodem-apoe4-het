@@ -532,6 +532,38 @@ The weak expert approach for decision trees:
 
 These random elements help make the trees more independent while keeping their prediction accuracy better than random guesses.
 
+## A single traditional tree is fine
+
+
+```{r penguin-fig-axis-traditional}
+penguin_figs$axis_2 + ggplot2::ggtitle("1 traditional tree")
+```
+
+
+## A single randomized tree struggles
+
+```{r penguin-fig-axis-random-1}
+penguin_figs$axis_3a + ggplot2::ggtitle("1 randomized tree")
+```
+
+## Five randomized trees do okay
+
+```{r penguin-fig-axis-random-5}
+penguin_figs$axis_3b + ggplot2::ggtitle("5 randomized trees")
+```
+
+## 100 randomized trees do great
+
+```{r penguin-fig-axis-random-100}
+penguin_figs$axis_3c + ggplot2::ggtitle("100 randomized trees")
+```
+
+## 500 randomized trees - no overfitting!
+
+```{r penguin-fig-axis-random-500}
+penguin_figs$axis_3d + ggplot2::ggtitle("500 randomized trees")
+```
+
 ## Random forest predictions
 
 To get a prediction from the random forest, 
@@ -541,54 +573,6 @@ To get a prediction from the random forest,
 - take the majority vote
 
 In situations where trees predictions are continuous and you can't take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree's predictions.
-
-## A single tree is okay
-
-:::{.column width="30%"}
-
-Aggregating randomized trees gives the classic random forest
-
-:::
-
-:::{.column width="69%"}
-
-```{r penguin-fig-axis-traditional}
-penguin_figs$axis_2 + ggplot2::ggtitle("1 traditional tree")
-```
-
-:::
-
-## 100 trees is better
-
-:::{.column width="30%"}
-
-Aggregating randomized trees gives the classic random forest
-
-:::
-
-:::{.column width="69%"}
-
-```{r}
-penguin_figs$axis_3c + ggplot2::ggtitle("100 randomized trees")
-```
-
-:::
-
-## More trees does not mean overfitting
-
-:::{.column width="30%"}
-
-Aggregating randomized trees gives the classic random forest
-
-:::
-
-:::{.column width="69%"}
-
-```{r}
-penguin_figs$axis_3d + ggplot2::ggtitle("500 randomized trees")
-```
-
-:::
 
 ## How to get out-of-bag predictions
 
@@ -782,9 +766,11 @@ penguin_figs$axis_3d
 
 ## Axis based vs oblique
 
-- Leo Breiman found oblique random forests compared more favorably to boosting than axis based ones.^[Breiman L. [Random forests](https://link.springer.com/article/10.1023/a:1010933404324). Machine learning. 2001 Oct;45:5-32.]
+- @breiman2001random found oblique random forests compared more favorably to boosting than axis based ones.^[Leo Breiman named it "Forest-RC" but it later came to be known as oblique]
 
-- Other benchmarks have found the same result.^[Katuwal R, Suganthan PN, Zhang L. Heterogeneous oblique random forest. Pattern Recognition. 2020 Mar 1;99:107078.] Oblique random forests have high prediction accuracy.^[Menze BH, Kelm BM, Splitthoff DN, Koethe U, Hamprecht FA. On oblique random forests. Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22 2011 (pp. 453-469). Springer Berlin Heidelberg.]
+- @menze2011oblique coined the term 'oblique' random forest and introduced variable importance metrics for it.
+
+- On benchmarking 190 classifiers on 121 public datasets, @katuwal2020heterogeneous found variations on the oblique random forests were the top 3 classifiers.
 
 
 ---
@@ -798,13 +784,13 @@ Yet, everyone uses axis-based random forests. Here's why:
 
 ![](img/meme_slow_R.jpg){width=100% fig-align="center"}
 
-# `aorsf` <br/>accelerated oblique random survival forest
+# `aorsf` <br/>accelerated oblique random (survival) forest
 
-## `aorsf` Benchmark^[Jaeger BC, Welden S, Lenoir K, Speiser JL, Segar MW, Pandey A, Pajewski NM. [Accelerated and interpretable oblique random survival forests](https://www.tandfonline.com/doi/full/10.1080/10618600.2023.2231048). Journal of Computational and Graphical Statistics. 2023 Aug 3:1-6.]
+## `aorsf` Benchmark
 
-**Goal**: Test if a fast version of the oblique random survival forest ([`aorsf`](https://docs.ropensci.org/aorsf/)) is as good as the original (`obliqueRSF`).
+@jaeger2024accelerated tested how a fast version of the oblique random survival forest ([`aorsf`](https://docs.ropensci.org/aorsf/)) compared to the original (`obliqueRSF`). Here's what we did:
 
-- Evaluated both in 35 risk prediction tasks (21 datasets)
+- Evaluated both types of oblique random forests in 35 risk prediction tasks (21 datasets)
 
 - Measured computation time, C-statistic and index of prediction accuracy (IPA).
 
@@ -820,3 +806,6 @@ You can use oblique random forests now!
 And making them fast didn't break their predictions
 
 ![](img/fig_bm_3.png){width=100% fig-align="center"}
+
+
+## References
