@@ -430,22 +430,21 @@ Byron C. Jaeger, PhD
 <h2>Overview</h2>
 <p>This lecture focuses on the the causal random forest algorithm</p>
 <ul>
-<li><p>Residual-on-residual regression</p></li>
+<li><p>Robinson’s residual-on-residual regression</p></li>
 <li><p>Causal trees</p></li>
-<li><p>Conditional average treatment effect (CATE)</p></li>
-<li><p>Random forest adaptive neighborhoods</p></li>
-<li><p>Accounting for censoring</p></li>
+<li><p>Causal random forest</p></li>
+<li><p>Causal random survival forest</p></li>
 <li><p>Inference with CATE summaries</p></li>
 </ul>
 </section>
 <section>
-<section id="causal-random-forest-algorithm" class="title-slide slide level1 center">
-<h1>Causal random forest algorithm</h1>
+<section id="robinsons-residual-on-residual-regression" class="title-slide slide level1 center">
+<h1>Robinson’s residual-on-residual regression</h1>
 
 </section>
-<section id="residual-on-residual-regression" class="slide level2">
-<h2>Residual-on-residual regression</h2>
-<p>Start with the partially linear model:</p>
+<section id="the-partially-linear-model" class="slide level2">
+<h2>The partially linear model</h2>
+<p>Suppose</p>
 <p><span class="math display">\[
 Y_i = \tau W_i + f(X_i) + \varepsilon_i
 \]</span> Assume:</p>
@@ -457,7 +456,7 @@ Y_i = \tau W_i + f(X_i) + \varepsilon_i
 </section>
 <section id="how-to-estimate-tau" class="slide level2">
 <h2>How to estimate <span class="math inline">\(\tau\)</span>?</h2>
-<p>Consider the partially linear model:</p>
+<p>Suppose</p>
 <p><span class="math display">\[
 Y_i = \tau W_i + f(X_i) + \varepsilon_i
 \]</span></p>
@@ -507,8 +506,8 @@ Y_i - m(x) &amp;= \tau (W_i - e(x)) + \varepsilon_i, \, \\
 <ul>
 <li><span class="math inline">\(\tau\)</span> is 1/2</li>
 <li><span class="math inline">\(W_i\)</span> is randomized treatment</li>
-<li><span class="math inline">\(f(X_i) = |X_i|\)</span></li>
 <li><span class="math inline">\(X_i\)</span> is a continuous covariate</li>
+<li><span class="math inline">\(f(X_i) = |X_i|\)</span></li>
 </ul>
 <p>By defn, <span class="math inline">\(E[W_i] = 1/2\)</span> (why?).</p>
 </div>
@@ -580,21 +579,20 @@ Y_i - m(x) &amp;= \tau (W_i - e(x)) + \varepsilon_i, \, \\
 </ul>
 </div>
 <div class="column" style="width:53%;">
-<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-4_7dc7506c5c0be6fb1a8f6abd3d2943e2">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-4_fb5b8ca71952ad67d35e5860a4160ecb">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(aorsf)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">library</span>(glue)</span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a>fit_cmean <span class="ot">&lt;-</span> <span class="fu">orsf</span>(Y <span class="sc">~</span> X, <span class="at">data =</span> data)</span>
-<span id="cb4-5"><a href="#cb4-5"></a></span>
-<span id="cb4-6"><a href="#cb4-6"></a>m_x <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_cmean, <span class="at">new_data =</span> data)</span>
-<span id="cb4-7"><a href="#cb4-7"></a></span>
-<span id="cb4-8"><a href="#cb4-8"></a>resid_y <span class="ot">&lt;-</span> Y <span class="sc">-</span> m_x</span>
-<span id="cb4-9"><a href="#cb4-9"></a>resid_w <span class="ot">&lt;-</span> W <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a></span>
-<span id="cb4-11"><a href="#cb4-11"></a>tau_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(resid_y <span class="sc">~</span> resid_w) </span>
-<span id="cb4-12"><a href="#cb4-12"></a></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="fu">glue</span>(<span class="st">"True tau is {tau_truth}, </span><span class="sc">\\</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="st">      estimated tau is {coef(tau_fit)[2]}"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>fit_cmean <span class="ot">&lt;-</span> <span class="fu">orsf</span>(Y <span class="sc">~</span> X, <span class="at">data =</span> data)</span>
+<span id="cb4-4"><a href="#cb4-4"></a></span>
+<span id="cb4-5"><a href="#cb4-5"></a>m_x <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_cmean, <span class="at">new_data =</span> data)</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a>resid_y <span class="ot">&lt;-</span> Y <span class="sc">-</span> m_x</span>
+<span id="cb4-8"><a href="#cb4-8"></a>resid_w <span class="ot">&lt;-</span> W <span class="sc">-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a>tau_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(resid_y <span class="sc">~</span> resid_w) </span>
+<span id="cb4-11"><a href="#cb4-11"></a></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="fu">glue</span>(<span class="st">"True tau is {tau_truth}, </span><span class="sc">\\</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="st">      estimated tau is {coef(tau_fit)[2]}"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>True tau is 0.5, estimated tau is 0.394643899391376</code></pre>
 </div>
@@ -631,9 +629,14 @@ Y_i - m(x) &amp;= \tau (W_i - e(x)) + \varepsilon_i, \, \\
 <section id="conditional-mean-predictions-1" class="slide level2">
 <h2>Conditional mean predictions</h2>
 
-<img data-src="04-causal_forests_files/figure-revealjs/unnamed-chunk-6-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
-<section id="causal-trees" class="slide level2">
-<h2>Causal trees</h2>
+<img data-src="04-causal_forests_files/figure-revealjs/unnamed-chunk-6-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="causal-trees" class="title-slide slide level1 center">
+<h1>Causal trees</h1>
+
+</section>
+<section id="how-to-grow-causal-trees" class="slide level2">
+<h2>How to grow causal trees</h2>
 <p>Causal trees are much like standard decision trees, but they maximize</p>
 <p><span class="math display">\[n_L \cdot n_R \cdot (\hat{\tau}_L-\hat{\tau}_R)^2\]</span></p>
 <p>where residual-on-residual regression is used to estimate <span class="math inline">\(\hat{\tau}_L\)</span> and <span class="math inline">\(\hat{\tau}_R\)</span></p>
@@ -642,20 +645,25 @@ Y_i - m(x) &amp;= \tau (W_i - e(x)) + \varepsilon_i, \, \\
 <li><p>Predictions from leaves are <span class="math inline">\(E[Y|W=1] - E[Y|W=0]\)</span></p></li>
 </ul>
 </section>
-<section id="causal-trees-contd." class="slide level2">
-<h2>Causal trees contd.</h2>
-<p>Causal trees are grown using “honesty” and “subsampling” <span class="citation" data-cites="wager2018estimation">(<a href="#/references" role="doc-biblioref" onclick="">Wager and Athey 2018</a>)</span>.</p>
+<section id="how-to-grow-causal-trees-1" class="slide level2">
+<h2>How to grow causal trees</h2>
+<p>Causal trees use “honesty” and “subsampling” <span class="citation" data-cites="wager2018estimation">(<a href="#/references" role="doc-biblioref" onclick="">Wager and Athey 2018</a>)</span>.</p>
 <ul>
-<li><p><strong>Honesty</strong>: For each training observation <span class="math inline">\(i\)</span>, <span class="math inline">\(Y_i\)</span> is used for ONE of the following:</p>
+<li><p><strong>Honesty</strong>: Each training observation is used for <strong>one</strong> of the following:</p>
 <ul>
 <li><p>Estimate the treatment effect for leaf nodes.</p></li>
 <li><p>Decide splitting values for non-leaf nodes.</p></li>
 </ul></li>
-<li><p><strong>Subsampling</strong>: While Breiman’s random forest used bootstrap resampling with replacement, causal trees use a random subset sampled without replacement.</p></li>
+<li><p><strong>Subsampling</strong>: While <span class="citation" data-cites="breiman2001random">Breiman (<a href="#/references" role="doc-biblioref" onclick="">2001</a>)</span>’s random forest uses bootstrap sampling with replacement, the causal random forest samples without replacement.</p></li>
 </ul>
+</section></section>
+<section>
+<section id="causal-random-forest" class="title-slide slide level1 center">
+<h1>Causal random forest</h1>
+
 </section>
-<section id="conditional-average-treatment-effect" class="slide level2">
-<h2>Conditional average treatment effect</h2>
+<section id="back-to-the-partial-linear-model" class="slide level2">
+<h2>Back to the partial linear model</h2>
 <p>Relaxing the assumption of a constant treatment:</p>
 <p><span class="math display">\[
 Y_i = \color{red}{\tau(X_i)} W_i + f(X_i) + \varepsilon_i, \,
@@ -665,10 +673,9 @@ Y_i = \color{red}{\tau(X_i)} W_i + f(X_i) + \varepsilon_i, \,
 \hat\tau_i(x) := lm\Biggl( Y_i - \hat m^{(-i)}(X_i) \sim W_i - \hat e^{(-i)}(X_i), \color{red}{w = 1\{X_i \in \mathcal{N}(x) \}}\Biggr),
 \]</span></p>
 </section>
-<section id="random-forests-define-neighborhoods" class="slide level2">
-<h2>Random forests define neighborhoods</h2>
-<p>Suppose we fit a <span class="math inline">\(B\)</span> regression trees to a training set of size <span class="math inline">\(n\)</span>.</p>
-<p>We want to compute a prediction <span class="math inline">\(p\)</span> for a new observation <span class="math inline">\(x\)</span>:</p>
+<section id="random-forest-adaptive-neighborhoods" class="slide level2">
+<h2>Random forest adaptive neighborhoods</h2>
+<p>Suppose we fit a random forest with <span class="math inline">\(B\)</span> trees to a training set of size <span class="math inline">\(n\)</span>, and we compute a prediction <span class="math inline">\(p\)</span> for a new observation <span class="math inline">\(x\)</span>:</p>
 <p><span class="math display">\[\begin{equation*}
 \begin{split}
 &amp; p = \sum_{i=1}^{n} \frac{1}{B} \sum_{b=1}^{B} Y_i \frac{1\{Xi \in L_b(x)\}} {|L_b(x)|}
@@ -677,10 +684,11 @@ Y_i = \color{red}{\tau(X_i)} W_i + f(X_i) + \varepsilon_i, \,
 <ul>
 <li><p><span class="math inline">\(L_b(x)\)</span> indicates the leaf node that <span class="math inline">\(x\)</span> falls into for tree <span class="math inline">\(b\)</span></p></li>
 <li><p>The inner sum is the mean of outcomes in the same leaf as <span class="math inline">\(x\)</span></p></li>
+<li><p>This generalizes to causal random forests (it’s easier to write with regression trees).</p></li>
 </ul>
 </section>
-<section id="re-express-the-prediction-sums" class="slide level2">
-<h2>Re-express the prediction sums</h2>
+<section id="random-forest-adaptive-neighborhoods-1" class="slide level2">
+<h2>Random forest adaptive neighborhoods</h2>
 <p>Pull <span class="math inline">\(Y_i\)</span> out of the sum that depends on <span class="math inline">\(b\)</span>:</p>
 <p><span class="math display">\[\begin{equation*}
 \begin{split}
@@ -698,7 +706,7 @@ p &amp;= \sum_{i=1}^{n} \frac{1}{B} \sum_{b=1}^{B} Y_i \frac{1\{Xi \in L_b(x)\}}
 <p>Instead of defining neighborhood boundaries, weight by similarity:</p>
 <p><span class="math display">\[
 \hat\tau_i(x) := \text{lm}\Biggl( Y_i - \hat m^{(-i)}(X_i) \sim W_i - \hat e^{(-i)}(X_i), w = \color{blue}{\alpha_i(x)} \Biggr).
-\]</span> This forest-localized version of Robinson’s regression gives asymptotic guarantees for estimation and inference <span class="citation" data-cites="wager2018estimation">(<a href="#/references" role="doc-biblioref" onclick="">Wager and Athey 2018</a>)</span>:</p>
+\]</span> This forest-localized version of Robinson’s regression, paired with honesty and subsampling, gives asymptotic guarantees for estimation and inference <span class="citation" data-cites="wager2018estimation">(<a href="#/references" role="doc-biblioref" onclick="">Wager and Athey 2018</a>)</span>:</p>
 <ol type="1">
 <li><p>Pointwise consistency for the true treatment effect.</p></li>
 <li><p>Asymptotically Gaussian and centered sampling distribution.</p></li>
@@ -715,9 +723,14 @@ p &amp;= \sum_{i=1}^{n} \frac{1}{B} \sum_{b=1}^{B} Y_i \frac{1\{Xi \in L_b(x)\}}
 <li><p><span class="math inline">\(\color{red}{\hat e^{(-i)}(X_i)}\)</span> is a flexible, cross-fit estimate for <span class="math inline">\(E[W|X]\)</span></p></li>
 <li><p><span class="math inline">\(\color{blue}{\alpha_i(x)}\)</span> are the similarity weights from a causal random forest</p></li>
 </ol>
+</section></section>
+<section>
+<section id="causal-random-survival-forest" class="title-slide slide level1 center">
+<h1>Causal random survival forest</h1>
+
 </section>
-<section id="the-causal-survival-forest" class="slide level2">
-<h2>The causal survival forest</h2>
+<section id="set-up" class="slide level2">
+<h2>Set up</h2>
 <p>Assume the survival setting:</p>
 <p><span class="math display">\[\begin{equation}
   Y_i =
@@ -802,14 +815,9 @@ D_i =
 <li><p>Average treatment effect (ATE) = <code>mean(gamma)</code></p></li>
 <li><p>Best linear projection (BLP) = <code>lm(gamma ~ X)</code></p></li>
 </ul>
-</section></section>
-<section>
-<section id="causal-random-forest-applications" class="title-slide slide level1 center">
-<h1>Causal random forest applications</h1>
-
 </section>
-<section id="set-up" class="slide level2">
-<h2>Set up</h2>
+<section id="estimating-the-ate" class="slide level2">
+<h2>Estimating the ATE</h2>
 <p>First, we’ll prepare the data:</p>
 <div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-9_b0e9a264d620dab75f59a7b6f441ab3b">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># loads packages and R functions</span></span>
@@ -819,26 +827,26 @@ D_i =
 <span id="cb8-5"><a href="#cb8-5"></a><span class="fu">tar_load</span>(data_sim_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Second, coerce data to <code>grf</code> format:</p>
-<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-10_25f2f100c2a006e30e8e332f8155d451">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-10_3c4cdcf8ee9bc1750ce478a619368051">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># helper function for grf data prep </span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>data_grf <span class="ot">&lt;-</span> <span class="fu">data_coerce_grf</span>(data_sim_1)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>data_grf <span class="ot">&lt;-</span> <span class="fu">data_coerce_grf</span>(data_sim_1<span class="sc">$</span>values)</span>
 <span id="cb9-3"><a href="#cb9-3"></a></span>
 <span id="cb9-4"><a href="#cb9-4"></a><span class="co"># just a view of the X matrix</span></span>
 <span id="cb9-5"><a href="#cb9-5"></a><span class="fu">head</span>(data_grf<span class="sc">$</span>X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          age biomarker_1 biomarker_2 biomarker_3 sex_female
-[1,] 66.27077  0.74731375 -0.74236839  -1.7127343          1
-[2,] 65.51047 -0.56219488 -0.05134715   0.5464561          1
-[3,] 71.41878  0.01334597 -0.18433741   0.8256376          0
-[4,] 59.47485  0.79510234 -1.32408422  -1.2779016          1
-[5,] 58.47673 -0.29311302  0.19057088   2.5377970          1
-[6,] 67.24764  0.07806861 -1.09980944   1.0296027          0</code></pre>
+<pre><code>          age biomarker_1  biomarker_2 biomarker_3 sex_female
+[1,] 66.27077   0.5851853  0.007190105  0.08550595          1
+[2,] 65.51047   1.1224445 -0.750371586  0.36835322          1
+[3,] 71.41878  -0.6785327  0.579155978 -0.53611900          1
+[4,] 59.47485  -0.2466271 -1.044884274 -0.15812476          1
+[5,] 58.47673  -0.5896893  0.458485509 -0.35834242          0
+[6,] 67.24764   1.9964499 -0.122259009  1.41141702          0</code></pre>
 </div>
 </div>
 </section>
 <section id="fitting-the-forest" class="slide level2">
 <h2>Fitting the forest</h2>
-<p>Third, fit the causal forest:</p>
+<p>Third, fit the causal survival forest:</p>
 <div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-11_7cdbbdf3c1a1df6b2a66977e60323ecf">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>fit_grf <span class="ot">&lt;-</span> <span class="fu">causal_survival_forest</span>(</span>
 <span id="cb11-2"><a href="#cb11-2"></a>  <span class="at">X =</span> data_grf<span class="sc">$</span>X, <span class="co"># covariates</span></span>
@@ -856,10 +864,10 @@ D_i =
 <div class="cell-output cell-output-stdout">
 <pre><code>GRF forest object of type causal_survival_forest 
 Number of trees: 2000 
-Number of training samples: 974 
+Number of training samples: 2438 
 Variable importance: 
     1     2     3     4     5 
-0.220 0.344 0.213 0.196 0.028 </code></pre>
+0.145 0.566 0.168 0.107 0.013 </code></pre>
 </div>
 </div>
 </section>
@@ -876,7 +884,7 @@ Variable importance:
 <div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-13_4e3f9f5df319b8eaf9b5ead88bdeae75">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">mean</span>(gammas) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.4181864</code></pre>
+<pre><code>[1] -0.4100232</code></pre>
 </div>
 </div>
 <ul>
@@ -886,10 +894,271 @@ Variable importance:
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">average_treatment_effect</span>(fit_grf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   estimate     std.err 
--0.41818641  0.07033345 </code></pre>
+-0.41002324  0.04220722 </code></pre>
 </div>
 </div>
 </section>
+<section id="your-turn" class="slide level2">
+<h2>Your turn</h2>
+<p>Open <code>classwork/04-causal_forests.qmd</code> and complete Exercise 1</p>
+<ul>
+<li><p><strong>Reminder</strong>: Red sticky note for help, green sticky when you finish.</p></li>
+<li><p><strong>Note</strong>: the <code>data_coerce_grf()</code> function can save you lots of time.</p></li>
+</ul>
+</section>
+<section id="estimating-the-blp" class="slide level2">
+<h2>Estimating the BLP</h2>
+<p>The BLP <span class="citation" data-cites="semenova2021debiased">(<a href="#/references" role="doc-biblioref" onclick="">Semenova and Chernozhukov 2021</a>)</span>:</p>
+<ul>
+<li><p>Is estimated by regressing a set of covariates on <span class="math inline">\(\Gamma\)</span>.</p></li>
+<li><p>Can be estimated for a subset of covariates</p></li>
+<li><p>Can be estimated for a subset of observations.</p></li>
+<li><p>Summarizes heterogeneous treatment effects conditional on covariates.</p></li>
+</ul>
+<p>You can estimate BLP manually:</p>
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-15_87e28497dc00039e94db3600657c326c">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>data_blp <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(<span class="at">gamma =</span> gammas, data_grf<span class="sc">$</span>X)</span>
+<span id="cb18-2"><a href="#cb18-2"></a></span>
+<span id="cb18-3"><a href="#cb18-3"></a>fit_blp <span class="ot">&lt;-</span> <span class="fu">lm</span>(gamma <span class="sc">~</span> ., <span class="at">data =</span> data_blp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="what-happens-underneath-the-grf-hood" class="slide level2">
+<h2>What happens underneath the <code>grf</code> hood</h2>
+<p>Here’s how you can replicate <code>grf</code> results:</p>
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-16_b38436c360b57ef6070ac4f6b54da12f">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>lmtest<span class="sc">::</span><span class="fu">coeftest</span>(fit_blp, </span>
+<span id="cb19-2"><a href="#cb19-2"></a>                 <span class="at">vcov =</span> sandwich<span class="sc">::</span>vcovCL, </span>
+<span id="cb19-3"><a href="#cb19-3"></a>                 <span class="at">type =</span> <span class="st">'HC3'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+t test of coefficients:
+
+              Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept) -1.2472386  0.6076333 -2.0526  0.04022 *
+age          0.0135417  0.0092602  1.4624  0.14377  
+biomarker_1 -0.0901502  0.0430122 -2.0959  0.03619 *
+biomarker_2 -0.0318047  0.0454729 -0.6994  0.48436  
+biomarker_3  0.0410478  0.0409610  1.0021  0.31638  
+sex_female  -0.0831368  0.0844821 -0.9841  0.32518  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-17_b85219316a9891928fbe0333d9da0553">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">best_linear_projection</span>(fit_grf, data_grf<span class="sc">$</span>X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Best linear projection of the conditional average treatment effect.
+Confidence intervals are cluster- and heteroskedasticity-robust (HC3):
+
+              Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept) -1.2472386  0.6076333 -2.0526  0.04022 *
+age          0.0135417  0.0092602  1.4624  0.14377  
+biomarker_1 -0.0901502  0.0430122 -2.0959  0.03619 *
+biomarker_2 -0.0318047  0.0454729 -0.6994  0.48436  
+biomarker_3  0.0410478  0.0409610  1.0021  0.31638  
+sex_female  -0.0831368  0.0844821 -0.9841  0.32518  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="your-turn-1" class="slide level2">
+<h2>Your turn</h2>
+<p>Complete Exercise 2</p>
+</section>
+<section id="your-turn-2" class="slide level2">
+<h2>Your turn</h2>
+<p>Complete Exercise 3</p>
+</section>
+<section id="rank-weighted-average-treatment-effect" class="slide level2">
+<h2>Rank-Weighted Average Treatment Effect</h2>
+<p>While ATE and BLP are helpful, they do not tell us the following:</p>
+<ol type="1">
+<li><p>How good is a <em>treatment prioritization rule</em> at distinguishing sub-populations with different conditional treatment effects?</p></li>
+<li><p>Is there any heterogeneity present in a conditional treatment effect?</p></li>
+</ol>
+<p>The rank-weighted average treatment effect (RATE) answers both of these.</p>
+</section>
+<section id="treatment-prioritization-rules" class="slide level2">
+<h2>Treatment prioritization rules</h2>
+<p>Suppose we have a treatment that benefits some (not all) adults. Who should initiate treatment? A treatment prioritization rule can help:</p>
+<ul>
+<li><p>high score for those likely to benefit from treatment.</p></li>
+<li><p>low score for those likely to have a small/negative benefit from treatment.</p></li>
+</ul>
+<p>Risk prediction models can be a treatment prioritization rule:</p>
+<ul>
+<li>Initiate antihypertensive medication if predicted risk for cardiovascular disease is high.</li>
+</ul>
+</section>
+<section id="how-to-evaluate-treatment-prioritization" class="slide level2">
+<h2>How to evaluate treatment prioritization</h2>
+<p>The basic idea:</p>
+<ol type="1">
+<li><p>Chop the population up into subgroups based on the prioritization rule, e.g., by decile of score.</p></li>
+<li><p>Estimate the ATE in each group, separately, and compare to the overall estimated ATE from treating everyone</p></li>
+<li><p>Plot the difference between group-specific ATE and the overall ATE for each of the groups</p></li>
+</ol>
+<p>Example: the Targeting Operator Characteristic (TOC)</p>
+</section>
+<section id="targeting-operator-characteristic-toc" class="slide level2">
+<h2>Targeting Operator Characteristic (TOC)</h2>
+<div class="column" style="width:49%;">
+<ul>
+<li><p>Create groups by including the top q<span class="math inline">\(^\text{th}\)</span> fraction of individuals with the largest prioritization score.</p></li>
+<li><p>Use many values of <span class="math inline">\(q\)</span> to make the pattern more curve-like</p></li>
+<li><p>Motivation: Receiver Operating Characteristic (ROC) curve, a widely used metric for assessing discrimination of predictions.</p></li>
+</ul>
+</div>
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/toc-plot_0bb3e3b14fd8095f0abe0533b4db30e9">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="04-causal_forests_files/figure-revealjs/toc-plot-1.svg" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="rate-area-underneath-toc" class="slide level2">
+<h2>RATE: area underneath TOC</h2>
+<div class="column" style="width:49%;">
+<p>RATE is estimated by taking the area underneath the TOC curve.</p>
+<p><span class="math display">\[\textrm{RATE} = \int_0^1 \textrm{TOC}(q) dq .\]</span></p>
+<p>As <span class="math inline">\(\tau(X_i)\)</span> approaches a constant, RATE approaches 0.</p>
+</div>
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/toc-plot-autoc_f55c6ed93a691f805c38efc47bcc3091">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="04-causal_forests_files/figure-revealjs/toc-plot-autoc-1.svg" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="rate-of-prediction-model" class="slide level2">
+<h2>RATE of prediction model</h2>
+<p>Let’s use RATE to see how well risk prediction works as a treatment prioritization rule.</p>
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-18_dab052f87abaad94f5e50c292fed3f32">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(aorsf)</span>
+<span id="cb23-2"><a href="#cb23-2"></a></span>
+<span id="cb23-3"><a href="#cb23-3"></a>fit_orsf <span class="ot">&lt;-</span> <span class="fu">orsf</span>(time <span class="sc">+</span> status <span class="sc">~</span> .,</span>
+<span id="cb23-4"><a href="#cb23-4"></a>                 <span class="at">data =</span> data_sim_1<span class="sc">$</span>values,</span>
+<span id="cb23-5"><a href="#cb23-5"></a>                 <span class="at">oobag_pred_horizon =</span> <span class="dv">3</span>)</span>
+<span id="cb23-6"><a href="#cb23-6"></a></span>
+<span id="cb23-7"><a href="#cb23-7"></a><span class="co"># important to use oobag!</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a>prd_risk <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(fit_orsf<span class="sc">$</span>pred_oobag)</span>
+<span id="cb23-9"><a href="#cb23-9"></a></span>
+<span id="cb23-10"><a href="#cb23-10"></a>prd_rate <span class="ot">&lt;-</span> </span>
+<span id="cb23-11"><a href="#cb23-11"></a>  <span class="fu">rank_average_treatment_effect</span>(fit_grf, </span>
+<span id="cb23-12"><a href="#cb23-12"></a>                                <span class="at">priorities =</span> prd_risk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="not-good" class="slide level2">
+<h2>Not good</h2>
+
+<img data-src="04-causal_forests_files/figure-revealjs/unnamed-chunk-19-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section id="estimating-rate-from-cate" class="slide level2">
+<h2>Estimating RATE from CATE</h2>
+<p>An intuitive way to assign treatment priority is to use the CATE: <span class="math inline">\(\hat\tau(X_i)\)</span></p>
+<ul>
+<li><p><span class="math inline">\(\hat\tau(X_i)\)</span> should <strong>not</strong> be estimated and evaluated using the same data</p></li>
+<li><p>Use split-sample estimation or cross-fitting <span class="citation" data-cites="yadlowsky2021evaluating">(<a href="#/references" role="doc-biblioref" onclick="">Yadlowsky et al. 2021</a>)</span>.</p></li>
+</ul>
+<p>As a preliminary step, we’ll split our data in to training and testing sets</p>
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-20_f90355f8e3b53f6528b587a13c7109f9">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="fu">nrow</span>(data_sim_1<span class="sc">$</span>values), <span class="at">size =</span> <span class="dv">1250</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a></span>
+<span id="cb24-3"><a href="#cb24-3"></a>data_trn <span class="ot">&lt;-</span> data_sim_1<span class="sc">$</span>values[train_index, ]</span>
+<span id="cb24-4"><a href="#cb24-4"></a>data_tst <span class="ot">&lt;-</span> data_sim_1<span class="sc">$</span>values[<span class="sc">-</span>train_index, ]</span>
+<span id="cb24-5"><a href="#cb24-5"></a></span>
+<span id="cb24-6"><a href="#cb24-6"></a>data_trn_grf <span class="ot">&lt;-</span> <span class="fu">data_coerce_grf</span>(data_trn)</span>
+<span id="cb24-7"><a href="#cb24-7"></a>data_tst_grf <span class="ot">&lt;-</span> <span class="fu">data_coerce_grf</span>(data_tst)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fitting" class="slide level2">
+<h2>Fitting</h2>
+<p>We fit one forest with training data to estimate CATE and fit another forest with testing data to evaluate the CATE estimates:</p>
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-21_ed0ce5299095e4711d03de4503320075">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>fit_trn_grf <span class="ot">&lt;-</span> <span class="fu">causal_survival_forest</span>(</span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="at">X =</span> data_trn_grf<span class="sc">$</span>X, <span class="at">Y =</span> data_trn_grf<span class="sc">$</span>Y,</span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="at">W =</span> data_trn_grf<span class="sc">$</span>W, <span class="at">D =</span> data_trn_grf<span class="sc">$</span>D,</span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="at">horizon =</span> <span class="dv">3</span>, <span class="at">target =</span> <span class="st">'RMST'</span> </span>
+<span id="cb25-5"><a href="#cb25-5"></a>)</span>
+<span id="cb25-6"><a href="#cb25-6"></a></span>
+<span id="cb25-7"><a href="#cb25-7"></a>fit_tst_grf <span class="ot">&lt;-</span> <span class="fu">causal_survival_forest</span>(</span>
+<span id="cb25-8"><a href="#cb25-8"></a>  <span class="at">X =</span> data_tst_grf<span class="sc">$</span>X, <span class="at">Y =</span> data_tst_grf<span class="sc">$</span>Y,</span>
+<span id="cb25-9"><a href="#cb25-9"></a>  <span class="at">W =</span> data_tst_grf<span class="sc">$</span>W, <span class="at">D =</span> data_tst_grf<span class="sc">$</span>D,</span>
+<span id="cb25-10"><a href="#cb25-10"></a>  <span class="at">horizon =</span> <span class="dv">3</span>, <span class="at">target =</span> <span class="st">'RMST'</span> </span>
+<span id="cb25-11"><a href="#cb25-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="column" style="width:49%;">
+<p><img data-src="diagram/rate-1.svg"></p>
+</div>
+</section>
+<section id="predicting" class="slide level2">
+<h2>Predicting</h2>
+<p>We use the forest fitted to training data to estimate CATE for the testing data. For illustration, we also estimate naive CATE</p>
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-22_04ec8af1f68d49e88c85b55fa0c37dcd">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># the fitted forest hasn't</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="co"># seen the testing data</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>tau_hat_split <span class="ot">&lt;-</span> fit_trn_grf <span class="sc">%&gt;%</span> </span>
+<span id="cb26-4"><a href="#cb26-4"></a>  <span class="fu">predict</span>(data_tst_grf<span class="sc">$</span>X) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-5"><a href="#cb26-5"></a>  <span class="fu">getElement</span>(<span class="st">"predictions"</span>)</span>
+<span id="cb26-6"><a href="#cb26-6"></a></span>
+<span id="cb26-7"><a href="#cb26-7"></a><span class="co"># Illustration only (don't do this)</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a>tau_hat_naive <span class="ot">&lt;-</span> fit_trn_grf <span class="sc">%&gt;%</span> </span>
+<span id="cb26-9"><a href="#cb26-9"></a>  <span class="fu">predict</span>(data_trn_grf<span class="sc">$</span>X) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-10"><a href="#cb26-10"></a>  <span class="fu">getElement</span>(<span class="st">"predictions"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="column" style="width:49%;">
+<p><img data-src="diagram/rate-2.svg"></p>
+</div>
+</section>
+<section id="evaluating" class="slide level2">
+<h2>Evaluating</h2>
+<p>We use the forest fitted to the testing data to evaluate the CATE estimates for observations in the testing data</p>
+<div class="column" style="width:49%;">
+<div class="cell" data-layout-align="center" data-hash="04-causal_forests_cache/revealjs/unnamed-chunk-23_0ea1e8206303f9bbc1b0f2ca75ef5b4b">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>rate_split <span class="ot">&lt;-</span> </span>
+<span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">rank_average_treatment_effect</span>(</span>
+<span id="cb27-3"><a href="#cb27-3"></a>    <span class="at">forest =</span> fit_tst_grf, </span>
+<span id="cb27-4"><a href="#cb27-4"></a>    <span class="at">priorities =</span> tau_hat_split, </span>
+<span id="cb27-5"><a href="#cb27-5"></a>    <span class="at">target =</span> <span class="st">"AUTOC"</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>  )</span>
+<span id="cb27-7"><a href="#cb27-7"></a></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="co"># Illustration only (don't do this)</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a>rate_naive <span class="ot">&lt;-</span> </span>
+<span id="cb27-10"><a href="#cb27-10"></a>  <span class="fu">rank_average_treatment_effect</span>(</span>
+<span id="cb27-11"><a href="#cb27-11"></a>    <span class="at">forest =</span> fit_trn_grf, </span>
+<span id="cb27-12"><a href="#cb27-12"></a>    <span class="at">priorities =</span> tau_hat_naive, </span>
+<span id="cb27-13"><a href="#cb27-13"></a>    <span class="at">target =</span> <span class="st">"AUTOC"</span></span>
+<span id="cb27-14"><a href="#cb27-14"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="column" style="width:49%;">
+<p><img data-src="diagram/rate-full.svg"></p>
+</div>
+</section>
+<section id="correct-versus-overly-optimistic" class="slide level2">
+<h2>Correct versus overly optimistic</h2>
+<p>The problem with being overly optimistic is it has very high type 1 error</p>
+
+<img data-src="04-causal_forests_files/figure-revealjs/unnamed-chunk-24-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
 
@@ -897,6 +1166,9 @@ Variable importance:
 <p>Slides available at <a href="https://bcjaeger.github.io/melodem-apoe4-het/" class="uri">https://bcjaeger.github.io/melodem-apoe4-het/</a></p>
 </div>
 <div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-breiman2001random" class="csl-entry" role="listitem">
+Breiman, Leo. 2001. <span>“Random Forests.”</span> <em>Machine Learning</em> 45: 5–32.
+</div>
 <div id="ref-debiased_ML_Chernozhukov" class="csl-entry" role="listitem">
 Chernozhukov, Victor, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey, and James Robins. 2018. <span>“<span class="nocase">Double/debiased machine learning for treatment and structural parameters</span>.”</span> <em>The Econometrics Journal</em> 21 (1): C1–68. <a href="https://doi.org/10.1111/ectj.12097">https://doi.org/10.1111/ectj.12097</a>.
 </div>
@@ -906,8 +1178,14 @@ Cui, Yifan, Michael R Kosorok, Erik Sverdrup, Stefan Wager, and Ruoqing Zhu. 202
 <div id="ref-robinson1988root" class="csl-entry" role="listitem">
 Robinson, Peter M. 1988. <span>“Root-n-Consistent Semiparametric Regression.”</span> <em>Econometrica: Journal of the Econometric Society</em>, 931–54.
 </div>
+<div id="ref-semenova2021debiased" class="csl-entry" role="listitem">
+Semenova, Vira, and Victor Chernozhukov. 2021. <span>“Debiased Machine Learning of Conditional Average Treatment Effects and Other Causal Functions.”</span> <em>The Econometrics Journal</em> 24 (2): 264–89.
+</div>
 <div id="ref-wager2018estimation" class="csl-entry" role="listitem">
 Wager, Stefan, and Susan Athey. 2018. <span>“Estimation and Inference of Heterogeneous Treatment Effects Using Random Forests.”</span> <em>Journal of the American Statistical Association</em> 113 (523): 1228–42.
+</div>
+<div id="ref-yadlowsky2021evaluating" class="csl-entry" role="listitem">
+Yadlowsky, Steve, Scott Fleming, Nigam Shah, Emma Brunskill, and Stefan Wager. 2021. <span>“Evaluating Treatment Prioritization Rules via Rank-Weighted Average Treatment Effects.”</span> <em>arXiv Preprint arXiv:2111.07966</em>.
 </div>
 </div>
 </section></section>

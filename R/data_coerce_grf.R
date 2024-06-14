@@ -10,13 +10,13 @@ data_coerce_grf <- function(data,
   .name_D <- name_D %||% "status"
   .name_W <- name_W %||% "apoe4"
 
-  stopifnot(is.factor(data$values[[.name_W]]))
+  stopifnot(is.factor(data[[.name_W]]))
 
   not_in_X <- c(.name_Y, .name_D, .name_W)
 
-  .names_X <- names_X %||% setdiff(names(data$values), not_in_X)
+  .names_X <- names_X %||% setdiff(names(data), not_in_X)
 
-  data_x <- select(data$values, all_of(.names_X))
+  data_x <- select(data, all_of(.names_X))
 
   recipe_x <- recipe(~ ., data = data_x) %>%
     step_dummy(all_nominal_predictors()) %>%
@@ -26,9 +26,9 @@ data_coerce_grf <- function(data,
   list(
     recipe_x = recipe_x,
     X = as.matrix(bake(recipe_x, new_data = data_x)),
-    Y = data$values[[.name_Y]],
-    W = as.numeric(data$values[[.name_W]])-1,
-    D = data$values[[.name_D]]
+    Y = data[[.name_Y]],
+    W = as.numeric(data[[.name_W]])-1,
+    D = data[[.name_D]]
   )
 
 }

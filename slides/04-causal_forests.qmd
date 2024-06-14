@@ -43,23 +43,21 @@ withr::with_dir(
 
 This lecture focuses on the the causal random forest algorithm
 
-- Residual-on-residual regression
+- Robinson's residual-on-residual regression
 
 - Causal trees
 
-- Conditional average treatment effect (CATE)
+- Causal random forest
 
-- Random forest adaptive neighborhoods
-
-- Accounting for censoring
+- Causal random survival forest
 
 - Inference with CATE summaries
 
-# Causal random forest algorithm
+# Robinson's residual-on-residual regression
 
-## Residual-on-residual regression
+## The partially linear model
 
-Start with the partially linear model:
+Suppose
 
 $$
 Y_i = \tau W_i + f(X_i) + \varepsilon_i
@@ -75,7 +73,7 @@ Assume:
 
 ## How to estimate $\tau$?
 
-Consider the partially linear model:
+Suppose
 
 $$
 Y_i = \tau W_i + f(X_i) + \varepsilon_i 
@@ -135,8 +133,8 @@ Suppose $Y_i = \tau W_i + f(X_i) + \epsilon_i$
 
 - $\tau$ is 1/2
 - $W_i$ is randomized treatment
-- $f(X_i) = |X_i|$
 - $X_i$ is a continuous covariate
+- $f(X_i) = |X_i|$
 
 By defn, $E[W_i] = 1/2$ (why?). 
 
@@ -239,7 +237,6 @@ The model for conditional mean was under-specified.
 ```{r, echo=TRUE}
 
 library(aorsf)
-library(glue)
 
 fit_cmean <- orsf(Y ~ X, data = data)
 
@@ -317,7 +314,9 @@ library(patchwork)
 
 ```
 
-## Causal trees
+# Causal trees
+
+## How to grow causal trees
 
 Causal trees are much like standard decision trees, but they maximize
 
@@ -330,19 +329,21 @@ where residual-on-residual regression is used to estimate $\hat{\tau}_L$ and $\h
 - Predictions from leaves are $E[Y|W=1] - E[Y|W=0]$
 
 
-## Causal trees contd.
+## How to grow causal trees
 
-Causal trees are grown using "honesty" and "subsampling" [@wager2018estimation]. 
+Causal trees use "honesty" and "subsampling" [@wager2018estimation]. 
 
-- **Honesty**: For each training observation $i$, $Y_i$ is used for ONE of the following:
+- **Honesty**: Each training observation is used for **one** of the following:
 
     + Estimate the treatment effect for leaf nodes.
 
     + Decide splitting values for non-leaf nodes.
 
-- **Subsampling**: While Breiman's random forest used bootstrap resampling with replacement, causal trees use a random subset sampled without replacement. 
+- **Subsampling**: While @breiman2001random's random forest uses bootstrap sampling with replacement, the causal random forest samples without replacement. 
 
-## Conditional average treatment effect
+# Causal random forest
+
+## Back to the partial linear model
 
 Relaxing the assumption of a constant treatment:
 
@@ -356,11 +357,9 @@ $$
 \hat\tau_i(x) := lm\Biggl( Y_i - \hat m^{(-i)}(X_i) \sim W_i - \hat e^{(-i)}(X_i), \color{red}{w = 1\{X_i \in \mathcal{N}(x) \}}\Biggr),
 $$
 
-## Random forests define neighborhoods
+## Random forest adaptive neighborhoods
 
-Suppose we fit a $B$ regression trees to a training set of size $n$. 
-
-We want to compute a prediction $p$ for a new observation $x$:
+Suppose we fit a random forest with $B$ trees to a training set of size $n$, and we compute a prediction $p$ for a new observation $x$:
 
 \begin{equation*}
 \begin{split}
@@ -372,7 +371,9 @@ We want to compute a prediction $p$ for a new observation $x$:
 
 - The inner sum is the mean of outcomes in the same leaf as $x$
 
-## Re-express the prediction sums
+- This generalizes to causal random forests (it's easier to write with regression trees).
+
+## Random forest adaptive neighborhoods
 
 Pull $Y_i$ out of the sum that depends on $b$:
 
@@ -393,7 +394,7 @@ Instead of defining neighborhood boundaries, weight by similarity:
 $$
 \hat\tau_i(x) := \text{lm}\Biggl( Y_i - \hat m^{(-i)}(X_i) \sim W_i - \hat e^{(-i)}(X_i), w = \color{blue}{\alpha_i(x)} \Biggr).
 $$
-This forest-localized version of Robinson's regression gives asymptotic guarantees for estimation and inference [@wager2018estimation]:
+This forest-localized version of Robinson's regression, paired with honesty and subsampling, gives asymptotic guarantees for estimation and inference [@wager2018estimation]:
 
 1. Pointwise consistency for the true treatment effect.
 
@@ -413,7 +414,9 @@ $$
 
 3. $\color{blue}{\alpha_i(x)}$ are the similarity weights from a causal random forest
 
-## The causal survival forest
+# Causal random survival forest
+
+## Set up
 
 Assume the survival setting:
 
@@ -582,9 +585,7 @@ With a vector of these $\Gamma_i$'s, define:
 
 - Best linear projection (BLP) = `lm(gamma ~ X)`
 
-# Causal random forest applications
-
-## Set up
+## Estimating the ATE
 
 First, we'll prepare the data:
 
@@ -602,7 +603,7 @@ Second, coerce data to `grf` format:
 ```{r, echo = TRUE}
 
 # helper function for grf data prep 
-data_grf <- data_coerce_grf(data_sim_1)
+data_grf <- data_coerce_grf(data_sim_1$values)
 
 # just a view of the X matrix
 head(data_grf$X)
@@ -611,7 +612,7 @@ head(data_grf$X)
 
 ## Fitting the forest
 
-Third, fit the causal forest: 
+Third, fit the causal survival forest: 
 
 ```{r, echo = TRUE}
 
@@ -650,6 +651,373 @@ mean(gammas)
 - Verify this is what the `grf` function gives
 ```{r, echo=TRUE} 
 average_treatment_effect(fit_grf)
+```
+
+## Your turn
+
+Open `classwork/04-causal_forests.qmd` and complete Exercise 1
+
+- **Reminder**: Red sticky note for help, green sticky when you finish.
+
+- **Note**: the `data_coerce_grf()` function can save you lots of time.
+
+```{r ex-1}
+#| echo: false
+# countdown::countdown(minutes = 5, id = "ex-1")
+```
+
+## Estimating the BLP
+
+The BLP [@semenova2021debiased]:
+
+- Is estimated by regressing a set of covariates on $\Gamma$.
+
+- Can be estimated for a subset of covariates 
+
+- Can be estimated for a subset of observations.
+
+- Summarizes heterogeneous treatment effects conditional on covariates.
+
+You can estimate BLP manually:
+
+```{r, echo = TRUE}
+
+data_blp <- bind_cols(gamma = gammas, data_grf$X)
+
+fit_blp <- lm(gamma ~ ., data = data_blp)
+
+```
+
+## What happens underneath the `grf` hood
+
+Here's how you can replicate `grf` results:
+
+:::{.column width="49%"}
+
+```{r, echo=TRUE}
+lmtest::coeftest(fit_blp, 
+                 vcov = sandwich::vcovCL, 
+                 type = 'HC3')
+```
+
+:::
+
+:::{.column width="49%"}
+
+```{r, echo=TRUE}
+best_linear_projection(fit_grf, data_grf$X)
+```
+
+:::
+
+## Your turn
+
+Complete Exercise 2
+
+```{r ex-2}
+#| echo: false
+# countdown::countdown(minutes = 5, id = "ex-1")
+```
+
+## Your turn
+
+Complete Exercise 3
+
+```{r ex-3}
+#| echo: false
+# countdown::countdown(minutes = 5, id = "ex-1")
+```
+
+## Rank-Weighted Average Treatment Effect
+
+While ATE and BLP are helpful, they do not tell us the following:
+
+1. How good is a *treatment prioritization rule* at distinguishing sub-populations with different conditional treatment effects?
+
+1. Is there any heterogeneity present in a conditional treatment effect?
+
+The rank-weighted average treatment effect (RATE) answers both of these.
+
+## Treatment prioritization rules
+
+Suppose we have a treatment that benefits some (not all) adults. Who should initiate treatment? A treatment prioritization rule can help:
+
+- high score for those likely to benefit from treatment.
+
+- low score for those likely to have a small/negative benefit from treatment.
+
+Risk prediction models can be a treatment prioritization rule:
+
+- Initiate antihypertensive medication if predicted risk for cardiovascular disease is high.
+
+## How to evaluate treatment prioritization
+
+The basic idea:
+
+1. Chop the population up into subgroups based on the prioritization rule, e.g., by decile of score.
+
+1. Estimate the ATE in each group, separately, and compare to the overall estimated ATE from treating everyone
+
+1. Plot the difference between group-specific ATE and the overall ATE for each of the groups
+
+Example: the Targeting Operator Characteristic (TOC)
+
+## Targeting Operator Characteristic (TOC)
+
+:::{.column width="49%"}
+
+- Create groups by including the top q$^\text{th}$ fraction of individuals with the largest prioritization score.
+
+- Use many values of $q$ to make the pattern more curve-like
+
+- Motivation: Receiver Operating Characteristic (ROC) curve, a widely used metric for assessing discrimination of predictions.
+
+:::
+
+:::{.column width="49%"}
+
+```{r toc-plot, echo=FALSE, fig.width=5, fig.height=5}
+n <- 1000
+p <- 1
+X <- matrix(rnorm(n * p), n, p)
+tau <- X[, 1]
+
+ATE <- mean(tau)
+sort.idx <- order(tau, decreasing = TRUE)
+TOC <- rep(NA, n)
+for (i in 1:n) {
+  TOC[i] <- mean(tau[sort.idx[1:i]]) - ATE
+}
+q <- seq(1/n, 1, by = 1/n)
+df <- data.frame(q, TOC)
+ypoint <- df[df$q == 0.05, "TOC"]
+
+ggplot(df, aes(x = q, y = TOC)) +
+  geom_line() +
+  geom_hline(yintercept = 0, lty = 3) +
+  annotate(geom = 'text', x = .1, y = ypoint, color = 'black', hjust = -0.1,
+           label = 'ATE of top 5% minus overall ATE') +
+  annotate("segment", x = .1, xend = .05, y = ypoint, yend = ypoint,
+           arrow = arrow(type = "closed", length = unit(0.02, "npc"))) +
+  theme_classic() +
+  labs(y = "", title = "Targeting Operator Characteristic")
+```
+
+:::
+
+## RATE: area underneath TOC
+
+:::{.column width="49%"}
+
+RATE is estimated by taking the area underneath the TOC curve.
+
+$$\textrm{RATE} = \int_0^1 \textrm{TOC}(q) dq .$$
+
+As $\tau(X_i)$ approaches a constant, RATE approaches 0.
+
+:::
+
+:::{.column width="49%"}
+
+```{r toc-plot-autoc, echo=FALSE, fig.width=5, fig.height=5}
+
+n <- 1000
+p <- 1
+X <- matrix(rnorm(n * p), n, p)
+tau <- X[, 1]
+
+ATE <- mean(tau)
+sort.idx <- order(tau, decreasing = TRUE)
+TOC <- rep(NA, n)
+for (i in 1:n) {
+  TOC[i] <- mean(tau[sort.idx[1:i]]) - ATE
+}
+q <- seq(1/n, 1, by = 1/n)
+df <- data.frame(q, TOC)
+
+ggplot(df, aes(x = q, y = TOC)) +
+  geom_line() +
+  geom_hline(yintercept = 0, lty = 3) +
+  theme_classic() +
+  labs(y = "", title = "Targeting Operator Characteristic") +
+  geom_ribbon(aes(ymin = 0), ymax=TOC, alpha = 0.5, fill = "red") +
+  annotate(geom = 'text', x = 0.15, y = 0.6, color = 'black', hjust = -0.1,
+           label = "RATE")
+
+```
+
+:::
+
+## RATE of prediction model
+
+Let's use RATE to see how well risk prediction works as a treatment prioritization rule.
+
+```{r, echo=TRUE}
+
+library(aorsf)
+
+fit_orsf <- orsf(time + status ~ .,
+                 data = data_sim_1$values,
+                 oobag_pred_horizon = 3)
+
+# important to use oobag!
+prd_risk <- as.numeric(fit_orsf$pred_oobag)
+
+prd_rate <- 
+  rank_average_treatment_effect(fit_grf, 
+                                priorities = prd_risk)
+
+```
+
+## Not good
+
+```{r, fig.height=5, fig.width=8, out.width='100%'}
+plot(prd_rate, 
+     xlab = "Treated fraction", 
+     main = paste("TOC of predicted risk at horizon of",
+                  fit_orsf$pred_horizon))
+```
+
+## Estimating RATE from CATE
+
+An intuitive way to assign treatment priority is to use the CATE: $\hat\tau(X_i)$
+
+- $\hat\tau(X_i)$ should **not** be estimated and evaluated using the same data
+
+- Use split-sample estimation or cross-fitting [@yadlowsky2021evaluating].
+
+As a preliminary step, we'll split our data in to training and testing sets
+
+```{r, echo=TRUE}
+
+train_index <- sample(x = nrow(data_sim_1$values), size = 1250)
+
+data_trn <- data_sim_1$values[train_index, ]
+data_tst <- data_sim_1$values[-train_index, ]
+
+data_trn_grf <- data_coerce_grf(data_trn)
+data_tst_grf <- data_coerce_grf(data_tst)
+
+```
+
+
+---
+
+## Fitting
+
+We fit one forest with training data to estimate CATE and fit another forest with testing data to evaluate the CATE estimates:
+
+:::{.column width="49%"}
+
+```{r, echo=TRUE}
+fit_trn_grf <- causal_survival_forest(
+  X = data_trn_grf$X, Y = data_trn_grf$Y,
+  W = data_trn_grf$W, D = data_trn_grf$D,
+  horizon = 3, target = 'RMST' 
+)
+
+fit_tst_grf <- causal_survival_forest(
+  X = data_tst_grf$X, Y = data_tst_grf$Y,
+  W = data_tst_grf$W, D = data_tst_grf$D,
+  horizon = 3, target = 'RMST' 
+)
+```
+
+
+:::
+
+:::{.column width="49%"}
+
+![](diagram/rate-1.svg)
+:::
+
+## Predicting
+
+We use the forest fitted to training data to estimate CATE for the testing data. For illustration, we also estimate naive CATE
+
+:::{.column width="49%"}
+
+```{r, echo=TRUE}
+
+# the fitted forest hasn't
+# seen the testing data
+tau_hat_split <- fit_trn_grf %>% 
+  predict(data_tst_grf$X) %>% 
+  getElement("predictions")
+
+# Illustration only (don't do this)
+tau_hat_naive <- fit_trn_grf %>% 
+  predict(data_trn_grf$X) %>% 
+  getElement("predictions")
+```
+
+:::
+
+:::{.column width="49%"}
+
+![](diagram/rate-2.svg)
+:::
+
+## Evaluating
+
+We use the forest fitted to the testing data to evaluate the CATE estimates for observations in the testing data
+
+:::{.column width="49%"}
+
+```{r, echo=TRUE}
+
+
+rate_split <- 
+  rank_average_treatment_effect(
+    forest = fit_tst_grf, 
+    priorities = tau_hat_split, 
+    target = "AUTOC"
+  )
+
+# Illustration only (don't do this)
+rate_naive <- 
+  rank_average_treatment_effect(
+    forest = fit_trn_grf, 
+    priorities = tau_hat_naive, 
+    target = "AUTOC"
+  )
+
+```
+
+:::
+
+:::{.column width="49%"}
+
+![](diagram/rate-full.svg)
+:::
+
+## Correct versus overly optimistic
+
+The problem with being overly optimistic is it has very high type 1 error
+
+```{r, fig.width=11, fig.height=5}
+
+data_gg <- bind_rows(
+  `Correct split sample test` = rate_split$TOC,
+  `Naive double dip` = rate_naive$TOC,
+  .id = 'type'
+)
+
+ggplot(data_gg) + 
+  aes(x = q, 
+      y = estimate, 
+      ymin = estimate - 1.96*std.err, 
+      ymax = estimate + 1.96*std.err) +
+  geom_ribbon(alpha = 0.2) + 
+  geom_line() + 
+  facet_wrap(~type) + 
+  theme_bw() + 
+  theme(panel.grid = element_blank(), 
+        text = element_text(size=15)) + 
+  geom_hline(yintercept = 0, linetype = 2, alpha = 0.2) + 
+  labs(x = "Treated fraction (q)",
+       y = "ATE at q - overall ATE")
+
 ```
 
 

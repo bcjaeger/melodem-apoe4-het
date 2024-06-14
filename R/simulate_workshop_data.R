@@ -1,7 +1,7 @@
 
 
 simulate_workshop_data <- function(name,
-                                   n_obs = 1000,
+                                   n_obs = 2500,
                                    seed = 329){
 
   require(magrittr)

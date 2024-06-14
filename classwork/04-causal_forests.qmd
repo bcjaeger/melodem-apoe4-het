@@ -6,6 +6,10 @@ editor_options:
 ---
 I recommend restarting R between each slide deck!
 
+# Exercise 1
+
+In this exercise you will fit a causal random forest to your data and estimate the average treatment effect (ATE).
+
 ## Setup
 
 Change `data_sim_1` to be the name of your data.
@@ -33,7 +37,7 @@ First, we'll prepare the data by designating `X`, `Y`, `W`, and `D` matrices for
 ```{r}
 
 # helper function for grf data prep 
-data_grf <- data_coerce_grf(data_classwork)
+data_grf <- data_coerce_grf(data_classwork$values)
 
 # just a view of the X matrix
 head(data_grf$X)
@@ -75,21 +79,67 @@ average_treatment_effect(fit_grf)
 
 This estimate indicates that the difference in estimated survival time of the "treated" group minus the "not treated" group is `r average_treatment_effect(fit_grf)['estimate']`.
 
-- A negative number indicates the survival time of the treated group is lower
+- A *negative* number indicates the RMST at `horizon` of the treated group is *lower* than the untreated group.
 
-- A positive number indicates the survival time of the treated group is higher
+- A *positive* number indicates the RMST at `horizon` of the treated group is *higher* than the untreated group.
 
 In the case of the simulated data, being in the "treatment" group for `apoe4` results in higher risk of the outcome, so a negative ATE makes sense.
 
 **Your turn:** Interpret these results for your data. Do you detect an overall treatment effect?
 
 ```{r}
+
+library(table.glue)
+
 # hint: here's how to get CI from ATE.
 ate <- average_treatment_effect(fit_grf)
-ate['estimate'] + c(-1, 1) * ate['std.err'] * 1.96
+cis <- ate['estimate'] + c(-1, 1) * ate['std.err'] * 1.96
+
+table_glue("The estimated ATE is {ate[1]} \\
+           (95% CI: {cis[1]} to {cis[2]})")
+
 ```
 
-**Re-run your forest with** `target = "survival.probability"` instead of `target = "RMST"`. This will make the average treatment effect be the difference in the probability of being event-free at `horizon` time units after baseline. Re-interpret your average treatment effect - is this result consistent with the result you got using RMST?
+**Re-run your forest with** `target = "survival.probability"` instead of `target = "RMST"`. This will make the average treatment effect be the difference in the probability of being event-free at `horizon` time units after baseline. 
 
-## 
+- A *negative* number indicates the probability of being event-free at `horizon` for the treated group is *lower* than the untreated group.
 
+- A *positive* number indicates the probability of being event-free at `horizon` for the treated group is *higher* than the untreated group.
+
+Re-interpret your average treatment effect - is this result consistent with the result you got using RMST?
+
+## Exercise 2
+
+Estimate the best linear projection (BLP) of the conditional treatment effect from your forest to an intercept only model. The code below will do this:
+
+```{r}
+
+ones <- matrix(1, nrow = nrow(data_grf$X))
+
+best_linear_projection(fit_grf, A = ones)
+
+```
+
+**Discuss with your neighbor**: 
+
+- Does the intercept of this model match the estimate ATE? 
+
+- Why or why not?
+
+## Exercise 3
+
+Estimate the BLP of the conditional treatment effect from your forest on to all the covariates used by the forest:
+
+```{r}
+
+best_linear_projection(fit_grf, A = data_grf$X)
+
+```
+
+**Interpret your results**:
+
+- Does the intercept still match the estimated ATE? Why or why not?
+
+- Is there evidence of heterogeneity in the conditional treatment effect based on any of the covariates?
+
+- Do your results change if you use `target = "RMST"` versus `target = "survival.probability"` when you fit your forest?

@@ -73,6 +73,7 @@ Please join the workshop with a computer that has the following installed (all a
 #| eval: false
 #| echo: true
 
+# A few more packages may be added - this list isn't final yet.
 # Install required packages for the workshop
 pkgs <- 
   c("tidyverse", "tidymodels", "data.table", "haven", "magrittr",
@@ -80,11 +81,19 @@ pkgs <-
     "party", "riskRegression", "survival", "officer", "flextable", 
     "table.glue", "gtsummary", "usethis", "cli", "ggforce",
     "rpart", "rpart.plot", "ranger", "withr", "gt", 'recipes', 
-    'butcher')
+    'butcher', 'sandwich', 'lmtest')
 
-# A few more packages may be added - this list isn't final yet.
+# identify what packages are not installed
+pkgs_needed <- setdiff(
+  pkgs,
+  rownames(installed.packages())
+)
 
-install.packages(pkgs)
+# install packages if needed
+if(length(pkgs_needed) > 0){
+  install.packages(pkgs_needed)
+}
+
 ```
 
 If you're a Windows user and encounter an error message during installation noting a missing Rtools installation, install Rtools using the installer linked [here](https://cran.r-project.org/bin/windows/Rtools/).

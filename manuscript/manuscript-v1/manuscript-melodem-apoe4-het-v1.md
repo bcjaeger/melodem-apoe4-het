@@ -53,7 +53,6 @@ Winston-Salem, NC 27154\
 
 Here's how to cite one thing.[@r_language]
 
-Here's how to cite two or more things.[@ambrosius_design_2014; @sprint_research_group_randomized_2015]
 
 # METHODS
 

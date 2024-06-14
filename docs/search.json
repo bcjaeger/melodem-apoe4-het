@@ -781,7 +781,7 @@
     "href": "slides/04-causal_forests.html#overview",
     "title": "Causal random forests",
     "section": "Overview",
-    "text": "Overview\nThis lecture focuses on the the causal random forest algorithm\n\nResidual-on-residual regression\nCausal trees\nConditional average treatment effect (CATE)\nRandom forest adaptive neighborhoods\nAccounting for censoring\nInference with CATE summaries"
+    "text": "Overview\nThis lecture focuses on the the causal random forest algorithm\n\nRobinson’s residual-on-residual regression\nCausal trees\nCausal random forest\nCausal random survival forest\nInference with CATE summaries"
   },
   {
     "objectID": "slides/04-causal_forests.html#background",
@@ -851,7 +851,7 @@
     "href": "slides/04-causal_forests.html#references",
     "title": "Causal random forests",
     "section": "References",
-    "text": "References\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/\n\n\n\nChernozhukov, Victor, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey, and James Robins. 2018. “Double/debiased machine learning for treatment and structural parameters.” The Econometrics Journal 21 (1): C1–68. https://doi.org/10.1111/ectj.12097.\n\n\nCui, Yifan, Michael R Kosorok, Erik Sverdrup, Stefan Wager, and Ruoqing Zhu. 2023. “Estimating Heterogeneous Treatment Effects with Right-Censored Data via Causal Survival Forests.” Journal of the Royal Statistical Society Series B: Statistical Methodology 85 (2): 179–211.\n\n\nRobinson, Peter M. 1988. “Root-n-Consistent Semiparametric Regression.” Econometrica: Journal of the Econometric Society, 931–54.\n\n\nWager, Stefan, and Susan Athey. 2018. “Estimation and Inference of Heterogeneous Treatment Effects Using Random Forests.” Journal of the American Statistical Association 113 (523): 1228–42."
+    "text": "References\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/\n\n\n\nBreiman, Leo. 2001. “Random Forests.” Machine Learning 45: 5–32.\n\n\nChernozhukov, Victor, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey, and James Robins. 2018. “Double/debiased machine learning for treatment and structural parameters.” The Econometrics Journal 21 (1): C1–68. https://doi.org/10.1111/ectj.12097.\n\n\nCui, Yifan, Michael R Kosorok, Erik Sverdrup, Stefan Wager, and Ruoqing Zhu. 2023. “Estimating Heterogeneous Treatment Effects with Right-Censored Data via Causal Survival Forests.” Journal of the Royal Statistical Society Series B: Statistical Methodology 85 (2): 179–211.\n\n\nRobinson, Peter M. 1988. “Root-n-Consistent Semiparametric Regression.” Econometrica: Journal of the Econometric Society, 931–54.\n\n\nSemenova, Vira, and Victor Chernozhukov. 2021. “Debiased Machine Learning of Conditional Average Treatment Effects and Other Causal Functions.” The Econometrics Journal 24 (2): 264–89.\n\n\nWager, Stefan, and Susan Athey. 2018. “Estimation and Inference of Heterogeneous Treatment Effects Using Random Forests.” Journal of the American Statistical Association 113 (523): 1228–42.\n\n\nYadlowsky, Steve, Scott Fleming, Nigam Shah, Emma Brunskill, and Stefan Wager. 2021. “Evaluating Treatment Prioritization Rules via Rank-Weighted Average Treatment Effects.” arXiv Preprint arXiv:2111.07966."
   },
   {
     "objectID": "slides/04-causal_forests.html#random-forest-as-an-adaptive-neighborhood-finder",
@@ -942,7 +942,7 @@
     "href": "slides/04-causal_forests.html#how-to-estimate-tau",
     "title": "Causal random forests",
     "section": "How to estimate \\(\\tau\\)?",
-    "text": "How to estimate \\(\\tau\\)?\nConsider the partially linear model:\n\\[\nY_i = \\tau W_i + f(X_i) + \\varepsilon_i\n\\]\nHow do we estimate \\(\\tau\\) when we do not know \\(f(X_i)\\)?\nDefine:\n\\[\\begin{align*}\n\ne(x) &= E[W_i | X_i=x] \\,\\, \\text{(Propensity score)} \\\\\n\nm(x) &= E[Y_i | X_i = x] = f(x) + \\tau e(x) \\,\\,\\,\\,\\, \\text{(Cndl. mean of } Y\\text{)}\n\n\\end{align*}\\]"
+    "text": "How to estimate \\(\\tau\\)?\nSuppose\n\\[\nY_i = \\tau W_i + f(X_i) + \\varepsilon_i\n\\]\nHow do we estimate \\(\\tau\\) when we do not know \\(f(X_i)\\)?\nDefine:\n\\[\\begin{align*}\n\ne(x) &= E[W_i | X_i=x] \\,\\, \\text{(Propensity score)} \\\\\n\nm(x) &= E[Y_i | X_i = x] = f(x) + \\tau e(x) \\,\\,\\,\\,\\, \\text{(Cndl. mean of } Y\\text{)}\n\n\\end{align*}\\]"
   },
   {
     "objectID": "slides/04-causal_forests.html#use-propensity-and-conditional-mean",
@@ -963,7 +963,7 @@
     "href": "slides/04-causal_forests.html#example",
     "title": "Causal random forests",
     "section": "Example",
-    "text": "Example\n\nSuppose \\(Y_i = \\tau W_i + f(X_i) + \\epsilon_i\\)\n\n\\(\\tau\\) is 1/2\n\\(W_i\\) is randomized treatment\n\\(f(X_i) = |X_i|\\)\n\\(X_i\\) is a continuous covariate\n\nBy defn, \\(E[W_i] = 1/2\\) (why?).\n\n\n\n# Set up for const tau example\n\nset.seed(1)\ntau_truth &lt;- 1/2\nn &lt;- 1000\n\n# randomized treatment\nW &lt;- rbinom(n = n, size = 1, prob = 1/2)\n\n# continuous covariate\nX &lt;- rnorm(n = n)\n\n# outcome \nY &lt;- tau_truth * W + abs(X) + rnorm(n)\n\ndata &lt;- data.frame(Y=Y, X=X, W=W)"
+    "text": "Example\n\nSuppose \\(Y_i = \\tau W_i + f(X_i) + \\epsilon_i\\)\n\n\\(\\tau\\) is 1/2\n\\(W_i\\) is randomized treatment\n\\(X_i\\) is a continuous covariate\n\\(f(X_i) = |X_i|\\)\n\nBy defn, \\(E[W_i] = 1/2\\) (why?).\n\n\n\n# Set up for const tau example\n\nset.seed(1)\ntau_truth &lt;- 1/2\nn &lt;- 1000\n\n# randomized treatment\nW &lt;- rbinom(n = n, size = 1, prob = 1/2)\n\n# continuous covariate\nX &lt;- rnorm(n = n)\n\n# outcome \nY &lt;- tau_truth * W + abs(X) + rnorm(n)\n\ndata &lt;- data.frame(Y=Y, X=X, W=W)"
   },
   {
     "objectID": "slides/04-causal_forests.html#example-contd",
@@ -1047,7 +1047,7 @@
     "href": "slides/04-causal_forests.html#example-done-wrong-take-2",
     "title": "Causal random forests",
     "section": "Example done wrong, take 2",
-    "text": "Example done wrong, take 2\n\nThe model for conditional mean was under-specified.\n\nFit a flexible model to estimate conditional mean of \\(Y\\).\nCompute residuals and run Robinson’s regression.\nWhat’d we do wrong?\n\n\n\n\nlibrary(aorsf)\nlibrary(glue)\n\nfit_cmean &lt;- orsf(Y ~ X, data = data)\n\nm_x &lt;- predict(fit_cmean, new_data = data)\n\nresid_y &lt;- Y - m_x\nresid_w &lt;- W - 1/2\n\ntau_fit &lt;- lm(resid_y ~ resid_w) \n\nglue(\"True tau is {tau_truth}, \\\\\n      estimated tau is {coef(tau_fit)[2]}\")\n\nTrue tau is 0.5, estimated tau is 0.394643899391376"
+    "text": "Example done wrong, take 2\n\nThe model for conditional mean was under-specified.\n\nFit a flexible model to estimate conditional mean of \\(Y\\).\nCompute residuals and run Robinson’s regression.\nWhat’d we do wrong?\n\n\n\n\nlibrary(aorsf)\n\nfit_cmean &lt;- orsf(Y ~ X, data = data)\n\nm_x &lt;- predict(fit_cmean, new_data = data)\n\nresid_y &lt;- Y - m_x\nresid_w &lt;- W - 1/2\n\ntau_fit &lt;- lm(resid_y ~ resid_w) \n\nglue(\"True tau is {tau_truth}, \\\\\n      estimated tau is {coef(tau_fit)[2]}\")\n\nTrue tau is 0.5, estimated tau is 0.394643899391376"
   },
   {
     "objectID": "slides/04-causal_forests.html#conditional-mean-predictions-1",
@@ -1068,7 +1068,7 @@
     "href": "slides/04-causal_forests.html#causal-trees-contd.",
     "title": "Causal random forests",
     "section": "Causal trees contd.",
-    "text": "Causal trees contd.\nCausal trees are grown using “honesty” and “subsampling” (Wager and Athey 2018).\n\nHonesty: For each training observation \\(i\\), \\(Y_i\\) is used for ONE of the following:\n\nEstimate the treatment effect for leaf nodes.\nDecide splitting values for non-leaf nodes.\n\nSubsampling: While Breiman’s random forest used bootstrap resampling with replacement, causal trees use a random subset sampled without replacement."
+    "text": "Causal trees contd.\nCausal trees are grown using “honesty” and “subsampling” (Wager and Athey 2018).\n\nHonesty: Each training observation is used for one of the following:\n\nEstimate the treatment effect for leaf nodes.\nDecide splitting values for non-leaf nodes.\n\nSubsampling: While Breiman (2001)’s random forest uses bootstrap sampling with replacement, the causal random forest samples without replacement."
   },
   {
     "objectID": "slides/04-causal_forests.html#random-forests-define-adaptive-neighborhoods",
@@ -1103,7 +1103,7 @@
     "href": "slides/04-causal_forests.html#plug-weights-in-to-lm",
     "title": "Causal random forests",
     "section": "Plug weights in to lm",
-    "text": "Plug weights in to lm\nInstead of defining neighborhood boundaries, weight by similarity:\n\\[\n\\hat\\tau_i(x) := \\text{lm}\\Biggl( Y_i - \\hat m^{(-i)}(X_i) \\sim W_i - \\hat e^{(-i)}(X_i), w = \\color{blue}{\\alpha_i(x)} \\Biggr).\n\\] This forest-localized version of Robinson’s regression gives asymptotic guarantees for estimation and inference (Wager and Athey 2018):\n\nPointwise consistency for the true treatment effect.\nAsymptotically Gaussian and centered sampling distribution."
+    "text": "Plug weights in to lm\nInstead of defining neighborhood boundaries, weight by similarity:\n\\[\n\\hat\\tau_i(x) := \\text{lm}\\Biggl( Y_i - \\hat m^{(-i)}(X_i) \\sim W_i - \\hat e^{(-i)}(X_i), w = \\color{blue}{\\alpha_i(x)} \\Biggr).\n\\] This forest-localized version of Robinson’s regression, paired with honesty and subsampling, gives asymptotic guarantees for estimation and inference (Wager and Athey 2018):\n\nPointwise consistency for the true treatment effect.\nAsymptotically Gaussian and centered sampling distribution."
   },
   {
     "objectID": "slides/04-causal_forests.html#summary",
@@ -1159,14 +1159,14 @@
     "href": "slides/04-causal_forests.html#set-up",
     "title": "Causal random forests",
     "section": "Set up",
-    "text": "Set up\nFirst, we’ll prepare the data:\n\n# loads packages and R functions\ntargets::tar_load_globals()\n\n# loads a specific target\ntar_load(data_sim_1)\n\nSecond, coerce data to grf format:\n\n# helper function for grf data prep \ndata_grf &lt;- data_coerce_grf(data_sim_1)\n\n# just a view of the X matrix\nhead(data_grf$X)\n\n          age biomarker_1 biomarker_2 biomarker_3 sex_female\n[1,] 66.27077  0.74731375 -0.74236839  -1.7127343          1\n[2,] 65.51047 -0.56219488 -0.05134715   0.5464561          1\n[3,] 71.41878  0.01334597 -0.18433741   0.8256376          0\n[4,] 59.47485  0.79510234 -1.32408422  -1.2779016          1\n[5,] 58.47673 -0.29311302  0.19057088   2.5377970          1\n[6,] 67.24764  0.07806861 -1.09980944   1.0296027          0"
+    "text": "Set up\nAssume the survival setting:\n\\[\\begin{equation}\n  Y_i =\n    \\begin{cases}\n      T_i & \\text{if } \\, T_i \\leq C_i \\\\\n      C_i & \\text{otherwise}\n    \\end{cases}\n\\end{equation}\\]\nWhere \\(T_i\\) is time to event and (\\(C_i\\)) is time to censoring. Define\n\\[\\begin{equation}\nD_i =\n    \\begin{cases}\n      1 & \\text{if } \\, T_i \\leq C_i \\\\\n      0 & \\text{otherwise.}\n    \\end{cases}\n\\end{equation}\\]"
   },
   {
     "objectID": "slides/04-causal_forests.html#fitting-the-forest",
     "href": "slides/04-causal_forests.html#fitting-the-forest",
     "title": "Causal random forests",
     "section": "Fitting the forest",
-    "text": "Fitting the forest\nThird, fit the causal forest:\n\nfit_grf &lt;- causal_survival_forest(\n  X = data_grf$X, # covariates\n  Y = data_grf$Y, # time to event\n  W = data_grf$W, # treatment status\n  D = data_grf$D, # event status\n  horizon = 3, # 3-year horizon\n  # treatment effect will be\n  # measured in terms of the\n  # restricted mean survival time\n  target = 'RMST' \n)\n\nfit_grf\n\nGRF forest object of type causal_survival_forest \nNumber of trees: 2000 \nNumber of training samples: 974 \nVariable importance: \n    1     2     3     4     5 \n0.220 0.344 0.213 0.196 0.028"
+    "text": "Fitting the forest\nThird, fit the causal survival forest:\n\nfit_grf &lt;- causal_survival_forest(\n  X = data_grf$X, # covariates\n  Y = data_grf$Y, # time to event\n  W = data_grf$W, # treatment status\n  D = data_grf$D, # event status\n  horizon = 3, # 3-year horizon\n  # treatment effect will be\n  # measured in terms of the\n  # restricted mean survival time\n  target = 'RMST' \n)\n\nfit_grf\n\nGRF forest object of type causal_survival_forest \nNumber of trees: 2000 \nNumber of training samples: 2438 \nVariable importance: \n    1     2     3     4     5 \n0.145 0.566 0.168 0.107 0.013"
   },
   {
     "objectID": "slides/04-causal_forests.html#validate-what-youve-learned",
@@ -1180,7 +1180,7 @@
     "href": "slides/04-causal_forests.html#get-gamma-scores",
     "title": "Causal random forests",
     "section": "Get \\(\\Gamma\\) scores",
-    "text": "Get \\(\\Gamma\\) scores\nRemember the \\(\\Gamma_i\\)’s that provide conditional estimates of \\(\\tau\\)? Let’s get them.\n\n# pull the augmented CATEs from the fitted grf object\ngammas &lt;- get_scores(fit_grf)\n\n\nWith gammas, we can compute ATE manually\n\n\nmean(gammas) \n\n[1] -0.4181864\n\n\n\nVerify this is what the grf function gives\n\n\naverage_treatment_effect(fit_grf)\n\n   estimate     std.err \n-0.41818641  0.07033345"
+    "text": "Get \\(\\Gamma\\) scores\nRemember the \\(\\Gamma_i\\)’s that provide conditional estimates of \\(\\tau\\)? Let’s get them.\n\n# pull the augmented CATEs from the fitted grf object\ngammas &lt;- get_scores(fit_grf)\n\n\nWith gammas, we can compute ATE manually\n\n\nmean(gammas) \n\n[1] -0.4100232\n\n\n\nVerify this is what the grf function gives\n\n\naverage_treatment_effect(fit_grf)\n\n   estimate     std.err \n-0.41002324  0.04220722"
   },
   {
     "objectID": "slides/04-causal_forests.html#robinsons-residual-on-residual-regression",
@@ -1244,5 +1244,257 @@
     "title": "Causal random forests",
     "section": "Treatment effects for survival",
     "text": "Treatment effects for survival\nTwo treatment effects can be estimated conditional on \\(h\\).\n\nRMST \\[\\tau(x) = E[\\min(T(1), h) - \\min(T(0), h) \\, | X = x],\\]\nSurvival probability: \\[\\tau(x) = P[T(1) &gt; h \\, | X = x] - P[T(0) &gt; h \\, | X = x].\\] \\(T(1)\\) and \\(T(0)\\) are treated and untreated event times, respectively."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#the-partially-linear-model",
+    "href": "slides/04-causal_forests.html#the-partially-linear-model",
+    "title": "Causal random forests",
+    "section": "The partially linear model",
+    "text": "The partially linear model\nSuppose\n\\[\nY_i = \\tau W_i + f(X_i) + \\varepsilon_i\n\\] Assume:\n\n\\(E[\\varepsilon_i | X_i, W_i] = 0\\)\nuntreated outcome is given by unknown function \\(f\\),\na treatment assignment shifts the outcome by \\(\\tau\\)."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#how-to-grow-causal-trees",
+    "href": "slides/04-causal_forests.html#how-to-grow-causal-trees",
+    "title": "Causal random forests",
+    "section": "How to grow causal trees",
+    "text": "How to grow causal trees\nCausal trees are much like standard decision trees, but they maximize\n\\[n_L \\cdot n_R \\cdot (\\hat{\\tau}_L-\\hat{\\tau}_R)^2\\]\nwhere residual-on-residual regression is used to estimate \\(\\hat{\\tau}_L\\) and \\(\\hat{\\tau}_R\\)\n\ngrf estimates \\(\\hat \\tau\\) once in the parent node and uses “influence functions” to approximate how \\(\\hat\\tau\\) would change if an observation moved from one child node to the other (Wager and Athey 2018).\nPredictions from leaves are \\(E[Y|W=1] - E[Y|W=0]\\)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#how-are-causal-trees-unique",
+    "href": "slides/04-causal_forests.html#how-are-causal-trees-unique",
+    "title": "Causal random forests",
+    "section": "How are causal trees unique?",
+    "text": "How are causal trees unique?\nCausal trees use “honesty” and “subsampling” (Wager and Athey 2018).\n\nHonesty: Each training observation is used for one of the following:\n\nEstimate the treatment effect for leaf nodes.\nDecide splitting values for non-leaf nodes.\n\nSubsampling: While Breiman (2001)’s random forest uses bootstrap sampling with replacement, the causal random forest samples without replacement."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#back-to-the-partial-linear-model",
+    "href": "slides/04-causal_forests.html#back-to-the-partial-linear-model",
+    "title": "Causal random forests",
+    "section": "Back to the partial linear model",
+    "text": "Back to the partial linear model\nRelaxing the assumption of a constant treatment:\n\\[\nY_i = \\color{red}{\\tau(X_i)} W_i + f(X_i) + \\varepsilon_i, \\,\n\\]\nwhere \\(\\color{red}{\\tau(X_i)}\\) is the conditional average treatment (CATE). If we had a neighborhood \\(\\mathcal{N}(x)\\) where \\(\\tau\\) was constant, then we could do residual-on-residual regression in the neighborhood:\n\\[\n\\hat\\tau_i(x) := lm\\Biggl( Y_i - \\hat m^{(-i)}(X_i) \\sim W_i - \\hat e^{(-i)}(X_i), \\color{red}{w = 1\\{X_i \\in \\mathcal{N}(x) \\}}\\Biggr),\n\\]"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#how-to-grow-causal-trees-1",
+    "href": "slides/04-causal_forests.html#how-to-grow-causal-trees-1",
+    "title": "Causal random forests",
+    "section": "How to grow causal trees",
+    "text": "How to grow causal trees\nCausal trees use “honesty” and “subsampling” (Wager and Athey 2018).\n\nHonesty: Each training observation is used for one of the following:\n\nEstimate the treatment effect for leaf nodes.\nDecide splitting values for non-leaf nodes.\n\nSubsampling: While Breiman (2001)’s random forest uses bootstrap sampling with replacement, the causal random forest samples without replacement."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#random-forests-adaptive-neighborhoods",
+    "href": "slides/04-causal_forests.html#random-forests-adaptive-neighborhoods",
+    "title": "Causal random forests",
+    "section": "Random forests adaptive neighborhoods",
+    "text": "Random forests adaptive neighborhoods\nSuppose we fit a \\(B\\) regression trees to a training set of size \\(n\\).\nWe want to compute a prediction \\(p\\) for a new observation \\(x\\):\n\\[\\begin{equation*}\n\\begin{split}\n& p = \\sum_{i=1}^{n} \\frac{1}{B} \\sum_{b=1}^{B} Y_i \\frac{1\\{Xi \\in L_b(x)\\}} {|L_b(x)|}\n\\end{split}\n\\end{equation*}\\]\n\n\\(L_b(x)\\) indicates the leaf node that \\(x\\) falls into for tree \\(b\\)\nThe inner sum is the mean of outcomes in the same leaf as \\(x\\)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#random-forest-adaptive-neighborhoods-1",
+    "href": "slides/04-causal_forests.html#random-forest-adaptive-neighborhoods-1",
+    "title": "Causal random forests",
+    "section": "Random forest adaptive neighborhoods",
+    "text": "Random forest adaptive neighborhoods\nPull \\(Y_i\\) out of the sum that depends on \\(b\\):\n\\[\\begin{equation*}\n\\begin{split}\np &= \\sum_{i=1}^{n} \\frac{1}{B} \\sum_{b=1}^{B} Y_i \\frac{1\\{Xi \\in L_b(x)\\}} {|L_b(x)|} \\\\\n&= \\sum_{i=1}^{n} Y_i \\sum_{b=1}^{B} \\frac{1\\{Xi \\in L_b(x)\\}} {B \\cdot |L_b(x)|} \\\\\n& = \\sum_{i=1}^{n} Y_i \\color{blue}{\\alpha_i(x)},\n\\end{split}\n\\end{equation*}\\]\n\n\\(\\alpha_i(x) \\propto\\) no. of times observation \\(i\\) lands in the same leaf as \\(x\\)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#random-forest-adaptive-neighborhoods",
+    "href": "slides/04-causal_forests.html#random-forest-adaptive-neighborhoods",
+    "title": "Causal random forests",
+    "section": "Random forest adaptive neighborhoods",
+    "text": "Random forest adaptive neighborhoods\nSuppose we fit a random forest with \\(B\\) trees to a training set of size \\(n\\), and we compute a prediction \\(p\\) for a new observation \\(x\\):\n\\[\\begin{equation*}\n\\begin{split}\n& p = \\sum_{i=1}^{n} \\frac{1}{B} \\sum_{b=1}^{B} Y_i \\frac{1\\{Xi \\in L_b(x)\\}} {|L_b(x)|}\n\\end{split}\n\\end{equation*}\\]\n\n\\(L_b(x)\\) indicates the leaf node that \\(x\\) falls into for tree \\(b\\)\nThe inner sum is the mean of outcomes in the same leaf as \\(x\\)\nThis generalizes to causal random forests (it’s easier to write with regression trees)."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#set-up-1",
+    "href": "slides/04-causal_forests.html#set-up-1",
+    "title": "Causal random forests",
+    "section": "Set up",
+    "text": "Set up\nFirst, we’ll prepare the data:\n\n# loads packages and R functions\ntargets::tar_load_globals()\n\n# loads a specific target\ntar_load(data_sim_1)\n\nSecond, coerce data to grf format:\n\n# helper function for grf data prep \ndata_grf &lt;- data_coerce_grf(data_sim_1)\n\n# just a view of the X matrix\nhead(data_grf$X)\n\n          age biomarker_1 biomarker_2 biomarker_3 sex_female\n[1,] 66.27077  0.74731375 -0.74236839  -1.7127343          1\n[2,] 65.51047 -0.56219488 -0.05134715   0.5464561          1\n[3,] 71.41878  0.01334597 -0.18433741   0.8256376          0\n[4,] 59.47485  0.79510234 -1.32408422  -1.2779016          1\n[5,] 58.47673 -0.29311302  0.19057088   2.5377970          1\n[6,] 67.24764  0.07806861 -1.09980944   1.0296027          0"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#estimating-the-ate",
+    "href": "slides/04-causal_forests.html#estimating-the-ate",
+    "title": "Causal random forests",
+    "section": "Estimating the ATE",
+    "text": "Estimating the ATE\nFirst, we’ll prepare the data:\n\n# loads packages and R functions\ntargets::tar_load_globals()\n\n# loads a specific target\ntar_load(data_sim_1)\n\nSecond, coerce data to grf format:\n\n# helper function for grf data prep \ndata_grf &lt;- data_coerce_grf(data_sim_1$values)\n\n# just a view of the X matrix\nhead(data_grf$X)\n\n          age biomarker_1  biomarker_2 biomarker_3 sex_female\n[1,] 66.27077   0.5851853  0.007190105  0.08550595          1\n[2,] 65.51047   1.1224445 -0.750371586  0.36835322          1\n[3,] 71.41878  -0.6785327  0.579155978 -0.53611900          1\n[4,] 59.47485  -0.2466271 -1.044884274 -0.15812476          1\n[5,] 58.47673  -0.5896893  0.458485509 -0.35834242          0\n[6,] 67.24764   1.9964499 -0.122259009  1.41141702          0"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#your-turn",
+    "href": "slides/04-causal_forests.html#your-turn",
+    "title": "Causal random forests",
+    "section": "Your turn",
+    "text": "Your turn\nOpen classwork/04-causal_forests.qmd and complete Exercise 1\n\nReminder: Red sticky note for help, green sticky when you finish.\nNote: the data_coerce_grf() function can save you lots of time."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#estimating-the-blp",
+    "href": "slides/04-causal_forests.html#estimating-the-blp",
+    "title": "Causal random forests",
+    "section": "Estimating the BLP",
+    "text": "Estimating the BLP\nThe BLP (Semenova and Chernozhukov 2021):\n\nIs estimated by regressing a set of covariates on \\(\\Gamma\\).\nCan be estimated for a subset of covariates\nCan be estimated for a subset of observations.\nSummarizes heterogeneous treatment effects conditional on covariates.\n\nYou can estimate BLP manually:\n\ndata_blp &lt;- bind_cols(gamma = gammas, data_grf$X)\n\nfit_blp &lt;- lm(gamma ~ ., data = data_blp)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#two-ways-to-estimate",
+    "href": "slides/04-causal_forests.html#two-ways-to-estimate",
+    "title": "Causal random forests",
+    "section": "Two ways to estimate",
+    "text": "Two ways to estimate\nReplicate grf results (good to know what’s happening underneath the hood):\n\n\nlmtest::coeftest(fit_blp, \n                 vcov = sandwich::vcovCL, \n                 type = 'HC3')\n\n\nt test of coefficients:\n\n              Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept)  0.3469986  1.0274928  0.3377   0.7357\nage         -0.0118992  0.0156814 -0.7588   0.4482\nbiomarker_1 -0.1025880  0.0683212 -1.5016   0.1335\nbiomarker_2 -0.0027167  0.0711906 -0.0382   0.9696\nbiomarker_3 -0.0316154  0.0710252 -0.4451   0.6563\nsex_female   0.0161499  0.1411142  0.1144   0.9089\n\n\n\n\n\nbest_linear_projection(fit_grf, data_grf$X)\n\n\nBest linear projection of the conditional average treatment effect.\nConfidence intervals are cluster- and heteroskedasticity-robust (HC3):\n\n              Estimate Std. Error t value Pr(&gt;|t|)\n(Intercept)  0.3469986  1.0274928  0.3377   0.7357\nage         -0.0118992  0.0156814 -0.7588   0.4482\nbiomarker_1 -0.1025880  0.0683212 -1.5016   0.1335\nbiomarker_2 -0.0027167  0.0711906 -0.0382   0.9696\nbiomarker_3 -0.0316154  0.0710252 -0.4451   0.6563\nsex_female   0.0161499  0.1411142  0.1144   0.9089"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#what-happens-underneath-the-grf-hood",
+    "href": "slides/04-causal_forests.html#what-happens-underneath-the-grf-hood",
+    "title": "Causal random forests",
+    "section": "What happens underneath the grf hood",
+    "text": "What happens underneath the grf hood\nHere’s how you can replicate grf results:\n\n\nlmtest::coeftest(fit_blp, \n                 vcov = sandwich::vcovCL, \n                 type = 'HC3')\n\n\nt test of coefficients:\n\n              Estimate Std. Error t value Pr(&gt;|t|)  \n(Intercept) -1.2472386  0.6076333 -2.0526  0.04022 *\nage          0.0135417  0.0092602  1.4624  0.14377  \nbiomarker_1 -0.0901502  0.0430122 -2.0959  0.03619 *\nbiomarker_2 -0.0318047  0.0454729 -0.6994  0.48436  \nbiomarker_3  0.0410478  0.0409610  1.0021  0.31638  \nsex_female  -0.0831368  0.0844821 -0.9841  0.32518  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n\nbest_linear_projection(fit_grf, data_grf$X)\n\n\nBest linear projection of the conditional average treatment effect.\nConfidence intervals are cluster- and heteroskedasticity-robust (HC3):\n\n              Estimate Std. Error t value Pr(&gt;|t|)  \n(Intercept) -1.2472386  0.6076333 -2.0526  0.04022 *\nage          0.0135417  0.0092602  1.4624  0.14377  \nbiomarker_1 -0.0901502  0.0430122 -2.0959  0.03619 *\nbiomarker_2 -0.0318047  0.0454729 -0.6994  0.48436  \nbiomarker_3  0.0410478  0.0409610  1.0021  0.31638  \nsex_female  -0.0831368  0.0844821 -0.9841  0.32518  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#your-turn-1",
+    "href": "slides/04-causal_forests.html#your-turn-1",
+    "title": "Causal random forests",
+    "section": "Your turn",
+    "text": "Your turn\nComplete Exercise 2"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#your-turn-2",
+    "href": "slides/04-causal_forests.html#your-turn-2",
+    "title": "Causal random forests",
+    "section": "Your turn",
+    "text": "Your turn\nComplete Exercise 3"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#rank-weighted-average-treatment-effect-rate",
+    "href": "slides/04-causal_forests.html#rank-weighted-average-treatment-effect-rate",
+    "title": "Causal random forests",
+    "section": "Rank-Weighted Average Treatment Effect (RATE)",
+    "text": "Rank-Weighted Average Treatment Effect (RATE)\nQuestions:\n\nIs there any heterogeneity present in a conditional treatment effect?\nHow good is a treatment prioritization rule at distinguishing sub-populations with different treatment effects?"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#rank-weighted-average-treatment-effect",
+    "href": "slides/04-causal_forests.html#rank-weighted-average-treatment-effect",
+    "title": "Causal random forests",
+    "section": "Rank-Weighted Average Treatment Effect",
+    "text": "Rank-Weighted Average Treatment Effect\nWhile ATE and BLP are helpful, they do not tell us the following:\n\nHow good is a treatment prioritization rule at distinguishing sub-populations with different conditional treatment effects?\nIs there any heterogeneity present in a conditional treatment effect?\n\nThe rank-weighted average treatment effect (RATE) answers both of these."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#treatment-prioritization-rules",
+    "href": "slides/04-causal_forests.html#treatment-prioritization-rules",
+    "title": "Causal random forests",
+    "section": "Treatment prioritization rules",
+    "text": "Treatment prioritization rules\nSuppose we have a treatment that benefits some (not all) adults. Who should initiate treatment? A treatment prioritization rule can help:\n\nhigh score for those likely to benefit from treatment.\nlow score for those likely to have a small/negative benefit from treatment.\n\nRisk prediction models can be a treatment prioritization rule:\n\nInitiate antihypertensive medication if predicted risk for cardiovascular disease is high."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#how-rate-works",
+    "href": "slides/04-causal_forests.html#how-rate-works",
+    "title": "Causal random forests",
+    "section": "How RATE works",
+    "text": "How RATE works\nThe basic idea:\n\nChop the population up into subgroups based on the prioritization rule, e.g., by decile of score.\nEstimate the ATE in each group, separately, and compare to the overall estimated ATE from treating everyone\nPlot the difference between group-specific ATE and the overall ATE for each of the groups\n\nExample: the Targeting Operator Characteristic (TOC)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#targeting-operator-characteristic-toc",
+    "href": "slides/04-causal_forests.html#targeting-operator-characteristic-toc",
+    "title": "Causal random forests",
+    "section": "Targeting Operator Characteristic (TOC)",
+    "text": "Targeting Operator Characteristic (TOC)\n\n\nCreate groups by including the top q\\(^\\text{th}\\) fraction of individuals with the largest prioritization score.\nUse many values of \\(q\\) to make the pattern more curve-like\nMotivation: Receiver Operating Characteristic (ROC) curve, a widely used metric for assessing discrimination of predictions."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#application",
+    "href": "slides/04-causal_forests.html#application",
+    "title": "Causal random forests",
+    "section": "Application",
+    "text": "Application\nLet’s use RATE to see how well risk prediction works as a treatment prioritization rule.\n\nlibrary(aorsf)\n\nfit_orsf &lt;- orsf(time + status ~ .,\n                 data = data_sim_1$values,\n                 oobag_pred_horizon = 3)\n\nprd_risk &lt;- as.numeric(fit_orsf$pred_oobag)\n\nprd_rate &lt;- \n  rank_average_treatment_effect(fit_grf, \n                                priorities = prd_risk)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#rate-is-the-area-underneath-toc",
+    "href": "slides/04-causal_forests.html#rate-is-the-area-underneath-toc",
+    "title": "Causal random forests",
+    "section": "RATE is the area underneath TOC",
+    "text": "RATE is the area underneath TOC"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#rate-area-underneath-toc",
+    "href": "slides/04-causal_forests.html#rate-area-underneath-toc",
+    "title": "Causal random forests",
+    "section": "RATE: area underneath TOC",
+    "text": "RATE: area underneath TOC\n\nRATE is estimated by taking the area underneath the TOC curve.\n\\[\\textrm{RATE} = \\int_0^1 \\textrm{TOC}(q) dq .\\]\nAs \\(\\tau(X_i)\\) approaches a constant, RATE approaches 0."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#estimating-rate",
+    "href": "slides/04-causal_forests.html#estimating-rate",
+    "title": "Causal random forests",
+    "section": "Estimating RATE",
+    "text": "Estimating RATE\n(Yadlowsky et al. 2021)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#rate-of-prediction-model",
+    "href": "slides/04-causal_forests.html#rate-of-prediction-model",
+    "title": "Causal random forests",
+    "section": "RATE of prediction model",
+    "text": "RATE of prediction model\nLet’s use RATE to see how well risk prediction works as a treatment prioritization rule.\n\nlibrary(aorsf)\n\nfit_orsf &lt;- orsf(time + status ~ .,\n                 data = data_sim_1$values,\n                 oobag_pred_horizon = 3)\n\n# important to use oobag!\nprd_risk &lt;- as.numeric(fit_orsf$pred_oobag)\n\nprd_rate &lt;- \n  rank_average_treatment_effect(fit_grf, \n                                priorities = prd_risk)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#not-good",
+    "href": "slides/04-causal_forests.html#not-good",
+    "title": "Causal random forests",
+    "section": "Not good",
+    "text": "Not good"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#estimating-rate-from-cate",
+    "href": "slides/04-causal_forests.html#estimating-rate-from-cate",
+    "title": "Causal random forests",
+    "section": "Estimating RATE from CATE",
+    "text": "Estimating RATE from CATE\nAn intuitive way to assign treatment priority is to use the CATE: \\(\\hat\\tau(X_i)\\)\n\n\\(\\hat\\tau(X_i)\\) should not be estimated and evaluated using the same data\nUse split-sample estimation or cross-fitting (Yadlowsky et al. 2021).\n\nAs a preliminary step, we’ll split our data in to training and testing sets\n\ntrain_index &lt;- sample(x = nrow(data_sim_1$values), size = 1250)\n\ndata_trn &lt;- data_sim_1$values[train_index, ]\ndata_tst &lt;- data_sim_1$values[-train_index, ]\n\ndata_trn_grf &lt;- data_coerce_grf(data_trn)\ndata_tst_grf &lt;- data_coerce_grf(data_tst)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#how-to-evaluate-treatment-prioritization",
+    "href": "slides/04-causal_forests.html#how-to-evaluate-treatment-prioritization",
+    "title": "Causal random forests",
+    "section": "How to evaluate treatment prioritization",
+    "text": "How to evaluate treatment prioritization\nThe basic idea:\n\nChop the population up into subgroups based on the prioritization rule, e.g., by decile of score.\nEstimate the ATE in each group, separately, and compare to the overall estimated ATE from treating everyone\nPlot the difference between group-specific ATE and the overall ATE for each of the groups\n\nExample: the Targeting Operator Characteristic (TOC)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#split-sample-approach",
+    "href": "slides/04-causal_forests.html#split-sample-approach",
+    "title": "Causal random forests",
+    "section": "Split sample approach",
+    "text": "Split sample approach\nWe fit one forest with training data to estimate CATE and fit another forest with testing data to evaluate the CATE estimates:\n\n\nfit_trn_grf &lt;- \n  causal_survival_forest(\n    X = data_trn_grf$X, Y = data_trn_grf$Y,\n    W = data_trn_grf$W, D = data_trn_grf$D,\n    horizon = 3, target = 'RMST' \n  )\n\nfit_tst_grf &lt;- \n  causal_survival_forest(\n    X = data_tst_grf$X, Y = data_tst_grf$Y,\n    W = data_tst_grf$W, D = data_tst_grf$D,\n    horizon = 3, target = 'RMST' \n  )"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#split-sample-approach-step-2",
+    "href": "slides/04-causal_forests.html#split-sample-approach-step-2",
+    "title": "Causal random forests",
+    "section": "Split sample approach; step 2",
+    "text": "Split sample approach; step 2"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#split-sample-approach-step-2-1",
+    "href": "slides/04-causal_forests.html#split-sample-approach-step-2-1",
+    "title": "Causal random forests",
+    "section": "Split sample approach; step 2",
+    "text": "Split sample approach; step 2"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#fitting",
+    "href": "slides/04-causal_forests.html#fitting",
+    "title": "Causal random forests",
+    "section": "Fitting",
+    "text": "Fitting\nWe fit one forest with training data to estimate CATE and fit another forest with testing data to evaluate the CATE estimates:\n\n\nfit_trn_grf &lt;- causal_survival_forest(\n  X = data_trn_grf$X, Y = data_trn_grf$Y,\n  W = data_trn_grf$W, D = data_trn_grf$D,\n  horizon = 3, target = 'RMST' \n)\n\nfit_tst_grf &lt;- causal_survival_forest(\n  X = data_tst_grf$X, Y = data_tst_grf$Y,\n  W = data_tst_grf$W, D = data_tst_grf$D,\n  horizon = 3, target = 'RMST' \n)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#predicting",
+    "href": "slides/04-causal_forests.html#predicting",
+    "title": "Causal random forests",
+    "section": "Predicting",
+    "text": "Predicting\nWe use the forest fitted to training data to estimate CATE for the testing data. For illustration, we also estimate naive CATE\n\n\n# the fitted forest hasn't\n# seen the testing data\ntau_hat_split &lt;- fit_trn_grf %&gt;% \n  predict(data_tst_grf$X) %&gt;% \n  getElement(\"predictions\")\n\n# Illustration only (don't do this)\ntau_hat_naive &lt;- fit_trn_grf %&gt;% \n  predict(data_trn_grf$X) %&gt;% \n  getElement(\"predictions\")"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#evaluating",
+    "href": "slides/04-causal_forests.html#evaluating",
+    "title": "Causal random forests",
+    "section": "Evaluating",
+    "text": "Evaluating\nWe use the forest fitted to the testing data to evaluate the CATE estimates for observations in the testing data\n\n\nrate_split &lt;- \n  rank_average_treatment_effect(\n    forest = fit_tst_grf, \n    priorities = tau_hat_split, \n    target = \"AUTOC\"\n  )\n\n# Illustration only (don't do this)\nrate_naive &lt;- \n  rank_average_treatment_effect(\n    forest = fit_trn_grf, \n    priorities = tau_hat_naive, \n    target = \"AUTOC\"\n  )"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#correct-versus-overly-optimistic",
+    "href": "slides/04-causal_forests.html#correct-versus-overly-optimistic",
+    "title": "Causal random forests",
+    "section": "Correct versus overly optimistic",
+    "text": "Correct versus overly optimistic\nThe problem with being overly optimistic is it has very high type 1 error"
   }
 ]
