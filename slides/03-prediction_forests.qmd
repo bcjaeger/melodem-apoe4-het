@@ -1,5 +1,5 @@
 ---
-title: "Develop and evaluate prediction models"
+title: "Oblique random forests with `aorsf`"
 subtitle: "MELODEM data workshop"
 author: "Byron C. Jaeger, PhD"
 institute: "Wake Forest University School of Medicine"
@@ -25,14 +25,159 @@ knitr::opts_chunk$set(echo = FALSE,
                       out.width = '100%',
                       fig.align = 'center')
 
+library(tidyverse)
+library(palmerpenguins)
+
+penguins <- drop_na(penguins)
 
 withr::with_dir(
   new = here::here(),
-  targets::tar_load(data_sim_1)
+  targets::tar_load(c(penguin_figs,
+                      data_sim_1))
 )
+
 
 ```
 
 ## Overview
+
+
+- Axis-based and oblique
+
+    + Background
+
+    + Benchmarks
+    
+    + Software
+
+# Axis based and oblique
+
+## Background
+
+Axis based trees use a single predictor to split data. 
+
+Oblique trees use a weighted combination of two or more predictors
+
+![](img/axis_versus_oblique.png){fig-align="center"}
+
+---
+
+## Oblique tree: first split
+
+:::{.column width="30%"}
+
+First, split mostly by bill length
+
+:::
+
+:::{.column width="69%"}
+
+```{r}
+penguin_figs$oblique_1
+```
+
+:::
+
+---
+
+## Oblique tree: second split
+
+:::{.column width="30%"}
+
+First, split mostly by bill length
+
+<br/>
+
+Second, make a triangle for the gentoo.
+
+:::
+
+:::{.column width="69%"}
+
+```{r}
+penguin_figs$oblique_2
+```
+
+:::
+
+---
+
+## Oblique random forests
+
+:::{.column width="30%"}
+
+Aggregating randomized trees gives the *oblique* random forest
+
+:::
+
+:::{.column width="69%"}
+
+```{r}
+penguin_figs$oblique_3
+```
+
+:::
+
+---
+
+## Surprisingly different!
+
+:::{.column width="30%"}
+
+Despite very many similarities, axis-based and oblique random forests may give different results.
+
+:::
+
+:::{.column width="69%"}
+
+```{r}
+penguin_figs$axis_3d
+```
+
+:::
+
+## Axis based vs oblique
+
+- @breiman2001random found oblique random forests compared more favorably to boosting than axis based ones.^[Leo Breiman named it "Forest-RC" but it later came to be known as oblique]
+
+- @menze2011oblique coined the term 'oblique' random forest and introduced variable importance metrics for it.
+
+- On benchmarking 190 classifiers on 121 public datasets, @katuwal2020heterogeneous found variations on the oblique random forests were the top 3 classifiers.
+
+
+---
+
+Yet, everyone uses axis-based random forests. Here's why:
+
+![](img/fig_bm_1.png){width=100% fig-align="center"}
+
+
+---
+
+![](img/meme_slow_R.jpg){width=100% fig-align="center"}
+
+# `aorsf` <br/>accelerated oblique random (survival) forest
+
+## `aorsf` Benchmark
+
+@jaeger2024accelerated tested how a fast version of the oblique random survival forest ([`aorsf`](https://docs.ropensci.org/aorsf/)) compared to the original (`obliqueRSF`). Here's what we did:
+
+- Evaluated both types of oblique random forests in 35 risk prediction tasks (21 datasets)
+
+- Measured computation time, C-statistic and index of prediction accuracy (IPA).
+
+- Used Bayesian linear mixed models to test for differences in expected C-statistic and IPA.
+
+---
+
+You can use oblique random forests now!
+
+![](img/fig_bm_2.png){width=100% fig-align="center"}
+---
+
+And making them fast didn't break their predictions
+
+![](img/fig_bm_3.png){width=100% fig-align="center"}
+
 
 

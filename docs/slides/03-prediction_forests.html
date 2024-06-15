@@ -12,7 +12,7 @@
   <meta name="generator" content="quarto-1.3.450">
 
   <meta name="author" content="Byron C. Jaeger, PhD">
-  <title>Methods in longitudinal dementia research workshop - Develop and evaluate prediction models</title>
+  <title>Methods in longitudinal dementia research workshop - Oblique random forests with aorsf</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -30,7 +30,26 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -327,7 +346,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Develop and evaluate prediction models</h1>
+  <h1 class="title">Oblique random forests with <code>aorsf</code></h1>
   <p class="subtitle">MELODEM data workshop</p>
 
 <div class="quarto-title-authors">
@@ -344,11 +363,156 @@ Byron C. Jaeger, PhD
 </section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
+<ul>
+<li><p>Axis-based and oblique</p>
+<ul>
+<li><p>Background</p></li>
+<li><p>Benchmarks</p></li>
+<li><p>Software</p></li>
+</ul></li>
+</ul>
+</section>
+<section>
+<section id="axis-based-and-oblique" class="title-slide slide level1 center">
+<h1>Axis based and oblique</h1>
 
-<div class="footer footer-default">
-<p>Slides available at <a href="https://bcjaeger.github.io/melodem-apoe4-het/" class="uri">https://bcjaeger.github.io/melodem-apoe4-het/</a></p>
+</section>
+<section id="background" class="slide level2">
+<h2>Background</h2>
+<p>Axis based trees use a single predictor to split data.</p>
+<p>Oblique trees use a weighted combination of two or more predictors</p>
+
+<img data-src="img/axis_versus_oblique.png" class="r-stretch quarto-figure-center"></section>
+<section id="oblique-tree-first-split" class="slide level2">
+<h2>Oblique tree: first split</h2>
+<div class="column" style="width:30%;">
+<p>First, split mostly by bill length</p>
+</div>
+<div class="column" style="width:69%;">
+<div class="cell" data-layout-align="center" data-hash="03-prediction_forests_cache/revealjs/unnamed-chunk-1_bc137e009efd6b2c26df329a99dc40a3">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="03-prediction_forests_files/figure-revealjs/unnamed-chunk-1-1.svg" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </section>
+<section id="oblique-tree-second-split" class="slide level2">
+<h2>Oblique tree: second split</h2>
+<div class="column" style="width:30%;">
+<p>First, split mostly by bill length</p>
+<p><br></p>
+<p>Second, make a triangle for the gentoo.</p>
+</div>
+<div class="column" style="width:69%;">
+<div class="cell" data-layout-align="center" data-hash="03-prediction_forests_cache/revealjs/unnamed-chunk-2_8d99a17cc727466321fddbc48a48da15">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="03-prediction_forests_files/figure-revealjs/unnamed-chunk-2-1.svg" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="oblique-random-forests" class="slide level2">
+<h2>Oblique random forests</h2>
+<div class="column" style="width:30%;">
+<p>Aggregating randomized trees gives the <em>oblique</em> random forest</p>
+</div>
+<div class="column" style="width:69%;">
+<div class="cell" data-layout-align="center" data-hash="03-prediction_forests_cache/revealjs/unnamed-chunk-3_fda9b84f35aef263c17d8014cb70d6e6">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="03-prediction_forests_files/figure-revealjs/unnamed-chunk-3-1.svg" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="surprisingly-different" class="slide level2">
+<h2>Surprisingly different!</h2>
+<div class="column" style="width:30%;">
+<p>Despite very many similarities, axis-based and oblique random forests may give different results.</p>
+</div>
+<div class="column" style="width:69%;">
+<div class="cell" data-layout-align="center" data-hash="03-prediction_forests_cache/revealjs/unnamed-chunk-4_a5a61b24781d9bbfd8f34cbfad9fb19e">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="03-prediction_forests_files/figure-revealjs/unnamed-chunk-4-1.svg" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="axis-based-vs-oblique" class="slide level2">
+<h2>Axis based vs oblique</h2>
+<ul>
+<li><p><span class="citation" data-cites="breiman2001random">Breiman (<a href="#/references" role="doc-biblioref" onclick="">2001</a>)</span> found oblique random forests compared more favorably to boosting than axis based ones.<sup>1</sup></p></li>
+<li><p><span class="citation" data-cites="menze2011oblique">Menze et al. (<a href="#/references" role="doc-biblioref" onclick="">2011</a>)</span> coined the term ‘oblique’ random forest and introduced variable importance metrics for it.</p></li>
+<li><p>On benchmarking 190 classifiers on 121 public datasets, <span class="citation" data-cites="katuwal2020heterogeneous">Katuwal, Suganthan, and Zhang (<a href="#/references" role="doc-biblioref" onclick="">2020</a>)</span> found variations on the oblique random forests were the top 3 classifiers.</p></li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Leo Breiman named it “Forest-RC” but it later came to be known as oblique</p></li></ol></aside></section>
+<section class="slide level2">
+
+<p>Yet, everyone uses axis-based random forests. Here’s why:</p>
+
+<img data-src="img/fig_bm_1.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section class="slide level2">
+
+
+<img data-src="img/meme_slow_R.jpg" style="width:100.0%" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="aorsf-accelerated-oblique-random-survival-forest" class="title-slide slide level1 center">
+<h1><code>aorsf</code> <br>accelerated oblique random (survival) forest</h1>
+
+</section>
+<section id="aorsf-benchmark" class="slide level2">
+<h2><code>aorsf</code> Benchmark</h2>
+<p><span class="citation" data-cites="jaeger2024accelerated">Jaeger et al. (<a href="#/references" role="doc-biblioref" onclick="">2024</a>)</span> tested how a fast version of the oblique random survival forest (<a href="https://docs.ropensci.org/aorsf/"><code>aorsf</code></a>) compared to the original (<code>obliqueRSF</code>). Here’s what we did:</p>
+<ul>
+<li><p>Evaluated both types of oblique random forests in 35 risk prediction tasks (21 datasets)</p></li>
+<li><p>Measured computation time, C-statistic and index of prediction accuracy (IPA).</p></li>
+<li><p>Used Bayesian linear mixed models to test for differences in expected C-statistic and IPA.</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p>You can use oblique random forests now!</p>
+
+<img data-src="img/fig_bm_2.png" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<section class="slide level2 smaller scrollable" id="references">
+
+<p>And making them fast didn’t break their predictions</p>
+
+
+<img data-src="img/fig_bm_3.png" style="width:100.0%" class="r-stretch quarto-figure-center"><div class="footer footer-default">
+<p>Slides available at <a href="https://bcjaeger.github.io/melodem-apoe4-het/" class="uri">https://bcjaeger.github.io/melodem-apoe4-het/</a></p>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-breiman2001random" class="csl-entry" role="listitem">
+Breiman, Leo. 2001. <span>“Random Forests.”</span> <em>Machine Learning</em> 45: 5–32.
+</div>
+<div id="ref-jaeger2024accelerated" class="csl-entry" role="listitem">
+Jaeger, Byron C, Sawyer Welden, Kristin Lenoir, Jaime L Speiser, Matthew W Segar, Ambarish Pandey, and Nicholas M Pajewski. 2024. <span>“Accelerated and Interpretable Oblique Random Survival Forests.”</span> <em>Journal of Computational and Graphical Statistics</em> 33 (1): 192–207.
+</div>
+<div id="ref-katuwal2020heterogeneous" class="csl-entry" role="listitem">
+Katuwal, Rakesh, Ponnuthurai Nagaratnam Suganthan, and Le Zhang. 2020. <span>“Heterogeneous Oblique Random Forest.”</span> <em>Pattern Recognition</em> 99: 107078.
+</div>
+<div id="ref-menze2011oblique" class="csl-entry" role="listitem">
+Menze, Bjoern H, B Michael Kelm, Daniel N Splitthoff, Ullrich Koethe, and Fred A Hamprecht. 2011. <span>“On Oblique Random Forests.”</span> In <em>Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22</em>, 453–69. Springer.
+</div>
+</div>
+</section></section>
+
     </div>
   </div>
 

@@ -143,3 +143,15 @@ best_linear_projection(fit_grf, A = data_grf$X)
 - Is there evidence of heterogeneity in the conditional treatment effect based on any of the covariates?
 
 - Do your results change if you use `target = "RMST"` versus `target = "survival.probability"` when you fit your forest?
+
+## Exercise 4
+
+Split your sample intro a training and testing set, then
+
+1. Fit one causal survival forest to each set, separately.
+1. Use the training forest to estimate CATE for the testing forest
+1. Use the testing forest to evaluate RATE, using the estimated CATE values as a treatment prioritization rule.
+
+Plot your results. Do you see evidence of heterogeneity?
+
+

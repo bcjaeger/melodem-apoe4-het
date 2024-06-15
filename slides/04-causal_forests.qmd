@@ -1,5 +1,5 @@
 ---
-title: "Causal random forests"
+title: "Causal random forests with `grf`"
 subtitle: "MELODEM data workshop"
 author: "Byron C. Jaeger, PhD"
 institute: "Wake Forest University School of Medicine"
@@ -606,7 +606,7 @@ Second, coerce data to `grf` format:
 data_grf <- data_coerce_grf(data_sim_1$values)
 
 # just a view of the X matrix
-head(data_grf$X)
+head(data_grf$X, n = 2)
 
 ```
 
@@ -1020,5 +1020,14 @@ ggplot(data_gg) +
 
 ```
 
+## Your turn
+
+Complete Exercise 4
+
+```{r ex-4}
+#| echo: false
+# countdown::countdown(minutes = 5, id = "ex-1")
+```
 
 ## References
+
