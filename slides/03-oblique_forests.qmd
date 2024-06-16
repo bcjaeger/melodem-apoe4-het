@@ -1,0 +1,613 @@
+---
+title: "Oblique random forests with `aorsf`"
+subtitle: "MELODEM data workshop"
+author: "Byron C. Jaeger, PhD"
+institute: "Wake Forest University School of Medicine"
+format: 
+  revealjs:
+    slide-number: true
+    footer: Slides available at <https://bcjaeger.github.io/melodem-apoe4-het/>
+    include-before-body: header.html
+    include-after-body: footer-annotations.html
+    theme: [default, tidymodels.scss]
+    width: 1280
+    height: 720
+---
+
+```{r setup, cache=FALSE, include=FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, 
+                      message = FALSE,
+                      warning = FALSE,
+                      dpi = 300,
+                      cache = TRUE,
+                      fig.height = 7.25,
+                      out.width = '100%',
+                      fig.align = 'center')
+
+library(tidyverse)
+library(palmerpenguins)
+library(aorsf)
+
+penguins <- drop_na(penguins)
+
+withr::with_dir(
+  new = here::here(),
+  code = {
+    source("R/aorsf_select_vars.R")
+    targets::tar_load(c(penguin_figs,
+                        data_sim_1))  
+  }
+  
+)
+
+```
+
+## Overview
+
+
+- What does oblique mean?
+    
+- `aorsf`
+
+    + Motivation
+
+    + Design
+    
+    + Benchmarks
+    
+    + Applications
+
+# What does oblique mean?
+
+## Background
+
+Axis-based splits (left) and oblique splits (right)
+
+![](img/axis_versus_oblique.png){fig-align="center"}
+
+---
+
+## Oblique tree: first split
+
+:::{.column width="30%"}
+
+First, split mostly by bill length
+
+:::
+
+:::{.column width="69%"}
+
+```{r}
+penguin_figs$oblique_1
+```
+
+:::
+
+---
+
+## Oblique tree: second split
+
+:::{.column width="30%"}
+
+First, split mostly by bill length
+
+<br/>
+
+Second, make a triangle for the gentoo.
+
+:::
+
+:::{.column width="69%"}
+
+```{r}
+penguin_figs$oblique_2
+```
+
+:::
+
+---
+
+## Oblique random forests
+
+:::{.column width="30%"}
+
+Aggregating randomized trees gives the *oblique* random forest
+
+:::
+
+:::{.column width="69%"}
+
+```{r}
+penguin_figs$oblique_3
+```
+
+:::
+
+---
+
+## Surprisingly different!
+
+:::{.column width="30%"}
+
+Despite very many similarities, axis-based and oblique random forests may give different results.
+
+:::
+
+:::{.column width="69%"}
+
+```{r}
+penguin_figs$axis_3d
+```
+
+:::
+
+## Prior benchmarks
+
+- @breiman2001random found oblique random forests compared more favorably to boosting than axis based ones.
+
+- @menze2011oblique coined the term 'oblique' random forest and introduced variable importance metrics for it.
+
+- On benchmarking 190 classifiers on 121 public datasets, @katuwal2020heterogeneous found variations on the oblique random forests were the top 3 classifiers.
+
+:::footer
+Leo Breiman named it "Forest-RC" but it later came to be known as oblique
+:::
+
+**Yet, everyone uses axis-based random forests. Few people even know that oblique random forests exist.**
+
+---
+
+## Here's why:
+
+![](img/fig_bm_1.png){width=100% fig-align="center"}
+
+
+---
+
+![](img/meme_slow_R.jpg){width=100% fig-align="center"}
+
+# `aorsf` <br/>accelerated oblique random (survival) forest
+
+## What is the problem?
+
+Oblique random forests are slow. How slow, you ask?
+
+```{r, warning=FALSE, echo=TRUE}
+
+library(ODRF)
+library(ranger)
+library(microbenchmark)
+
+microbenchmark(
+  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, 
+              data = penguins, 
+              ntrees = 500),
+  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,
+                  data = penguins,
+                  num.trees = 500),
+  times = 5
+)
+
+
+
+```
+
+## Why so slow?
+
+Suppose we're given $p$ predictors, each with $k$ unique values.
+
+- If predictor has $k$ unique values $\Rightarrow$ max $k-2$ potential splits
+
+- At most, $p \cdot (k-2)$ axis-based splits to assess
+
+Suppose we assess $L$ linear combinations of predictors:
+
+- At most, $L \cdot (k-2)$ oblique splits to assess
+
+Usually, $L \gg p$ to find good oblique splits
+
+## Find 1 **good** linear combination?
+
+What if we use a method like regression to find $L=1$ linear combination?
+
+$$\text{Time to assess an oblique split }= R + S$$
+
+Where
+
+- $R$ is time to fit regression
+
+- $S$ is time to assess up to $k-2$ splits
+
+If $R$ is small, we can do okay with this!
+    
+## But $R$ is not small
+
+It takes $\approx$ 2.5ms for 1 oblique split, <20ms to fit 500 axis-based trees...
+
+
+```{r, echo=TRUE}
+
+# compare time for 1 oblique split to 500 axis-based trees
+microbenchmark(
+  # 1 oblique split
+  glm = glm(I(species == 'Adelie') ~ bill_length_mm + flipper_length_mm,
+            family = 'binomial', 
+            data = penguins),
+  # 500 axis based trees
+  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,
+                  data = penguins,
+                  num.trees = 500)
+)
+
+```
+
+1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩
+
+## `aorsf`
+
+@jaeger2022aorsf: Accelerated oblique random (survival) forest
+
+- We take the approach of minimizing $R$
+
+- Instead of fitting a full regression model, we 
+
+    + Avoid scaling during regression (minimize data copying)
+    
+    + Relax convergence criteria (e.g., use just 1 iteration)
+    
+While model convergence is vital for valid statistical inference, it isn't that big of a deal for finding oblique splits. Remember, we just have to do slightly better than random guessing.
+
+## Benchmark
+
+Minimizing $R$ helps.
+
+```{r, echo=TRUE}
+
+microbenchmark(
+  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, 
+              data = penguins, 
+              ntrees = 500),
+  aorsf = orsf(species ~ bill_length_mm + flipper_length_mm, 
+              data = penguins, 
+              n_tree = 500),
+  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,
+                  data = penguins,
+                  num.trees = 500),
+  times = 5
+)
+
+```
+
+## More benchmarks
+
+@jaeger2024accelerated compare `aorsf` to `obliqueRSF`:
+
+- Evaluated in 35 risk prediction tasks (21 datasets)
+
+- Measured computation time and C-statistic.
+
+- Used Bayesian linear mixed models to test for differences.
+
+---
+
+## Computation time
+
+`aorsf` over 300 times faster than `obliqueRSF`
+
+![](img/fig_bm_2.png){width=100% fig-align="center"}
+
+## C-statistic
+
+`aorsf` practically equivalent to `obliqueRSF`
+
+![](img/fig_bm_3.png){width=100% fig-align="center"}
+
+# Applications of `aorsf`
+
+## Data
+
+I'll use Alzheimer's disease data (`ad_data`) from the `modeldata` package.
+
+```{r, echo=TRUE}
+
+library(modeldata)
+glimpse(ad_data, width = 100)
+
+```
+
+## Model fitting
+
+
+:::{.column width="44%"}
+
+Formula interface 
+
+- Similar to other R packages
+
+- Shortcut: `outcome ~ .`
+
+```{r, echo=TRUE, results='hide'}
+
+library(aorsf)
+fit <- orsf(ad_data, Class ~ .)
+
+```
+
+:::
+
+:::{.column width="55%"}
+
+```{r}
+fit
+```
+
+:::
+
+## Your turn
+
+Open `classwork/03-oblique_forests.qmd` and complete Exercise 1
+
+```{r ex-1}
+#| echo: false
+# countdown::countdown(minutes = 5, id = "ex-1")
+```
+
+## Partial dependence
+
+**big idea**: Interpret a model by evaluating its predictions on special data.
+
+**Example**: Expected prediction from the model as a function of age. 
+
+**Pseudo-code**: `for i in seq(min_age, max_age)`:
+
+- Set all values of `age` to `i` in the training data
+
+- Compute out-of-bag predictions for training data
+
+- Save the mean prediction and `i`
+
+## Single variable summary
+
+Similar to `summary()`, `orsf_summarize_uni()` computes out-of-bag partial dependence on the number of variables you request. 
+
+```{r, echo=TRUE}
+
+orsf_summarize_uni(fit, n_variables = 1, class = "Impaired")
+
+```
+
+## Multi-variable summary
+
+See if predictors interact (they don't in this case)
+
+```{r, echo=TRUE}
+
+pd <- orsf_pd_oob(fit, pred_spec_auto(tau, Genotype))
+
+```
+
+```{r}
+
+gg_data <- filter(pd, class == "Impaired")
+
+ggplot(gg_data) +
+  aes(x = tau, y = mean, color = Genotype) + 
+  geom_line()
+
+```
+
+## Your turn
+
+Complete exercise 2
+
+```{r ex-2}
+#| echo: false
+# countdown::countdown(minutes = 5, id = "ex-2")
+```
+
+## Variable selection
+
+We want to remove predictors that don't have any prognostic value.
+
+- `orsf_vs()` performs recursive feature elimination.
+
+- Fit a forest and estimate importance
+
+- Drop the least important predictor
+
+- Repeat until < `n_predictor_min` predictors left.
+
+```{r, echo=TRUE}
+
+orsf_vars <- orsf_vs(fit, 
+                     n_predictor_min = 1, 
+                     verbose_progress = TRUE)
+
+```
+
+## Want to go faster?
+
+You can reduce the number of trees and increase terminal node size if you'd like to speed this process up
+
+```{r, echo=TRUE}
+
+fit_light <- orsf_update(fit, n_tree = 100, leaf_min_obs = 20)
+
+orsf_vars_light <- orsf_vs(fit_light, n_predictor_min = 1, verbose_progress = TRUE)
+
+```
+
+## Pick your variables
+
+Plot the history of performance and variables included.
+
+:::{.column width="49%"}
+
+```{r echo=TRUE}
+
+max_auc <- orsf_vars %>% 
+  arrange(desc(stat_value)) %>% 
+  slice(1)
+
+fig <- ggplot(orsf_vars) + 
+  aes(x = n_predictors,
+      y = stat_value) + 
+  geom_point(alpha = 0.5) + 
+  geom_smooth(se = FALSE, 
+              linewidth = 1) + 
+  geom_point(data = max_auc, 
+             size = 3, 
+             color = 'purple')
+
+```
+
+:::
+
+:::{.column width="49%"}
+
+```{r fig.height=4, fig.width=5}
+fig
+```
+
+:::
+
+## Your turn
+
+Complete exercise 3
+
+```{r ex-3}
+#| echo: false
+# countdown::countdown(minutes = 5, id = "ex-3")
+```
+
+## Compare models
+
+For causal random forests, we'll need *good* prediction models for both dementia and APOE4 status.
+
+- Developing and evaluating prediction models is a deep topic. 
+
+- We will cover the basics:
+
+    + Data splitting
+    
+    + Pre-processing
+    
+    + Evaluating in test data
+
+We'll do this using the `tidymodels` framework.
+
+## Data splitting
+
+If you evaluate prediction models with their training data, you
+
+- Reward models that overfit the data.
+
+- Don't learn much about what will happen in the real world.
+
+So, always evaluate prediction models with data that is "new"
+
+```{r, echo=TRUE, results='hide'}
+
+library(rsample)
+set.seed(123)
+# make the split: 75% training data, 25% testing
+split <- initial_split(data = ad_data, prop = 3/4)
+# get the training data
+train <- training(split)
+# get the testing data
+test <- testing(split)
+
+
+```
+
+## Pre-processing
+
+Why do we pre-process data?
+
+- Some models require special data format
+
+- Sometimes its helpful to apply transformations to data prior to modeling
+
+We'll train our pre-processing steps using the `recipes` package 
+
+```{r, echo=TRUE}
+
+library(recipes)
+vars_picked <- aorsf_select_vars(train, Class ~ .)
+
+# Makes the recipe steps
+recipe_steps <- recipe(data = train, Class ~ .) %>% 
+  step_select(all_of(vars_picked)) %>% 
+  step_impute_knn(all_predictors()) %>% 
+  step_dummy(all_nominal_predictors())
+
+```
+
+## Training the recipe
+
+With its steps defined, we are ready to
+
+- train the recipe 
+
+```{r, echo=TRUE}
+# train the recipe steps with training data
+recipe_trained <- prep(recipe_steps, training = train)
+```
+
+- use it to process the training and testing data.
+
+```{r, echo=TRUE}
+
+# apply the recipe steps to process training data
+train_processed <- bake(recipe_trained, new_data = train)
+# apply the exact same steps to the testing data
+test_processed <- bake(recipe_trained, new_data = test)
+
+```
+
+## Fitting models
+
+- `parsnip` is a unified interface for models with R. 
+
+- `bonsai` extends `parsnip`, focusing on decision tree models.
+
+With these packages, we make a model *specification*, and then *fit* it.
+
+```{r, echo=TRUE}
+
+library(parsnip)
+library(bonsai)
+
+# make model specifications
+ranger_spec <- rand_forest(mode = 'classification', engine = 'ranger')
+aorsf_spec  <- rand_forest(mode = 'classification', engine = 'aorsf')
+
+# fit them
+ranger_fit <- fit(ranger_spec, data = train_processed, formula = Class ~ .)
+aorsf_fit  <- fit(aorsf_spec,  data = train_processed, formula = Class ~ .)
+
+```
+
+## Evaluating in test data
+
+We predict probabilities for observations in the testing data, and evaluate discrimination using the `yardstick` package:
+
+```{r, echo=TRUE}
+
+preds <- list(aorsf = aorsf_fit, ranger = ranger_fit) %>% 
+  map(~ predict(.x, new_data = test_processed, type = 'prob')) %>% 
+  map(~ mutate(.x, truth = test_processed$Class)) %>% 
+  bind_rows(.id = 'model')
+
+library(yardstick)
+
+preds %>% 
+  group_by(model) %>% 
+  roc_auc(truth = truth, .pred_Impaired)
+
+```
+
+
+
+## References

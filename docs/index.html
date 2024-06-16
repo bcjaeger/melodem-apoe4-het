@@ -232,18 +232,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>The following R packages, which you can install from the R console:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for the workshop</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"tidymodels"</span>, <span class="st">"data.table"</span>, <span class="st">"haven"</span>, <span class="st">"magrittr"</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"glue"</span>, <span class="st">"grf"</span>, <span class="st">"aorsf"</span>, <span class="st">"glmnet"</span>, <span class="st">"xgboost"</span>, <span class="st">"randomForestSRC"</span>,</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"party"</span>, <span class="st">"riskRegression"</span>, <span class="st">"survival"</span>, <span class="st">"officer"</span>, <span class="st">"flextable"</span>, </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"table.glue"</span>, <span class="st">"gtsummary"</span>, <span class="st">"usethis"</span>, <span class="st">"cli"</span>, <span class="st">"ggforce"</span>,</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rpart"</span>, <span class="st">"rpart.plot"</span>, <span class="st">"ranger"</span>, <span class="st">"withr"</span>, <span class="st">"gt"</span>, <span class="st">'recipes'</span>, </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'butcher'</span>)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># A few more packages may be added - this list isn't final yet.</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A few more packages may be added - this list isn't final yet.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Install required packages for the workshop</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"tidymodels"</span>, <span class="st">"data.table"</span>, <span class="st">"haven"</span>, <span class="st">"magrittr"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"glue"</span>, <span class="st">"grf"</span>, <span class="st">"aorsf"</span>, <span class="st">"glmnet"</span>, <span class="st">"xgboost"</span>, <span class="st">"randomForestSRC"</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"party"</span>, <span class="st">"riskRegression"</span>, <span class="st">"survival"</span>, <span class="st">"officer"</span>, <span class="st">"flextable"</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"table.glue"</span>, <span class="st">"gtsummary"</span>, <span class="st">"usethis"</span>, <span class="st">"cli"</span>, <span class="st">"ggforce"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rpart"</span>, <span class="st">"rpart.plot"</span>, <span class="st">"ranger"</span>, <span class="st">"withr"</span>, <span class="st">"gt"</span>, <span class="st">'recipes'</span>, </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'butcher'</span>, <span class="st">'sandwich'</span>, <span class="st">'lmtest'</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># identify what packages are not installed</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>pkgs_needed <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  pkgs,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(<span class="fu">installed.packages</span>())</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># install packages if needed</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(pkgs_needed) <span class="sc">&gt;</span> <span class="dv">0</span>){</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(pkgs_needed)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you’re a Windows user and encounter an error message during installation noting a missing Rtools installation, install Rtools using the installer linked <a href="https://cran.r-project.org/bin/windows/Rtools/">here</a>.</p>
 <section id="github" class="level3">
@@ -273,7 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li><a href="slides/01-introduction.html" target="_blank">Introduction</a></li>
 <li><a href="slides/02-trees_and_forests.html" target="_blank">Decision trees and random forests</a></li>
-<li><a href="slides/03-prediction_forests.html" target="_blank">Oblique random forests</a></li>
+<li><a href="slides/03-oblique_forests.html" target="_blank">Oblique random forests</a></li>
 <li><a href="slides/04-causal_forests.html" target="_blank">Causal random forests</a></li>
 </ol>
 </section>

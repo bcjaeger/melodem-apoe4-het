@@ -1,0 +1,217 @@
+---
+title: "Oblique random forests classwork"
+subtitle: "MELODEM data workshop"
+editor_options: 
+  chunk_output_type: console
+---
+
+I recommend restarting R between each slide deck!
+
+# Exercise 1
+
+In this exercise you will fit an oblique random forest to your data and print it.
+
+## Setup
+
+Change `data_sim_1` to be the name of your data.
+
+```{r, message=FALSE}
+
+withr::with_dir(
+  new = here::here(),
+  code = {
+    targets::tar_load_globals()
+    # change data_sim_1 to be the name of your data.
+    tar_load(data_sim_1)
+  }
+)
+
+library(tidyverse)
+library(survival)
+library(aorsf)
+
+# change data_sim_1 to be the name of your data.
+data_classwork <- data_sim_1$values
+
+```
+
+## Fit an oblique random survival forest
+
+Let's fit an oblique random survival forest to predict dementia risk
+
+- **Careful**: Do your data include an identifier column? If so, you should remove that column or tell `orsf` to ignore it by writing your formula like so: `Surv(time, status) ~ . - id_col`, where `id_col` is the name of your identifier column.
+
+```{r}
+
+fit_orsf_dementia <- orsf(data_classwork, 
+                          formula = Surv(time, status) ~ .)
+
+```
+
+Next, print the fitted object:
+
+```{r}
+
+fit_orsf_dementia
+
+```
+
+## Fit an oblique random classification forest
+
+Next, we'll fit a forest to predict APOE4 status. Why? You'll learn in the next chapter that a good prediction model for the "treatment" variable is an important part of the causal random forest.
+
+- **Careful**: The model for APOE4 should not use dementia time or status as predictors. Note how the formula argument is modified to make this clear.
+
+```{r}
+
+fit_orsf_apoe4 <- orsf(data_classwork, 
+                       formula = apoe4 ~ . - time -status)
+
+```
+
+**Note**: You can use either oblique random forest model for the following exercises. Use both if you'd like.
+
+# Exercise 2
+
+In this exercise you will summarize your oblique random forests to understand (1) the most important predictors, (2) how those predictors impact predictions, and (3) pairwise interactions.
+
+
+## Importance and univariate summary
+
+The function `orsf_summarize_uni()` will organize predictors from most to least important, and also print a summary of how they impact predictions. The input `n_variables` determines how many variables will be summarized (keep small to reduce computation time, or leave unspecified to summarize all predictors). 
+
+```{r}
+
+smry_dementia <- 
+  orsf_summarize_uni(fit_orsf_dementia, n_variables = 5)
+
+smry_dementia
+
+```
+
+**Interpret**:
+
+- What are the 5 most important predictors for dementia risk?
+
+- What predictors associate with greater dementia risk?
+
+```{r}
+
+smry_apoe4 <- 
+  orsf_summarize_uni(fit_orsf_apoe4, n_variables = 5)
+
+smry_apoe4
+
+```
+
+**Interpret**:
+
+- What are the 5 most important predictors for APOE4 status?
+
+- What predictors associate with greater probability of elevated APOE4?
+
+## Multi-variable summaries and interactions
+
+Let's investigate whether there are interactions in the APOE4 forest. The function `orsf_vint()` will give a score to all pairwise interactions (higher score means more evidence of interaction).
+
+- **Careful**: this can be very computational. Limit your call to use at most the 5 most important variables.
+
+```{r}
+
+top_5 <- names(orsf_vi(fit_orsf_apoe4)[1:5])
+
+# verbose progress so you'll know how long it's going to take.
+vints <- orsf_vint(fit_orsf_apoe4, 
+                   predictors = top_5,
+                   verbose_progress = TRUE)
+
+vints
+
+```
+
+
+How can we examine the way that two predictors interact? Graphs!
+
+- Step 1: Get the `pd` data for the top interacting pair
+
+```{r}
+
+data_pd <- vints$pd_values[[1]]
+
+```
+
+- Step 2: Plot expected predictions as a function of these two predictors
+
+    + Set one variable to be the coloring variable 
+    
+    + Set the other variable to be the x-axis variable
+
+```{r}
+
+var_1_name <- data_pd$var_1_name[1] # color variable
+var_2_name <- data_pd$var_2_name[1] # x-axis variable
+
+ggplot(data_pd) + 
+  aes(x = var_2_value, y = mean, color = factor(var_1_value)) + 
+  geom_line() + 
+  labs(x = var_2_name, color = var_1_name)
+
+```
+
+If you see all lines have the same slope, it means **no evidence** of interaction. If you see different slopes in each line, that is **evidence for** interaction.
+
+# Exercise 3
+
+Perform variable selection with `orsf_vs()`.
+
+```{r}
+
+vars <- fit_orsf_dementia %>% 
+  orsf_vs(n_predictor_min = 1)
+
+vars
+
+```
+
+Plot the history of variable selection:
+
+```{r}
+
+ggplot(vars) + 
+  aes(x = n_predictors, 
+      y = stat_value) + 
+  geom_point() + 
+  geom_smooth(se = FALSE, linewidth = 1)
+
+```
+
+If your data don't have many predictors, you may like this plot better.
+
+
+```{r}
+
+library(ggrepel)
+
+vars_modified <- vars %>% 
+  mutate(
+    vars_included = map_chr(.x = variables_included, 
+                            .f = paste, 
+                            collapse = '\n'),
+    vars_included = paste(vars_included,
+                          round(stat_value, 4),
+                          sep = '\n C = ')
+  )
+
+ggplot(vars_modified) + 
+  aes(x = n_predictors, 
+      y = stat_value) + 
+  geom_smooth(se = FALSE, 
+              method = 'loess',
+              formula = y ~ x,
+              linewidth = 1/2) + 
+  geom_point(size = 3) + 
+  geom_label_repel(aes(label = vars_included))
+
+```
+
+

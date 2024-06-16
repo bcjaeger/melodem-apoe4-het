@@ -41,17 +41,21 @@ withr::with_dir(
 
 ## Overview
 
-This lecture focuses on the the causal random forest algorithm
-
 - Robinson's residual-on-residual regression
 
-- Causal trees
+    + Causal trees
+    
+    + Causal random forest
+    
+    + Causal random survival forest
 
-- Causal random forest
+- Inference with causal random forests
 
-- Causal random survival forest
-
-- Inference with CATE summaries
+    + Conditional average treatment effect (CATE)
+    
+    + Best linear projection (BLP)
+    
+    + Rank weighted average treatment effect (RATE)
 
 # Robinson's residual-on-residual regression
 
@@ -561,6 +565,8 @@ $$\tau(x) = E[\min(T(1), h) - \min(T(0), h) \, | X = x],$$
 - Survival probability:
 $$\tau(x) = P[T(1) > h \, | X = x] - P[T(0) > h \, | X = x].$$
 $T(1)$ and $T(0)$ are treated and untreated event times, respectively.
+
+# Inference with causal random forests
 
 ## Summaries of CATEs
 

@@ -428,13 +428,19 @@ Byron C. Jaeger, PhD
 </section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
-<p>This lecture focuses on the the causal random forest algorithm</p>
 <ul>
-<li><p>Robinson’s residual-on-residual regression</p></li>
+<li><p>Robinson’s residual-on-residual regression</p>
+<ul>
 <li><p>Causal trees</p></li>
 <li><p>Causal random forest</p></li>
 <li><p>Causal random survival forest</p></li>
-<li><p>Inference with CATE summaries</p></li>
+</ul></li>
+<li><p>Inference with causal random forests</p>
+<ul>
+<li><p>Conditional average treatment effect (CATE)</p></li>
+<li><p>Best linear projection (BLP)</p></li>
+<li><p>Rank weighted average treatment effect (RATE)</p></li>
+</ul></li>
 </ul>
 </section>
 <section>
@@ -798,6 +804,11 @@ D_i =
 <li>RMST <span class="math display">\[\tau(x) = E[\min(T(1), h) - \min(T(0), h) \, | X = x],\]</span></li>
 <li>Survival probability: <span class="math display">\[\tau(x) = P[T(1) &gt; h \, | X = x] - P[T(0) &gt; h \, | X = x].\]</span> <span class="math inline">\(T(1)\)</span> and <span class="math inline">\(T(0)\)</span> are treated and untreated event times, respectively.</li>
 </ul>
+</section></section>
+<section>
+<section id="inference-with-causal-random-forests" class="title-slide slide level1 center">
+<h1>Inference with causal random forests</h1>
+
 </section>
 <section id="summaries-of-cates" class="slide level2">
 <h2>Summaries of CATEs</h2>
