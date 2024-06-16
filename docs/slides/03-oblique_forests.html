@@ -404,6 +404,8 @@
       margin-right: 0; 
     }
   </style>
+  <link href="../site_libs/countdown-0.4.0/countdown.css" rel="stylesheet">
+  <script src="../site_libs/countdown-0.4.0/countdown.js"></script>
 </head>
 <body class="quarto-light">
 <script src="https://use.fontawesome.com/5235085b15.js"></script>
@@ -564,8 +566,8 @@ Byron C. Jaeger, PhD
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
    expr       min        lq       mean    median        uq       max neval cld
-   ODRF 3670.5154 3720.3008 3715.86764 3727.5760 3729.7764 3731.1696     5  a 
- ranger   20.6938   20.9443   23.75184   24.0957   25.6599   27.3655     5   b</code></pre>
+   ODRF 3550.0649 3684.4281 3668.36624 3693.2075 3702.4468 3711.6839     5  a 
+ ranger   21.1618   21.3898   23.74186   23.5567   24.8762   27.7248     5   b</code></pre>
 </div>
 </div>
 </section>
@@ -610,9 +612,9 @@ Byron C. Jaeger, PhD
 <span id="cb3-11"><a href="#cb3-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
-   expr     min      lq      mean   median       uq     max neval cld
-    glm  1.7466  2.1916  2.752409  2.30565  2.46645 17.8025   100  a 
- ranger 18.8925 19.7044 20.206858 20.12320 20.44355 34.4850   100   b</code></pre>
+   expr     min       lq      mean   median       uq     max neval cld
+    glm  1.7179  2.11885  2.847896  2.25230  2.41635 17.9125   100  a 
+ ranger 19.0809 19.82320 20.122212 20.18665 20.44835 21.1479   100   b</code></pre>
 </div>
 </div>
 <p>1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩</p>
@@ -649,9 +651,9 @@ Byron C. Jaeger, PhD
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
    expr       min        lq       mean    median        uq       max neval cld
-   ODRF 3560.8812 3719.7699 3689.73696 3719.7776 3721.4284 3726.8277     5  a 
-  aorsf   46.8275   47.8123   50.05386   48.9781   49.5285   57.1229     5   b
- ranger   20.4019   21.8647   23.32748   24.1629   24.1870   26.0209     5   b</code></pre>
+   ODRF 3529.8630 3694.8034 3669.37612 3699.9150 3700.9639 3721.3353     5  a 
+  aorsf   43.1198   47.5809   47.54118   47.8632   48.6613   50.4807     5   b
+ ranger   20.6367   21.4912   22.27638   21.6040   23.3981   24.2519     5   b</code></pre>
 </div>
 </div>
 </section>
@@ -846,7 +848,7 @@ $ Class                            &lt;fct&gt; Control, Control, Control, Contro
                  N trees: 500
       N predictors total: 130
    N predictors per node: 12
- Average leaves per tree: 13.1
+ Average leaves per tree: 13.314
 Min observations in leaf: 5
           OOB stat value: 0.89
            OOB stat type: AUC-ROC
@@ -860,6 +862,14 @@ Min observations in leaf: 5
 <section id="your-turn" class="slide level2">
 <h2>Your turn</h2>
 <p>Open <code>classwork/03-oblique_forests.qmd</code> and complete Exercise 1</p>
+<div class="cell" data-layout-align="center" data-hash="03-oblique_forests_cache/revealjs/ex-1_e8fcad339938701a3f36debd8df77ca0">
+<div class="cell-output-display">
+<div class="countdown" id="ex-1" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
 </section>
 <section id="partial-dependence" class="slide level2">
 <h2>Partial dependence</h2>
@@ -884,11 +894,11 @@ Min observations in leaf: 5
         |------------ Probability ------------|
   Value      Mean    Median    25th %    75th %
  &lt;char&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
-   5.04 0.2289765 0.1864061 0.1176195 0.3085315
-   5.37 0.2345466 0.1926672 0.1192539 0.3211593
-   5.75 0.2527557 0.2128122 0.1341983 0.3459920
-   6.18 0.2827814 0.2462766 0.1578741 0.3860494
-   6.50 0.3024760 0.2627900 0.1786740 0.4066311
+   5.04 0.2315356 0.1894760 0.1222009 0.3278439
+   5.37 0.2367238 0.1922871 0.1233362 0.3278661
+   5.75 0.2520669 0.2143218 0.1316913 0.3484019
+   6.18 0.2803966 0.2423853 0.1529185 0.3868747
+   6.50 0.2993092 0.2579856 0.1757890 0.4095241
 
  Predicted probability for top 1 predictors </code></pre>
 </div>
@@ -905,6 +915,14 @@ Min observations in leaf: 5
 <section id="your-turn-1" class="slide level2">
 <h2>Your turn</h2>
 <p>Complete exercise 2</p>
+<div class="cell" data-layout-align="center" data-hash="03-oblique_forests_cache/revealjs/ex-2_c3e7d16f8c27747efa946705222935f4">
+<div class="cell-output-display">
+<div class="countdown" id="ex-2" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
 </section>
 <section id="variable-selection" class="slide level2">
 <h2>Variable selection</h2>
@@ -920,8 +938,8 @@ Min observations in leaf: 5
 <span id="cb14-2"><a href="#cb14-2"></a>                     <span class="at">n_predictor_min =</span> <span class="dv">1</span>, </span>
 <span id="cb14-3"><a href="#cb14-3"></a>                     <span class="at">verbose_progress =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Selecting variables: 37.2% ~ time remaining: 5 seconds 
-Selecting variables: 96.1% ~ time remaining: 0 seconds 
+<pre><code>Selecting variables: 36.4% ~ time remaining: 5 seconds 
+Selecting variables: 94.6% ~ time remaining: 0 seconds 
 Selecting variables: 100%</code></pre>
 </div>
 </div>
@@ -973,6 +991,14 @@ Selecting variables: 100%</code></pre>
 <section id="your-turn-2" class="slide level2">
 <h2>Your turn</h2>
 <p>Complete exercise 3</p>
+<div class="cell" data-layout-align="center" data-hash="03-oblique_forests_cache/revealjs/ex-3_df6bcfe15b46ea73073757b05d3d8a11">
+<div class="cell-output-display">
+<div class="countdown" id="ex-3" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
 </section>
 <section id="compare-models" class="slide level2">
 <h2>Compare models</h2>

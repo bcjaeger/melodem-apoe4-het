@@ -669,7 +669,7 @@ Open `classwork/04-causal_forests.qmd` and complete Exercise 1
 
 ```{r ex-1}
 #| echo: false
-# countdown::countdown(minutes = 5, id = "ex-1")
+countdown::countdown(minutes = 5, id = "ex-1")
 ```
 
 ## Estimating the BLP
@@ -722,7 +722,7 @@ Complete Exercise 2
 
 ```{r ex-2}
 #| echo: false
-# countdown::countdown(minutes = 5, id = "ex-1")
+countdown::countdown(minutes = 5, id = "ex-1")
 ```
 
 ## Your turn
@@ -731,7 +731,7 @@ Complete Exercise 3
 
 ```{r ex-3}
 #| echo: false
-# countdown::countdown(minutes = 5, id = "ex-1")
+countdown::countdown(minutes = 5, id = "ex-1")
 ```
 
 ## Rank-Weighted Average Treatment Effect
@@ -1032,7 +1032,7 @@ Complete Exercise 4
 
 ```{r ex-4}
 #| echo: false
-# countdown::countdown(minutes = 5, id = "ex-1")
+countdown::countdown(minutes = 5, id = "ex-1")
 ```
 
 ## References

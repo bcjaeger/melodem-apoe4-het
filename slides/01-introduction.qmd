@@ -210,12 +210,12 @@ create_from_github(
 
 While you're working,
 
-- Place red sticky note on the back of your laptop if you want help.
+- Place **red** sticky note on the back of your laptop if you want **help**.
 
-- Place green sticky note on the back of your laptop when you finish.
+- Place **green** sticky note on the back of your laptop when you are **done**
 
 ```{r ex-1-1}
-# countdown::countdown(minutes = 5, id = "ex-1-1")
+countdown::countdown(minutes = 5, id = "ex-1-1")
 ```
 
 ## Start with data management
@@ -267,7 +267,7 @@ We are going to add your data to the pipeline, carefully.
 . . .
 
 ```{r ex-1-2}
-# countdown::countdown(minutes = 3, id = "ex-1-2")
+countdown::countdown(minutes = 3, id = "ex-1-2")
 ```
 
 ## Your turn 
@@ -291,7 +291,7 @@ git branch -b regards
 ```
 
 ```{r ex-1-3}
-# countdown::countdown(minutes = 3, id = "ex-1-3")
+countdown::countdown(minutes = 3, id = "ex-1-3")
 ```
 
 ## Your turn 
@@ -338,7 +338,7 @@ data_x_tar <- tar_target(
 
 
 ```{r ex-1-4}
-# countdown::countdown(minutes = 5, id = "ex-1-4")
+countdown::countdown(minutes = 5, id = "ex-1-4")
 ```
 
 ---

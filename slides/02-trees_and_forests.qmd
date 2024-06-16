@@ -203,7 +203,7 @@ Was this the best possible split? Let's find out.
 
 ```{r ex-1}
 #| echo: false
-# countdown::countdown(minutes = 5, id = "ex-1")
+countdown::countdown(minutes = 5, id = "ex-1")
 ```
 
 ## Keep growing?
@@ -420,7 +420,7 @@ Fit your own decision tree to the `penguins` data.
 
 ```{r ex-2}
 #| echo: false
-# countdown::countdown(minutes = 5, id = "ex-2")
+countdown::countdown(minutes = 5, id = "ex-2")
 ```
 
 
