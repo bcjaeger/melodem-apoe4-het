@@ -14,7 +14,7 @@ format:
     height: 720
 ---
 
-```{r setup, cache=FALSE}
+```{r setup, cache=FALSE, include=FALSE}
 
 knitr::opts_chunk$set(echo = FALSE, 
                       message = FALSE,
