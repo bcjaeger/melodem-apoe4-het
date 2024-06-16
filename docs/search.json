@@ -32,7 +32,7 @@
     "href": "slides/01-introduction.html#set-up-r-packages",
     "title": "MELODEM data workshop",
     "section": "Set-up R packages",
-    "text": "Set-up R packages\nMake sure we all have up-to-date versions of these R packages:\n\n# Install required packages for the workshop\npkgs &lt;- \n  c(\"tidyverse\", \"tidymodels\", \"data.table\", \"haven\", \"magrittr\",\n    \"glue\", \"grf\", \"aorsf\", \"glmnet\", \"xgboost\", \"randomForestSRC\",\n    \"party\", \"riskRegression\", \"survival\", \"officer\", \"flextable\", \n    \"table.glue\", \"gtsummary\", \"usethis\", \"cli\")\n\ninstall.packages(pkgs)"
+    "text": "Set-up R packages\nMake sure we all have up-to-date versions of these R packages:\n\n# Install required packages for the workshop\npkgs &lt;- \n  c(\"tidyverse\", \"tidymodels\", \"data.table\", \"haven\", \"magrittr\",\n    \"glue\", \"grf\", \"aorsf\", \"glmnet\", \"xgboost\", \"randomForestSRC\",\n    \"party\", \"riskRegression\", \"survival\", \"officer\", \"flextable\", \n    \"table.glue\", \"gtsummary\", \"usethis\", \"cli\", \"ggforce\",\n    \"rpart\", \"rpart.plot\", \"ranger\", \"withr\", \"gt\", 'recipes', \n    'butcher', 'sandwich', 'lmtest')\n\ninstall.packages(pkgs)"
   },
   {
     "objectID": "slides/01-introduction.html#set-up-github",

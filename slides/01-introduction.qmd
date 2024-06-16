@@ -158,7 +158,9 @@ pkgs <-
   c("tidyverse", "tidymodels", "data.table", "haven", "magrittr",
     "glue", "grf", "aorsf", "glmnet", "xgboost", "randomForestSRC",
     "party", "riskRegression", "survival", "officer", "flextable", 
-    "table.glue", "gtsummary", "usethis", "cli")
+    "table.glue", "gtsummary", "usethis", "cli", "ggforce",
+    "rpart", "rpart.plot", "ranger", "withr", "gt", 'recipes', 
+    'butcher', 'sandwich', 'lmtest')
 
 install.packages(pkgs)
 ```
