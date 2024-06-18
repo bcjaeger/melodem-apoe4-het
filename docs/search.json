@@ -11,14 +11,14 @@
     "href": "slides/01-introduction.html#schedule-for-day-1-morning",
     "title": "MELODEM data workshop",
     "section": "Schedule for day 1: Morning",
-    "text": "Schedule for day 1: Morning\nIntroduction, data management (75m)\n\nBreak (15m)\n\nDecision trees and random forests (75m)\n\nBreak (15m)\n\nLunch (1 hour)"
+    "text": "Schedule for day 1: Morning\nIntroduction, data management (75m)\n\nBreak (15m)\n\nDecision trees and random forests (75m)\n\nBreak (15m)\n\nLunch (1 hour)\n\nEach lecture is 75m and this includes time for questions/discussion."
   },
   {
     "objectID": "slides/01-introduction.html#schedule-for-day-1-afternoon",
     "href": "slides/01-introduction.html#schedule-for-day-1-afternoon",
     "title": "MELODEM data workshop",
     "section": "Schedule for day 1: Afternoon",
-    "text": "Schedule for day 1: Afternoon\nDevelop and evaluate prediction models (75m)\n\nBreak (15m)\n\nDevelop and evaluate causal models (75m)\n\nBreak (15m)\n\nCollaboration (1 hour)"
+    "text": "Schedule for day 1: Afternoon\nOblique random forests (75m)\n\nBreak (15m)\n\nCausal random forests (75m)\n\nBreak (15m)\n\nCollaboration (1 hour)\n\nEach lecture is 75m and this includes time for questions/discussion."
   },
   {
     "objectID": "slides/01-introduction.html#schedule-for-day-2-morning",
@@ -53,7 +53,7 @@
     "href": "slides/01-introduction.html#your-turn",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun library(targets) to load the targets package.\nRun tar_load_globals() to load relevant functions and packages.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nWhile you’re working,\n\nPlace red sticky note on the back of your laptop if you want help.\nPlace green sticky note on the back of your laptop when you are done\n\n\n\n\n−+\n05:00"
+    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun library(targets) to load the targets package.\nRun tar_load_globals() to load relevant functions and packages.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nWhile you’re working,\n\nPlace red sticky note on the back of your laptop if you want help.\nPlace green sticky note on the back of your laptop when you are done"
   },
   {
     "objectID": "slides/01-introduction.html#working-together-separately.",
@@ -74,21 +74,21 @@
     "href": "slides/01-introduction.html#your-turn-1",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nThink of a name for your data.\n\nExample name: regards\n\nSave a copy of your data in data/sensitive. The name of your file should be name-raw.csv or name-raw.sas7bdat, where name is your data’s name. E.g., regards-raw.csv\n\n\n\n\n\n−+\n03:00"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nThink of a name for your data.\n\nExample name: regards\n\nSave a copy of your data in data/sensitive. The name of your file should be name-raw.csv or name-raw.sas7bdat, where name is your data’s name. E.g., regards-raw.csv"
   },
   {
     "objectID": "slides/01-introduction.html#your-turn-2",
     "href": "slides/01-introduction.html#your-turn-2",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nSwitch from the R console to the terminal.\nVerify you have no uncommitted changes:\n\n\ngit status\n\nShould return “nothing to commit, working tree clean”\n\nCreate a new branch with git:\n\n\ngit branch -b regards\n\n\n\n\n−+\n03:00"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\nSwitch from the R console to the terminal.\nVerify you have no uncommitted changes:\n\n\ngit status\n\nShould return “nothing to commit, working tree clean”\n\nCreate a new branch with git:\n\n\ngit branch -b regards"
   },
   {
     "objectID": "slides/01-introduction.html#your-turn-3",
     "href": "slides/01-introduction.html#your-turn-3",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\n\n\nModify the code beside in _targets.R, replacing x with the name of your data.\nSave the _targets.R file\nRun tar_make() in the R console.\nrun tar_load(data_x), where x is your data name, and print it\n\n\n\nfile_x_tar &lt;- tar_target(               \n  file_x,\n  command = \"data/sensitive/x-raw.csv\",\n  format = \"file\"\n)\n\ndata_x_tar &lt;- tar_target(\n  data_x,\n  data_prepare(file_name = \"data/sensitive/x-raw.csv\")\n)\n\n# don't forget to add these targets\n# to the targets list at the bottom!\n\n\n\n\n\n\n−+\n05:00"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\n\n\nModify the code beside in _targets.R, replacing x with the name of your data.\nSave the _targets.R file\nRun tar_make() in the R console.\nrun tar_load(data_x), where x is your data name, and print it\n\n\n\nfile_x_tar &lt;- tar_target(               \n  file_x,\n  command = \"data/sensitive/x-raw.csv\",\n  format = \"file\"\n)\n\ndata_x_tar &lt;- tar_target(\n  data_x,\n  data_prepare(file_name = \"data/sensitive/x-raw.csv\")\n)\n\n# don't forget to add these targets\n# to the targets list at the bottom!"
   },
   {
     "objectID": "index.html",

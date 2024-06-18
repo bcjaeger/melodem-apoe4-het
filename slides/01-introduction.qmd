@@ -86,17 +86,25 @@ I study risk <br/> prediction + machine learning
 
 **Lunch (1 hour)**
 
+:::footer
+Each lecture is 75m and this includes time for questions/discussion.
+:::
+
 ## Schedule for day 1: Afternoon
 
-*Develop and evaluate prediction models (75m)*
+*Oblique random forests (75m)*
 
 - Break (15m)
 
-*Develop and evaluate causal models (75m)*
+*Causal random forests (75m)*
 
 - Break (15m)
 
 **Collaboration (1 hour)**
+
+:::footer
+Each lecture is 75m and this includes time for questions/discussion.
+:::
 
 ## Schedule for day 2: Morning
 
@@ -113,6 +121,18 @@ I study risk <br/> prediction + machine learning
 **Wrap-up (30m)**
 
 # Part 1: Introduction and data management
+
+## Goals
+
+Half the battle of learning is organization. We're going to get organized.
+
+- Build familiarity with R/Rstudio and git/GitHub
+
+- Learn how to use a *stellar* R package: `targets`
+
+- Plug your data into the workshop pipeline
+
+- Help a friend
 
 ## Whole game
 
@@ -215,7 +235,7 @@ While you're working,
 - Place **green** sticky note on the back of your laptop when you are **done**
 
 ```{r ex-1-1}
-countdown::countdown(minutes = 5, id = "ex-1-1")
+# countdown::countdown(minutes = 5, id = "ex-1-1")
 ```
 
 ## Start with data management
@@ -267,7 +287,7 @@ We are going to add your data to the pipeline, carefully.
 . . .
 
 ```{r ex-1-2}
-countdown::countdown(minutes = 3, id = "ex-1-2")
+# countdown::countdown(minutes = 3, id = "ex-1-2")
 ```
 
 ## Your turn 
@@ -291,7 +311,7 @@ git branch -b regards
 ```
 
 ```{r ex-1-3}
-countdown::countdown(minutes = 3, id = "ex-1-3")
+# countdown::countdown(minutes = 3, id = "ex-1-3")
 ```
 
 ## Your turn 
@@ -338,7 +358,7 @@ data_x_tar <- tar_target(
 
 
 ```{r ex-1-4}
-countdown::countdown(minutes = 5, id = "ex-1-4")
+# countdown::countdown(minutes = 5, id = "ex-1-4")
 ```
 
 ---

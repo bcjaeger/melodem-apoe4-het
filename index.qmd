@@ -80,8 +80,8 @@ pkgs <-
     "glue", "grf", "aorsf", "glmnet", "xgboost", "randomForestSRC",
     "party", "riskRegression", "survival", "officer", "flextable", 
     "table.glue", "gtsummary", "usethis", "cli", "ggforce",
-    "rpart", "rpart.plot", "ranger", "withr", "gt", 'recipes', 
-    'butcher', 'sandwich', 'lmtest')
+    "rpart", "rpart.plot", "ranger", "withr", "gt", "recipes", 
+    "butcher", "sandwich", "lmtest", "gbm")
 
 # identify what packages are not installed
 pkgs_needed <- setdiff(
@@ -123,25 +123,11 @@ These slides are designed to use with live teaching and are published for worksh
 
 1. [Introduction](slides/01-introduction.html){target="_blank"}
 2. [Decision trees and random forests](slides/02-trees_and_forests.html){target="_blank"}
-2. [Oblique random forests](slides/03-oblique_forests.html){target="_blank"}
-2. [Causal random forests](slides/04-causal_forests.html){target="_blank"}
+3. [Oblique random forests](slides/03-oblique_forests.html){target="_blank"}
+4. [Causal random forests](slides/04-causal_forests.html){target="_blank"}
 
 ### Day 2: Collaborative analysis and manuscript planning
 
-<!-- -   02: [Feature engineering using recipes](slides/advanced-02-feature-engineering.html){target="_blank"} -->
-<!-- -   03: [Tuning hyperparameters (grid search)](slides/advanced-03-tuning-hyperparameters.html){target="_blank"} -->
-<!-- -   04: [Grid search via racing](slides/advanced-04-racing.html){target="_blank"} -->
-<!-- -   05: [Iterative search](slides/advanced-05-iterative.html){target="_blank"} -->
-<!-- -   06: [Wrapping up](slides/advanced-06-wrapping-up.html){target="_blank"} -->
-
-<!-- ### Extra content (time permitting) -->
-
-<!-- -   [Intro: Time-based splitting](slides/intro-extra-time-splits.html){target="_blank"} -->
-<!-- -   [Intro: Using workflowsets](slides/intro-extra-workflowsets.html){target="_blank"} -->
-<!-- -   [Intro: Using recipes](slides/intro-extra-recipes.html){target="_blank"} -->
-<!-- -   [Advanced: Transit case study (includes stacking)](slides/extras-transit-case-study.html){target="_blank"} -->
-<!-- -   [Advanced: Effect encoding](slides/extras-effect-encodings.html){target="_blank"} -->
-<!-- -   [Advanced: Model deployment](slides/extras-vetiver.html){target="_blank"} -->
 
 
 <!-- There's also a page for [slide annotations](slides/annotations.html){target="_blank"}; these are extra notes for selected slides. -->
