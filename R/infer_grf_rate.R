@@ -44,7 +44,7 @@ infer_grf_rate <- function(fit_grf_sim, n_folds = 10) {
 
   p_value = 2 * pnorm(-abs(sum(t.statistics) / sqrt(n_folds - 1)))
 
-  p_value
+  tibble(rate_pval = p_value)
 
 
 

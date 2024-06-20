@@ -25,7 +25,8 @@ fit_orsf_clsf <- function(data, select_variables = TRUE) {
   }
 
   # fit the finalized orsf model
-  fit <- orsf(apoe4 ~ ., data = select(data$values, all_of(vars)))
+  fit <- orsf(apoe4 ~ .,
+              data = select(data$values, all_of(vars)))
 
   # all fit functions should return a model
   fit

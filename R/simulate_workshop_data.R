@@ -1,7 +1,7 @@
 
 
 simulate_workshop_data <- function(name,
-                                   n_obs = 2500,
+                                   n_obs = 2000,
                                    seed = 329){
 
   require(magrittr)
@@ -11,9 +11,6 @@ simulate_workshop_data <- function(name,
 
   # number of predictors (does not include apoe4)
   n_predictors <- 5
-
-  # Define the new truncated Y and updated event indicator
-  pred_horizon <- 10
 
   # loading
   X <- matrix(rnorm(n_obs * n_predictors), n_obs, n_predictors) %>%

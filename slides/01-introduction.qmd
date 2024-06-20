@@ -103,7 +103,7 @@ Each lecture is 75m and this includes time for questions/discussion.
 **Collaboration (1 hour)**
 
 :::footer
-Each lecture is 75m and this includes time for questions/discussion.
+Each lecture includes time for questions/discussion.
 :::
 
 ## Schedule for day 2: Morning
@@ -119,6 +119,15 @@ Each lecture is 75m and this includes time for questions/discussion.
 - Break (5m)
 
 **Wrap-up (30m)**
+
+## Sticky notes
+
+While you're working on exercises,
+
+- Place **red** sticky note on the back of your laptop if you want **help**.
+
+- Place **green** sticky note on the back of your laptop when you are **done**
+
 
 # Part 1: Introduction and data management
 
@@ -228,11 +237,6 @@ create_from_github(
 1. Run `tar_glimpse()` to inspect the pipeline.
 1. Run `tar_make()` to make the pipeline.
 
-While you're working,
-
-- Place **red** sticky note on the back of your laptop if you want **help**.
-
-- Place **green** sticky note on the back of your laptop when you are **done**
 
 ```{r ex-1-1}
 # countdown::countdown(minutes = 5, id = "ex-1-1")
@@ -255,8 +259,7 @@ file_sim_tar <- tar_target(
 
 data_sim_tar <- tar_target(
   data_sim,
-  data_prepare(file_sim, 
-               age_range = c(55, 80))
+  data_prepare(file_sim)
 )
 
 ```
@@ -322,13 +325,13 @@ We are going to add your data to the pipeline, carefully.
 
 ::: {.column width="50%"}
 
-6. Modify the code beside in `_targets.R`, replacing `x` with the name of your data.
+6. Modify the code showen here in `_targets.R`, replacing `zzzz` with the name of your data.
 
 7. Save the `_targets.R` file
 
 8. Run `tar_make()` in the R console. 
 
-9. run `tar_load(data_x)`, where `x` is your data name, and print it
+9. run `tar_read(data_zzzz)`, where `zzzz` is your data name.
 
 :::
 
@@ -336,15 +339,17 @@ We are going to add your data to the pipeline, carefully.
 
 ```{r, echo=TRUE, eval=FALSE}
 
-file_x_tar <- tar_target(               
-  file_x,
-  command = "data/sensitive/x-raw.csv",
+file_zzzz_tar <- tar_target(               
+  file_zzzz,
+  command = "data/sensitive/zzzz-raw.csv",
   format = "file"
 )
 
-data_x_tar <- tar_target(
-  data_x,
-  data_prepare(file_name = "data/sensitive/x-raw.csv")
+data_zzzz_tar <- tar_target(
+  data_zzzz,
+  data_prepare(
+    file_name = "data/sensitive/zzzz-raw.csv"
+  )
 )
 
 # don't forget to add these targets

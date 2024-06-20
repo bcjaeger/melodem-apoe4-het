@@ -18,7 +18,7 @@
     "href": "slides/01-introduction.html#schedule-for-day-1-afternoon",
     "title": "MELODEM data workshop",
     "section": "Schedule for day 1: Afternoon",
-    "text": "Schedule for day 1: Afternoon\nOblique random forests (75m)\n\nBreak (15m)\n\nCausal random forests (75m)\n\nBreak (15m)\n\nCollaboration (1 hour)\n\nEach lecture is 75m and this includes time for questions/discussion."
+    "text": "Schedule for day 1: Afternoon\nOblique random forests (75m)\n\nBreak (15m)\n\nCausal random forests (75m)\n\nBreak (15m)\n\nCollaboration (1 hour)\n\nEach lecture includes time for questions/discussion."
   },
   {
     "objectID": "slides/01-introduction.html#schedule-for-day-2-morning",
@@ -53,7 +53,7 @@
     "href": "slides/01-introduction.html#your-turn",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun library(targets) to load the targets package.\nRun tar_load_globals() to load relevant functions and packages.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline.\n\nWhile you’re working,\n\nPlace red sticky note on the back of your laptop if you want help.\nPlace green sticky note on the back of your laptop when you are done"
+    "text": "Your turn\n\nOpen _targets.R in the melodem-apoe4-het project.\nRun library(targets) to load the targets package.\nRun tar_load_globals() to load relevant functions and packages.\nRun tar_glimpse() to inspect the pipeline.\nRun tar_make() to make the pipeline."
   },
   {
     "objectID": "slides/01-introduction.html#working-together-separately.",
@@ -67,7 +67,7 @@
     "href": "slides/01-introduction.html#start-with-data-management",
     "title": "MELODEM data workshop",
     "section": "Start with data management",
-    "text": "Start with data management\nIn the _targets.R file:\n\n\n\nfile_sim_tar &lt;- tar_target(\n  file_sim,\n  command = \"data/sim-raw.csv\",\n  format = 'file'\n)\n\ndata_sim_tar &lt;- tar_target(\n  data_sim,\n  data_prepare(file_sim, \n               age_range = c(55, 80))\n)\n\n\n\n\n\nThis will be done with your data, too!"
+    "text": "Start with data management\nIn the _targets.R file:\n\n\n\nfile_sim_tar &lt;- tar_target(\n  file_sim,\n  command = \"data/sim-raw.csv\",\n  format = 'file'\n)\n\ndata_sim_tar &lt;- tar_target(\n  data_sim,\n  data_prepare(file_sim)\n)\n\n\n\n\n\nThis will be done with your data, too!"
   },
   {
     "objectID": "slides/01-introduction.html#your-turn-1",
@@ -88,7 +88,7 @@
     "href": "slides/01-introduction.html#your-turn-3",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\n\n\nModify the code beside in _targets.R, replacing x with the name of your data.\nSave the _targets.R file\nRun tar_make() in the R console.\nrun tar_load(data_x), where x is your data name, and print it\n\n\n\nfile_x_tar &lt;- tar_target(               \n  file_x,\n  command = \"data/sensitive/x-raw.csv\",\n  format = \"file\"\n)\n\ndata_x_tar &lt;- tar_target(\n  data_x,\n  data_prepare(file_name = \"data/sensitive/x-raw.csv\")\n)\n\n# don't forget to add these targets\n# to the targets list at the bottom!"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\n\n\nModify the code showen here in _targets.R, replacing zzzz with the name of your data.\nSave the _targets.R file\nRun tar_make() in the R console.\nrun tar_read(data_zzzz), where zzzz is your data name.\n\n\n\nfile_zzzz_tar &lt;- tar_target(               \n  file_zzzz,\n  command = \"data/sensitive/zzzz-raw.csv\",\n  format = \"file\"\n)\n\ndata_zzzz_tar &lt;- tar_target(\n  data_zzzz,\n  data_prepare(\n    file_name = \"data/sensitive/zzzz-raw.csv\"\n  )\n)\n\n# don't forget to add these targets\n# to the targets list at the bottom!"
   },
   {
     "objectID": "index.html",
@@ -144,7 +144,7 @@
     "href": "slides/01-introduction.html#your-turn-4",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\ndata_sim\n\n\n\n-------------------------------------- sim -------------------------------------- \n# A tibble: 2,500 × 8\n   time status apoe4    sex      age biomarker_1 biomarker_2 biomarker_3\n  &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;\n1 5.57       0 normal   female  66.3       0.585     0.00719      0.0855\n2 3.44       1 elevated female  65.5       1.12     -0.750        0.368 \n3 1.33       0 elevated female  71.4      -0.679     0.579       -0.536 \n4 0.732      1 normal   female  59.5      -0.247    -1.04        -0.158 \n5 1.94       0 elevated male    58.5      -0.590     0.458       -0.358 \n# ℹ 2,495 more rows\n\n ----------------------------------  exclusions  ---------------------------------- \n# A tibble: 1 × 2\n  label            n_obs\n  &lt;glue&gt;           &lt;int&gt;\n1 sim participants  2500"
+    "text": "Your turn\nWe are going to add your data to the pipeline, carefully.\n\ndata_sim\n\n\n\n-------------------------------------- sim -------------------------------------- \n# A tibble: 1,000 × 8\n   time status apoe4    sex      age biomarker_1 biomarker_2 biomarker_3\n  &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;\n1 0.530      1 elevated female  66.3      0.747      -0.742       -1.71 \n2 0.855      0 normal   female  65.5     -0.562      -0.0513       0.546\n3 0.120      1 elevated male    71.4      0.0133     -0.184        0.826\n4 1.16       1 elevated female  59.5      0.795      -1.32        -1.28 \n5 5.84       0 normal   female  58.5     -0.293       0.191        2.54 \n# ℹ 995 more rows\n\n ----------------------------------  exclusions  ---------------------------------- \n# A tibble: 1 × 2\n  label            n_obs\n  &lt;glue&gt;           &lt;int&gt;\n1 sim participants  1000"
   },
   {
     "objectID": "slides/01-introduction.html#data-management",
@@ -1571,8 +1571,8 @@
     "objectID": "slides/03-oblique_forests.html#overview",
     "href": "slides/03-oblique_forests.html#overview",
     "title": "Oblique random forests with aorsf",
-    "section": "",
-    "text": "What does oblique mean?\naorsf\n\nMotivation\nDesign\nBenchmarks\nApplications"
+    "section": "Overview",
+    "text": "Overview\n\nWhat does oblique mean?\naorsf\n\nMotivation\nDesign\nBenchmarks\nApplications"
   },
   {
     "objectID": "slides/03-oblique_forests.html#background",
@@ -1649,14 +1649,14 @@
     "href": "slides/03-oblique_forests.html#benchmark",
     "title": "Oblique random forests with aorsf",
     "section": "Benchmark",
-    "text": "Benchmark\nMinimizing \\(R\\) helps.\n\nmicrobenchmark(\n  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              ntrees = 500),\n  aorsf = orsf(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              n_tree = 500),\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500),\n  times = 5\n)\n\nUnit: milliseconds\n   expr       min        lq       mean    median        uq       max neval cld\n   ODRF 3557.5872 3617.8500 3672.27716 3676.5959 3743.6079 3765.7448     5  a \n  aorsf   44.9418   47.0487   58.48742   54.1538   67.6806   78.6122     5   b\n ranger   20.2291   20.5060   24.40984   20.8422   22.0504   38.4215     5   b"
+    "text": "Benchmark\nMinimizing \\(R\\) helps.\n\nmicrobenchmark(\n  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              ntrees = 500),\n  aorsf = orsf(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              n_tree = 500),\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500),\n  times = 5\n)\n\nUnit: milliseconds\n   expr       min        lq       mean    median        uq       max neval cld\n   ODRF 3567.0566 3690.7493 3675.39144 3693.2975 3707.2891 3718.5647     5  a \n  aorsf   44.8671   48.9122   56.46038   51.6710   57.6359   79.2157     5   b\n ranger   21.0694   21.5283   22.62312   21.5341   22.6977   26.2861     5   b"
   },
   {
     "objectID": "slides/03-oblique_forests.html#what-is-the-problem",
     "href": "slides/03-oblique_forests.html#what-is-the-problem",
     "title": "Oblique random forests with aorsf",
     "section": "What is the problem?",
-    "text": "What is the problem?\nOblique random forests are slow. How slow, you ask?\n\nlibrary(ODRF)\nlibrary(ranger)\nlibrary(microbenchmark)\n\nmicrobenchmark(\n  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              ntrees = 500),\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500),\n  times = 5\n)\n\nUnit: milliseconds\n   expr       min        lq     mean    median        uq      max neval cld\n   ODRF 3558.7462 3708.9262 3712.542 3729.7658 3731.3914 3833.879     5  a \n ranger   21.3093   21.4679   24.107   24.1079   24.3789   29.271     5   b"
+    "text": "What is the problem?\nOblique random forests are slow. How slow, you ask?\n\nlibrary(ODRF)\nlibrary(ranger)\nlibrary(microbenchmark)\n\nmicrobenchmark(\n  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              ntrees = 500),\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500),\n  times = 5\n)\n\nUnit: milliseconds\n   expr       min        lq      mean    median        uq       max neval cld\n   ODRF 3523.8859 3669.7335 3674.5940 3706.1862 3718.4377 3754.7265     5  a \n ranger   20.9567   22.7149   24.4645   22.9315   26.7886   28.9308     5   b"
   },
   {
     "objectID": "slides/03-oblique_forests.html#why-so-slow",
@@ -1684,7 +1684,7 @@
     "href": "slides/03-oblique_forests.html#but-r-is-not-small",
     "title": "Oblique random forests with aorsf",
     "section": "But \\(R\\) is not small",
-    "text": "But \\(R\\) is not small\nIt takes \\(\\approx\\) 2.5ms for 1 oblique split, &lt;20ms to fit 500 axis-based trees…\n\n# compare time for 1 oblique split to 500 axis-based trees\nmicrobenchmark(\n  # 1 oblique split\n  glm = glm(I(species == 'Adelie') ~ bill_length_mm + flipper_length_mm,\n            family = 'binomial', \n            data = penguins),\n  # 500 axis based trees\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500)\n)\n\nUnit: milliseconds\n   expr     min       lq     mean   median       uq     max neval cld\n    glm  1.7705  2.04795  2.73663  2.19065  2.26415 17.4840   100  a \n ranger 19.3958 19.69575 19.98804 19.89750 20.16345 21.7596   100   b\n\n\n1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩"
+    "text": "But \\(R\\) is not small\nIt takes \\(\\approx\\) 2.5ms for 1 oblique split, &lt;20ms to fit 500 axis-based trees…\n\n# compare time for 1 oblique split to 500 axis-based trees\nmicrobenchmark(\n  # 1 oblique split\n  glm = glm(I(species == 'Adelie') ~ bill_length_mm + flipper_length_mm,\n            family = 'binomial', \n            data = penguins),\n  # 500 axis based trees\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500)\n)\n\nUnit: milliseconds\n   expr    min       lq      mean  median       uq     max neval cld\n    glm  1.753  2.08445  2.551564  2.2695  2.46785 16.5628   100  a \n ranger 19.277 19.93555 20.556177 20.1971 20.55415 36.4619   100   b\n\n\n1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩"
   },
   {
     "objectID": "slides/03-oblique_forests.html#accelerating-a-model",
@@ -1761,7 +1761,7 @@
     "href": "slides/03-oblique_forests.html#model-fitting",
     "title": "Oblique random forests with aorsf",
     "section": "Model fitting",
-    "text": "Model fitting\n\nFormula interface\n\nSimilar to other R packages\nShortcut: outcome ~ .\n\n\nlibrary(aorsf)\nfit &lt;- orsf(ad_data, Class ~ .)\n\n\n\n\n\n---------- Oblique random classification forest\n\n     Linear combinations: Accelerated Logistic regression\n          N observations: 333\n               N classes: 2\n                 N trees: 500\n      N predictors total: 130\n   N predictors per node: 12\n Average leaves per tree: 13.102\nMin observations in leaf: 5\n          OOB stat value: 0.89\n           OOB stat type: AUC-ROC\n     Variable importance: anova\n\n-----------------------------------------"
+    "text": "Model fitting\n\nFormula interface\n\nSimilar to other R packages\nShortcut: outcome ~ .\n\n\nlibrary(aorsf)\nfit &lt;- orsf(ad_data, Class ~ .)\n\n\n\n\n\n---------- Oblique random classification forest\n\n     Linear combinations: Accelerated Logistic regression\n          N observations: 333\n               N classes: 2\n                 N trees: 500\n      N predictors total: 130\n   N predictors per node: 12\n Average leaves per tree: 13.094\nMin observations in leaf: 5\n          OOB stat value: 0.89\n           OOB stat type: AUC-ROC\n     Variable importance: anova\n\n-----------------------------------------"
   },
   {
     "objectID": "slides/03-oblique_forests.html#model-summary",
@@ -1775,7 +1775,7 @@
     "href": "slides/03-oblique_forests.html#single-variable-summary",
     "title": "Oblique random forests with aorsf",
     "section": "Single variable summary",
-    "text": "Single variable summary\nSimilar to summary(), orsf_summarize_uni() computes out-of-bag partial dependence on the number of variables you request.\n\norsf_summarize_uni(fit, n_variables = 1, class = \"Impaired\")\n\n\n-- tau (VI Rank: 1) ----------------------------\n\n        |------------ Probability ------------|\n  Value      Mean    Median    25th %    75th %\n &lt;char&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;\n   5.04 0.2319319 0.1916227 0.1189789 0.3197395\n   5.37 0.2378632 0.1950955 0.1215693 0.3318324\n   5.75 0.2566413 0.2163354 0.1341166 0.3583264\n   6.18 0.2876042 0.2474261 0.1630295 0.3975231\n   6.50 0.3092137 0.2654640 0.1847382 0.4192946\n\n Predicted probability for top 1 predictors"
+    "text": "Single variable summary\nSimilar to summary(), orsf_summarize_uni() computes out-of-bag partial dependence on the number of variables you request.\n\norsf_summarize_uni(fit, n_variables = 1, class = \"Impaired\")\n\n\n-- tau (VI Rank: 1) ----------------------------\n\n        |------------ Probability ------------|\n  Value      Mean    Median    25th %    75th %\n &lt;char&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;\n   5.04 0.2292983 0.1931633 0.1195408 0.3144244\n   5.37 0.2348429 0.1986864 0.1240737 0.3230236\n   5.75 0.2523429 0.2171855 0.1351420 0.3457929\n   6.18 0.2857471 0.2509648 0.1603631 0.3870524\n   6.50 0.3095428 0.2710737 0.1851320 0.4075356\n\n Predicted probability for top 1 predictors"
   },
   {
     "objectID": "slides/03-oblique_forests.html#multi-variable-summary",
@@ -1789,7 +1789,7 @@
     "href": "slides/03-oblique_forests.html#variable-selection",
     "title": "Oblique random forests with aorsf",
     "section": "Variable selection",
-    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 37.2% ~ time remaining: 5 seconds \nSelecting variables: 95.3% ~ time remaining: 0 seconds \nSelecting variables: 100%"
+    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 38.0% ~ time remaining: 5 seconds \nSelecting variables: 95.3% ~ time remaining: 0 seconds \nSelecting variables: 100%"
   },
   {
     "objectID": "slides/03-oblique_forests.html#your-turn",
@@ -1845,7 +1845,7 @@
     "href": "slides/03-oblique_forests.html#data-splitting",
     "title": "Oblique random forests with aorsf",
     "section": "Data splitting",
-    "text": "Data splitting\nIf you evaluate prediction models with their training data, you\n\nReward models that overfit the data.\nDon’t learn much about what will happen in the real world.\n\nSo, always evaluate prediction models with data that is “new”\n\nlibrary(rsample)\nset.seed(123)\n# make the split: 75% training data, 25% testing\nsplit &lt;- initial_split(data = ad_data, prop = 3/4)\n# get the training data\ntrain &lt;- training(split)\n# get the testing data\ntest &lt;- testing(split)"
+    "text": "Data splitting\nIf you evaluate prediction models with their training data, you\n\nReward models that overfit the data.\nDon’t learn much about what will happen in the real world.\n\nSo, always evaluate prediction models with data that is “new”\n\nlibrary(rsample)\nset.seed(1234)\n# make the split: 50% training data, 50% testing\nsplit &lt;- initial_split(data = ad_data, prop = 1/2)\n# get the training data\ntrain &lt;- training(split)\n# get the testing data\ntest &lt;- testing(split)"
   },
   {
     "objectID": "slides/03-oblique_forests.html#pre-processing",
@@ -1880,7 +1880,7 @@
     "href": "slides/03-oblique_forests.html#evaluating-in-test-data",
     "title": "Oblique random forests with aorsf",
     "section": "Evaluating in test data",
-    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n# A tibble: 2 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.95 \n2 ranger roc_auc binary         0.907"
+    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.902\n2 odrf   roc_auc binary         0.905\n3 ranger roc_auc binary         0.886"
   },
   {
     "objectID": "slides/03-oblique_forests.html#training-the-recipe",
@@ -1923,5 +1923,19 @@
     "title": "Oblique random forests with aorsf",
     "section": "",
     "text": "What does oblique mean?\naorsf\n\nMotivation\nDesign\nBenchmarks\nApplications"
+  },
+  {
+    "objectID": "slides/03-oblique_forests.html#to-the-pipeline",
+    "href": "slides/03-oblique_forests.html#to-the-pipeline",
+    "title": "Oblique random forests with aorsf",
+    "section": "To the pipeline",
+    "text": "To the pipeline\n\nCopy/paste this code into your _targets.R file.\n\n\n# Around line 87 of the file, you should see this comment: \n\n# real data model targets (to be added as an exercise). \n\n# Paste this code right beneath that.\n\nfit_aorsf_zzzz_tar &lt;- tar_target(\n  fit_aorsf_zzzz,\n  fit_orsf_clsf(data = data_zzzz)\n)\n\n\nModify this code, replacing zzzz with the name of your dataset."
+  },
+  {
+    "objectID": "slides/01-introduction.html#sticky-notes",
+    "href": "slides/01-introduction.html#sticky-notes",
+    "title": "MELODEM data workshop",
+    "section": "Sticky notes",
+    "text": "Sticky notes\nWhile you’re working on exercises,\n\nPlace red sticky note on the back of your laptop if you want help.\nPlace green sticky note on the back of your laptop when you are done"
   }
 ]

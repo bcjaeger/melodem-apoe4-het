@@ -20,18 +20,20 @@ data_derive.melodem_sim <- function(data){
 
   dt <- data$values
 
-  dt[, apoe4_prob := fcase(
-    sex == 'male', inv_logit(biomarker_1 * biomarker_3),
-    sex == 'female', inv_logit(biomarker_1 + biomarker_2)
+  # browser()
+
+  dt[, apoe4_prob := inv_logit(
+    biomarker_1/3 + biomarker_2/4 + biomarker_1 * biomarker_3/4
   )]
 
   dt[, apoe4 := rbinom(.N,
                        size = 1,
                        prob = apoe4_prob)]
 
-  dt[, event_time := rexp(.N,
-                          rate = apoe4 * abs(biomarker_1) / 5 +
-                            abs(biomarker_2) / 5)]
+  dt[, event_time := rexp(
+    .N,
+    rate = 0.01 + apoe4 * (biomarker_1 + abs(min(biomarker_1)))
+  )]
 
   dt[, apoe4 := factor(apoe4,
                        levels = c(0, 1),

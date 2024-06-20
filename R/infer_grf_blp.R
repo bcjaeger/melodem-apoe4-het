@@ -13,11 +13,11 @@ infer_grf_blp <- function(fit_grf_sim) {
     best_linear_projection(A = fit_grf_sim$X.orig)
 
   tibble(
-    term = rownames(blp),
-    est = blp[, "Estimate"],
-    std_error = blp[, "Std. Error"],
-    t_stat = blp[, "t value"],
-    p_value = blp[, "Pr(>|t|)"]
+    blp_term = rownames(blp),
+    blp_est = blp[, "Estimate"],
+    blp_lwr = blp[, "Estimate"] - 1.96 * blp[, "Std. Error"],
+    blp_upr = blp[, "Estimate"] + 1.96 * blp[, "Std. Error"],
+    blp_pval = blp[, "Pr(>|t|)"]
   )
 
 }

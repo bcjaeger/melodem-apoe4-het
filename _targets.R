@@ -50,7 +50,7 @@ manuscript_version <- 1
 
 # slides targets ----------------------------------------------------------
 
-# don't worry about making these on new computers
+# these don't need to be made on new systems
 penguin_figs_tar <- tar_target(penguin_figs, viz_penguins(),
                                cue = tar_cue('never'))
 
@@ -73,36 +73,30 @@ data_sim_tar <- tar_target(
 
 # Model targets -----------------------------------------------------------
 
-fit_aorsf_sim_tar <- tar_target(
-  fit_aorsf_sim,
+fit_orsf_sim_tar <- tar_target(
+  fit_orsf_sim,
   fit_orsf_clsf(data = data_sim)
 )
 
 fit_grf_sim_tar <- tar_target(
   fit_grf_sim,
   fit_grf_surv(data = data_sim,
-               w_propensity = fit_aorsf_sim$pred_oobag[,1])
+               fit_orsf = fit_orsf_sim)
 )
 
 # real data model targets (to be added as an exercise)
 
 # Shar-eable targets ------------------------------------------------------
 
-pd_smry_sim_tar <- tar_target(
-  pd_smry_sim,
-  as.data.table(orsf_summarize_uni(fit_aorsf_sim))
+orsf_smry_sim_tar <- tar_target(
+  orsf_smry_sim,
+  orsf_summarize(fit_orsf_sim)
 )
 
-rate_pval_tar <- tar_target(
-  rate_pval,
-  infer_grf_rate(fit_grf_sim)
+grf_smry_sim_tar <- tar_target(
+  grf_smry_sim,
+  grf_summarize(fit_grf_sim)
 )
-
-blp_smry_tar <- tar_target(
-  blp_smry,
-  infer_grf_blp(fit_grf_sim)
-)
-
 
 # real data share-able targets (to be added as an exercise)
 
@@ -130,13 +124,13 @@ manuscript_tar <- tar_render(
 # Finalize targets --------------------------------------------------------
 
 targets <- list(
-  penguin_figs_tar,
+  # penguin_figs_tar,
   file_sim_tar,
   data_sim_tar,
-  fit_aorsf_sim_tar,
+  fit_orsf_sim_tar,
   fit_grf_sim_tar,
-  pd_smry_sim_tar,
-  rate_pval_tar
+  orsf_smry_sim_tar,
+  grf_smry_sim_tar
 )
 
 

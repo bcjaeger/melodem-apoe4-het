@@ -11,11 +11,9 @@
 
 # for debugging
 # data <- tar_read(data_sim)
-# w_propensity <- tar_read(fit_aorsf_apoe4) %>%
-#   getElement('pred_oobag') %>%
-#   .[, 2, drop = TRUE]
+# fit_aorsf <- tar_read(fit_aorsf_sim)
 
-fit_grf_surv <- function(data, w_propensity, horizon = NULL) {
+fit_grf_surv <- function(data, fit_orsf, horizon = NULL) {
 
   # stop if the data aren't created using data_prep()
   stopifnot(inherits(data, 'melodem_data'))
@@ -31,7 +29,7 @@ fit_grf_surv <- function(data, w_propensity, horizon = NULL) {
     Y = data_grf$Y,
     W = data_grf$W,
     D = data_grf$D,
-    W.hat = w_propensity,
+    W.hat = fit_orsf$pred_oobag[, 2],
     horizon = horizon,
     target = 'RMST'
   )

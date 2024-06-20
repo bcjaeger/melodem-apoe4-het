@@ -510,9 +510,9 @@ So, always evaluate prediction models with data that is "new"
 ```{r, echo=TRUE, results='hide'}
 
 library(rsample)
-set.seed(123)
-# make the split: 75% training data, 25% testing
-split <- initial_split(data = ad_data, prop = 3/4)
+set.seed(1234)
+# make the split: 50% training data, 50% testing
+split <- initial_split(data = ad_data, prop = 1/2)
 # get the training data
 train <- training(split)
 # get the testing data
@@ -574,7 +574,7 @@ test_processed <- bake(recipe_trained, new_data = test)
 
 With these packages, we make a model *specification*, and then *fit* it.
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, eval=FALSE}
 
 library(parsnip)
 library(bonsai)
@@ -589,11 +589,39 @@ aorsf_fit  <- fit(aorsf_spec,  data = train_processed, formula = Class ~ .)
 
 ```
 
+```{r}
+
+library(ranger)
+library(aorsf)
+library(ODRF)
+
+# fit
+ranger_fit <- ranger(formula = Class ~ ., train_processed, probability = TRUE)
+aorsf_fit  <- orsf(train_processed, formula = Class ~ .)
+odrf_fit  <- ODRF(formula = Class ~ ., data = train_processed)
+
+# predict
+aorsf_prd <- predict(aorsf_fit, new_data = test_processed)[, 2]
+ranger_prd <- predict(ranger_fit, test_processed)$predictions[, 2]
+odrf_prd <- predict(odrf_fit, 
+                    Xnew = as.matrix(select(test_processed, -Class)),
+                    type = 'prob')[, 1]
+
+preds <- list(aorsf = aorsf_prd, 
+              ranger = ranger_prd,
+              odrf = odrf_prd) %>% 
+  map_dfr( ~ tibble(pred = .x, 
+                    truth = test_processed$Class),
+           .id = 'model')
+
+```
+
+
 ## Evaluating in test data
 
 We predict probabilities for observations in the testing data, and evaluate discrimination using the `yardstick` package:
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, eval=FALSE}
 
 preds <- list(aorsf = aorsf_fit, ranger = ranger_fit) %>% 
   map(~ predict(.x, new_data = test_processed, type = 'prob')) %>% 
@@ -607,6 +635,36 @@ preds %>%
   roc_auc(truth = truth, .pred_Impaired)
 
 ```
+
+```{r}
+library(yardstick)
+
+preds %>% 
+  group_by(model) %>% 
+  roc_auc(truth = truth, pred, event_level = 'second')
+```
+
+## To the pipeline
+
+
+- Copy/paste this code into your `_targets.R` file. 
+
+```{r, eval=FALSE, echo=TRUE}
+
+# Around line 87 of the file, you should see this comment: 
+
+# real data model targets (to be added as an exercise). 
+
+# Paste this code right beneath that.
+
+fit_aorsf_zzzz_tar <- tar_target(
+  fit_aorsf_zzzz,
+  fit_orsf_clsf(data = data_zzzz)
+)
+
+```
+
+- Modify this code, replacing `zzzz` with the name of your dataset.
 
 
 

@@ -466,7 +466,7 @@ Byron C. Jaeger, PhD
 </ul>
 <p><strong>Collaboration (1 hour)</strong></p>
 <div class="footer">
-<p>Each lecture is 75m and this includes time for questions/discussion.</p>
+<p>Each lecture includes time for questions/discussion.</p>
 </div>
 </section>
 <section id="schedule-for-day-2-morning" class="slide level2">
@@ -482,6 +482,14 @@ Byron C. Jaeger, PhD
 <li>Break (5m)</li>
 </ul>
 <p><strong>Wrap-up (30m)</strong></p>
+</section>
+<section id="sticky-notes" class="slide level2">
+<h2>Sticky notes</h2>
+<p>While you’re working on exercises,</p>
+<ul>
+<li><p>Place <strong>red</strong> sticky note on the back of your laptop if you want <strong>help</strong>.</p></li>
+<li><p>Place <strong>green</strong> sticky note on the back of your laptop when you are <strong>done</strong></p></li>
+</ul>
 </section>
 <section>
 <section id="part-1-introduction-and-data-management" class="title-slide slide level1 center">
@@ -575,11 +583,6 @@ Byron C. Jaeger, PhD
 <li>Run <code>tar_glimpse()</code> to inspect the pipeline.</li>
 <li>Run <code>tar_make()</code> to make the pipeline.</li>
 </ol>
-<p>While you’re working,</p>
-<ul>
-<li><p>Place <strong>red</strong> sticky note on the back of your laptop if you want <strong>help</strong>.</p></li>
-<li><p>Place <strong>green</strong> sticky note on the back of your laptop when you are <strong>done</strong></p></li>
-</ul>
 </section>
 <section id="start-with-data-management" class="slide level2">
 <h2>Start with data management</h2>
@@ -595,9 +598,8 @@ Byron C. Jaeger, PhD
 <span id="cb3-6"><a href="#cb3-6"></a></span>
 <span id="cb3-7"><a href="#cb3-7"></a>data_sim_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(</span>
 <span id="cb3-8"><a href="#cb3-8"></a>  data_sim,</span>
-<span id="cb3-9"><a href="#cb3-9"></a>  <span class="fu">data_prepare</span>(file_sim, </span>
-<span id="cb3-10"><a href="#cb3-10"></a>               <span class="at">age_range =</span> <span class="fu">c</span>(<span class="dv">55</span>, <span class="dv">80</span>))</span>
-<span id="cb3-11"><a href="#cb3-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-9"><a href="#cb3-9"></a>  <span class="fu">data_prepare</span>(file_sim)</span>
+<span id="cb3-10"><a href="#cb3-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <p><img data-src="diagram/targets-vis-data_sim.svg" style="width:90.0%"></p>
@@ -640,26 +642,28 @@ Byron C. Jaeger, PhD
 <div class="columns">
 <div class="column" style="width:50%;">
 <ol start="6" type="1">
-<li><p>Modify the code beside in <code>_targets.R</code>, replacing <code>x</code> with the name of your data.</p></li>
+<li><p>Modify the code showen here in <code>_targets.R</code>, replacing <code>zzzz</code> with the name of your data.</p></li>
 <li><p>Save the <code>_targets.R</code> file</p></li>
 <li><p>Run <code>tar_make()</code> in the R console.</p></li>
-<li><p>run <code>tar_load(data_x)</code>, where <code>x</code> is your data name, and print it</p></li>
+<li><p>run <code>tar_read(data_zzzz)</code>, where <code>zzzz</code> is your data name.</p></li>
 </ol>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>file_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(               </span>
-<span id="cb6-2"><a href="#cb6-2"></a>  file_x,</span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="at">command =</span> <span class="st">"data/sensitive/x-raw.csv"</span>,</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>file_zzzz_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(               </span>
+<span id="cb6-2"><a href="#cb6-2"></a>  file_zzzz,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="at">command =</span> <span class="st">"data/sensitive/zzzz-raw.csv"</span>,</span>
 <span id="cb6-4"><a href="#cb6-4"></a>  <span class="at">format =</span> <span class="st">"file"</span></span>
 <span id="cb6-5"><a href="#cb6-5"></a>)</span>
 <span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a>data_x_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(</span>
-<span id="cb6-8"><a href="#cb6-8"></a>  data_x,</span>
-<span id="cb6-9"><a href="#cb6-9"></a>  <span class="fu">data_prepare</span>(<span class="at">file_name =</span> <span class="st">"data/sensitive/x-raw.csv"</span>)</span>
-<span id="cb6-10"><a href="#cb6-10"></a>)</span>
-<span id="cb6-11"><a href="#cb6-11"></a></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co"># don't forget to add these targets</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co"># to the targets list at the bottom!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-7"><a href="#cb6-7"></a>data_zzzz_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(</span>
+<span id="cb6-8"><a href="#cb6-8"></a>  data_zzzz,</span>
+<span id="cb6-9"><a href="#cb6-9"></a>  <span class="fu">data_prepare</span>(</span>
+<span id="cb6-10"><a href="#cb6-10"></a>    <span class="at">file_name =</span> <span class="st">"data/sensitive/zzzz-raw.csv"</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>  )</span>
+<span id="cb6-12"><a href="#cb6-12"></a>)</span>
+<span id="cb6-13"><a href="#cb6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co"># don't forget to add these targets</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co"># to the targets list at the bottom!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -673,21 +677,21 @@ Byron C. Jaeger, PhD
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
 <pre><code>-------------------------------------- sim -------------------------------------- 
-# A tibble: 2,500 × 8
+# A tibble: 1,000 × 8
    time status apoe4    sex      age biomarker_1 biomarker_2 biomarker_3
   &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 5.57       0 normal   female  66.3       0.585     0.00719      0.0855
-2 3.44       1 elevated female  65.5       1.12     -0.750        0.368 
-3 1.33       0 elevated female  71.4      -0.679     0.579       -0.536 
-4 0.732      1 normal   female  59.5      -0.247    -1.04        -0.158 
-5 1.94       0 elevated male    58.5      -0.590     0.458       -0.358 
-# ℹ 2,495 more rows
+1 0.530      1 elevated female  66.3      0.747      -0.742       -1.71 
+2 0.855      0 normal   female  65.5     -0.562      -0.0513       0.546
+3 0.120      1 elevated male    71.4      0.0133     -0.184        0.826
+4 1.16       1 elevated female  59.5      0.795      -1.32        -1.28 
+5 5.84       0 normal   female  58.5     -0.293       0.191        2.54 
+# ℹ 995 more rows
 
  ----------------------------------  exclusions  ---------------------------------- 
 # A tibble: 1 × 2
   label            n_obs
   &lt;glue&gt;           &lt;int&gt;
-1 sim participants  2500</code></pre>
+1 sim participants  1000</code></pre>
 </div>
 </div>
 </section>
@@ -1106,6 +1110,44 @@ Byron C. Jaeger, PhD
     } );
 
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
