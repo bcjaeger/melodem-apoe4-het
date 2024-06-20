@@ -173,7 +173,7 @@ Leo Breiman named it "Forest-RC" but it later came to be known as oblique
 
 Oblique random forests are slow. How slow, you ask?
 
-```{r, warning=FALSE, echo=TRUE}
+```{r, warning=FALSE, echo=TRUE, cache=TRUE}
 
 library(ODRF)
 library(ranger)
@@ -226,7 +226,7 @@ If $R$ is small, we can do okay with this!
 It takes $\approx$ 2.5ms for 1 oblique split, <20ms to fit 500 axis-based trees...
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, cache=TRUE}
 
 # compare time for 1 oblique split to 500 axis-based trees
 microbenchmark(
@@ -262,7 +262,7 @@ While model convergence is vital for valid statistical inference, it isn't that 
 
 Minimizing $R$ helps.
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, cache=TRUE}
 
 microbenchmark(
   ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, 
