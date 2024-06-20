@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
                       dpi = 300,
-                      cache = TRUE,
+                      cache = FALSE,
                       fig.height = 7.25,
                       out.width = '100%',
                       fig.align = 'center')
@@ -33,7 +33,7 @@ withr::with_dir(
     library(tidymodels)
     library(butcher)
     library(grf)
-    targets::tar_load(data_sim_1)
+    targets::tar_load(data_sim)
   }
 )
 
@@ -601,7 +601,7 @@ First, we'll prepare the data:
 targets::tar_load_globals()
 
 # loads a specific target
-tar_load(data_sim_1)
+tar_load(data_sim)
 ```
 
 Second, coerce data to `grf` format: 
@@ -609,7 +609,7 @@ Second, coerce data to `grf` format:
 ```{r, echo = TRUE}
 
 # helper function for grf data prep 
-data_grf <- data_coerce_grf(data_sim_1$values)
+data_grf <- data_coerce_grf(data_sim$values)
 
 # just a view of the X matrix
 head(data_grf$X, n = 2)
@@ -863,7 +863,7 @@ Let's use RATE to see how well risk prediction works as a treatment prioritizati
 library(aorsf)
 
 fit_orsf <- orsf(time + status ~ .,
-                 data = data_sim_1$values,
+                 data = data_sim$values,
                  oobag_pred_horizon = 3)
 
 # important to use oobag!
@@ -896,10 +896,10 @@ As a preliminary step, we'll split our data in to training and testing sets
 
 ```{r, echo=TRUE}
 
-train_index <- sample(x = nrow(data_sim_1$values), size = 1250)
+train_index <- sample(x = nrow(data_sim$values), size = 1250)
 
-data_trn <- data_sim_1$values[train_index, ]
-data_tst <- data_sim_1$values[-train_index, ]
+data_trn <- data_sim$values[train_index, ]
+data_tst <- data_sim$values[-train_index, ]
 
 data_trn_grf <- data_coerce_grf(data_trn)
 data_tst_grf <- data_coerce_grf(data_tst)

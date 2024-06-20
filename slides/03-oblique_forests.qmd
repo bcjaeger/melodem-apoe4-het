@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
                       dpi = 300,
-                      cache = TRUE,
+                      cache = FALSE,
                       fig.height = 7.25,
                       out.width = '100%',
                       fig.align = 'center')
@@ -36,7 +36,7 @@ withr::with_dir(
   code = {
     source("R/aorsf_select_vars.R")
     targets::tar_load(c(penguin_figs,
-                        data_sim_1))  
+                        data_sim))  
   }
   
 )

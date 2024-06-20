@@ -11,6 +11,7 @@ print.melodem_data <- function(x, ...){
   decoration <- paste(rep("-", ndash), collapse = '')
   cat(decoration, header, decoration, '\n')
 
+
   print(tibble::as_tibble(x$values), n = 5)
 
   ndash <- 0.5*(cli::console_width() - nchar(" exclusions "))

@@ -15,8 +15,8 @@ data_exclude.melodem_data <- function(data, age_range = NULL){
 
 }
 
-data_exclude.sim_1 <- data_exclude.sim_2 <- function(data,
-                                                     age_range = NULL){
+data_exclude.melodem_sim <- function(data,
+                             age_range = NULL){
 
   # demonstrate what an exclusion function would do
 
@@ -24,17 +24,19 @@ data_exclude.sim_1 <- data_exclude.sim_2 <- function(data,
 
   setDT(dt)
 
-  # age_min <= age and age <= age_max
-  exclusion_1 <- dt[age %between% age_range %||% c(0, Inf)]
-
   if(!is.null(age_range)){
+
+    # age_min <= age and age <= age_max
+    dt <- dt[age %between% age_range %||% c(0, Inf)]
+
     data$exclusions %<>% add_row(
       label = glue("Aged {age_range[1]}-{age_range[2]} years"),
-      n_obs = nrow(exclusion_1)
+      n_obs = nrow(dt)
     )
+
   }
 
-  data$values <- exclusion_1
+  data$values <- dt
 
   data
 

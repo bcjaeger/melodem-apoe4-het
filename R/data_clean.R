@@ -13,7 +13,7 @@ data_clean.melodem_data <- function(data){
 
 }
 
-data_clean.sim_1 <- data_clean.sim_2 <- function(data){
+data_clean.melodem_sim <- function(data){
 
   dt <- as.data.table(data$values)
 

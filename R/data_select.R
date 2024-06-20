@@ -11,7 +11,7 @@ data_select.melodem_data <- function(data){
 
 }
 
-data_select.sim_1 <- data_select.sim_2 <- function(data){
+data_select.melodem_sim <- function(data){
 
   dt <- data$values
 

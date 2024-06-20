@@ -13,8 +13,7 @@ assert_data_safety <- function() {
     dir.create('data/sensitive/')
   }
 
-  files_expected = c("sim_1-raw.csv",
-                     "sim_2-raw.csv")
+  files_expected = c("sim-raw.csv")
 
   files_in_data <- setdiff(list.files('data'), "sensitive")
 

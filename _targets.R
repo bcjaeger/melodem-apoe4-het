@@ -48,59 +48,64 @@ assert_data_safety()
 
 manuscript_version <- 1
 
-include_benchmark <- FALSE
-
-
 # slides targets ----------------------------------------------------------
 
-penguin_figs_tar <- tar_target(penguin_figs, viz_penguins())
+# don't worry about making these on new computers
+penguin_figs_tar <- tar_target(penguin_figs, viz_penguins(),
+                               cue = tar_cue('never'))
 
 # Individual cohort targets -----------------------------------------------
 
-file_sim_1_tar <- tar_target(
-  file_sim_1,
-  command = "data/sim_1-raw.csv",
+file_sim_tar <- tar_target(
+  file_sim,
+  command = "data/sim-raw.csv",
   format = 'file'
 )
 
-data_sim_1_tar <- tar_target(
-  data_sim_1,
-  data_prepare(file_sim_1, age_range = c(55, 80))
-)
-
-file_sim_2_tar <- tar_target(
-  file_sim_2,
-  command = "data/sim_2-raw.csv",
-  format = 'file'
-)
-
-data_sim_2_tar <- tar_target(
-  data_sim_2,
-  data_prepare(file_sim_2, age_range = c(55, 80))
+data_sim_tar <- tar_target(
+  data_sim,
+  data_prepare(file_sim)
 )
 
 # real data cohorts (to be added as an exercise)
 
-# combining cohorts ----
 
-data_pooled_tar <- tar_target(
-  data_pooled,
-  data_pool(sim_1 = data_sim_1,
-            sim_2 = data_sim_2)
+
+# Model targets -----------------------------------------------------------
+
+fit_aorsf_sim_tar <- tar_target(
+  fit_aorsf_sim,
+  fit_orsf_clsf(data = data_sim)
+)
+
+fit_grf_sim_tar <- tar_target(
+  fit_grf_sim,
+  fit_grf_surv(data = data_sim,
+               w_propensity = fit_aorsf_sim$pred_oobag[,1])
+)
+
+# real data model targets (to be added as an exercise)
+
+# Shar-eable targets ------------------------------------------------------
+
+pd_smry_sim_tar <- tar_target(
+  pd_smry_sim,
+  as.data.table(orsf_summarize_uni(fit_aorsf_sim))
+)
+
+rate_pval_tar <- tar_target(
+  rate_pval,
+  infer_grf_rate(fit_grf_sim)
+)
+
+blp_smry_tar <- tar_target(
+  blp_smry,
+  infer_grf_blp(fit_grf_sim)
 )
 
 
-# Benchmark targets -------------------------------------------------------
+# real data share-able targets (to be added as an exercise)
 
-bm_risk_tar <- tar_map(
-  values = tibble(subset = list('overall',
-                                'sim_1',
-                                'sim_2')),
-  tar_target(bm_risk, bench_pred_risk(data_pooled,
-                                      subset = subset))
-)
-
-bm_risk_all_tar <- tar_combine(bm_risk_all, bm_risk_tar$bm_risk)
 
 # Manuscript targets ------------------------------------------------------
 
@@ -126,16 +131,14 @@ manuscript_tar <- tar_render(
 
 targets <- list(
   penguin_figs_tar,
-  file_sim_1_tar,
-  data_sim_1_tar,
-  file_sim_2_tar,
-  data_sim_2_tar,
-  data_pooled_tar,
-  manuscript_tar
+  file_sim_tar,
+  data_sim_tar,
+  fit_aorsf_sim_tar,
+  fit_grf_sim_tar,
+  pd_smry_sim_tar,
+  rate_pval_tar
 )
 
-if(include_benchmark) targets %<>% c(bm_risk_tar,
-                                     bm_risk_all_tar)
 
 # hook not needed for tar_make() but is for tar_make_future().
 tar_hook_before(

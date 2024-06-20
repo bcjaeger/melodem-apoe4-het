@@ -90,7 +90,7 @@ withr::with_dir(
   here::here(),
   code = {
     targets::tar_load(
-      names = c("data_sim_1",
+      names = c("data_sim",
                 "data_sim_2",
                 "data_pooled",
                 "bm_risk")

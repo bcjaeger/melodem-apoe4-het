@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = FALSE,
                       message = FALSE,
                       warning = FALSE,
                       dpi = 300,
-                      cache = TRUE,
+                      cache = FALSE,
                       fig.height = 6,
                       fig.align = 'center')
 
@@ -247,15 +247,15 @@ In the `_targets.R` file:
 
 ```{r, eval = FALSE, echo = TRUE}
 
-file_sim_1_tar <- tar_target(
-  file_sim_1,
-  command = "data/sim_1-raw.csv",
+file_sim_tar <- tar_target(
+  file_sim,
+  command = "data/sim-raw.csv",
   format = 'file'
 )
 
-data_sim_1_tar <- tar_target(
-  data_sim_1,
-  data_prepare(file_sim_1, 
+data_sim_tar <- tar_target(
+  data_sim,
+  data_prepare(file_sim, 
                age_range = c(55, 80))
 )
 
@@ -265,7 +265,7 @@ data_sim_1_tar <- tar_target(
 
 ::: {.column width="50%"}
 
-![](diagram/targets-vis-data_sim_1.svg){width=90%}
+![](diagram/targets-vis-data_sim.svg){width=90%}
 
 :::
 :::
@@ -368,7 +368,7 @@ data_x_tar <- tar_target(
 We are going to add your data to the pipeline, carefully.
 
 ```{r echo=TRUE, eval=FALSE}
-data_sim_1
+data_sim
 ```
 
 
@@ -376,12 +376,12 @@ data_sim_1
 withr::with_dir(
   here::here(),
   code = {
-    targets::tar_load(data_sim_1)
+    targets::tar_load(data_sim)
     R.utils::sourceDirectory('R') 
   }
 )
 
-data_sim_1
+data_sim
 ```
 
 ## Data management
@@ -453,7 +453,8 @@ data_load <- function(file_path){
       exclusions = tibble(label = glue("{cohort_name} participants"),
                           n_obs = nrow(data_input))
     ),
-    class = c(cohort_name, 'melodem_data'),
+    class = c(paste("melodem", cohort_name, sep = "_"), 
+              'melodem_data'),
     label = cohort_label
   )
   
@@ -535,11 +536,11 @@ R's *generic function* system. Generic functions (e.g., `plot()`) dispatch diffe
 
 <br>
 
-Here's a look at the generic function for cleaning an object of class `sim_1`:
+Here's a look at the generic function for cleaning an object of class `sim`:
 
 ```{r, echo=TRUE, eval=FALSE}
 
-data_clean.sim_1 <- function(data){
+data_clean.melodem_sim <- function(data){
   dt <- as.data.table(data$values)
   dt[, age := age * 5 + 65]
   dt[, sex := fifelse(sex > 0, 1, 0)]

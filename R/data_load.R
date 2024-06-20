@@ -29,7 +29,8 @@ data_load <- function(file_path){
       exclusions = tibble(label = glue("{cohort_label} participants"),
                           n_obs = nrow(data_input))
     ),
-    class = c(cohort_name, 'melodem_data'),
+    class = c(paste("melodem", cohort_name, sep = "_"),
+              'melodem_data'),
     label = cohort_label
   )
 

@@ -12,7 +12,7 @@ In this exercise you will fit a causal random forest to your data and estimate t
 
 ## Setup
 
-Change `data_sim_1` to be the name of your data.
+Change `data_sim` to be the name of your data.
 
 ```{r, message=FALSE}
 
@@ -20,13 +20,13 @@ withr::with_dir(
   new = here::here(),
   code = {
     targets::tar_load_globals()
-    # change data_sim_1 to be the name of your data.
-    tar_load(data_sim_1)
+    # change data_sim to be the name of your data.
+    tar_load(data_sim)
   }
 )
 
-# change data_sim_1 to be the name of your data.
-data_classwork <- data_sim_1
+# change data_sim to be the name of your data.
+data_classwork <- data_sim
 
 ```
 

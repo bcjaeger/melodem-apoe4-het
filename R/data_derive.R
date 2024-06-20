@@ -14,7 +14,7 @@ data_derive.melodem_data <- function(data){
 
 }
 
-data_derive.sim_1 <- data_derive.sim_2 <- function(data){
+data_derive.melodem_sim <- function(data){
 
   pred_horizon <- 10
 

@@ -5,7 +5,7 @@
 #' @param test_prop what proportion of data to set aside for testing
 
 # tar_load(data_pooled)
-# subset <- 'sim_1'
+# subset <- 'sim'
 
 bench_pred_risk <- function(data_pooled,
                             subset,

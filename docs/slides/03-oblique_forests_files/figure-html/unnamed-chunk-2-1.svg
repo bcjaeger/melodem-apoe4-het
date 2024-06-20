@@ -106,7 +106,7 @@
 <clipPath id="clip-1">
 <path clip-rule="nonzero" d="M 83 22 L 482.917969 22 L 482.917969 439 L 83 439 Z M 83 22 "/>
 </clipPath>
-<image id="source-468" x="0" y="0" width="50" height="50" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAAdklEQVRoge3ZQQ2AQAwF0RYhKEIFZ5SsBoJELICK7k6aeQJ+Mumx+ezvEROd112yu5WsLmAIjSE0htAYQmMIjSE0htAYQmMIjSE0htAYQmMIjSE0htC0CclvxNRHT8Yo2W1zEUNoDKExhMYQGkNoDKExhKZNyA8Y/gYjzOa+fwAAAABJRU5ErkJggg=="/>
+<image id="source-164" x="0" y="0" width="50" height="50" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAA+ElEQVRoge3YMRKCMBBG4YfjOTyRp6Cm9hDUlozekCtg56AuGsgif5h9VSZFyDdpmK1up/7MDjpsfQGvAqJWQNQKiFoBUSsgStVNx3HrS+RUN91zXeyLjBFQKOQdAQVCLAQUBplCQEGQbwgoBPILAQVAUhAgDklFgDBkDgJEIXMRIAhZggAxyFIECEFyECACyUWAAMQDAVANLS+z3/u1dzk4JS8EGBCrNXCeCEiEWOXgvBGQAbFKwa2BAGeI1Ri3FgL+ADE/Sut+5iZTlIHLx14uTmYcZOEgHSgDmSr19eQhVhZu818UrwKiVkDUCohaAVErIGrtBvIA9K4/HemZ8xYAAAAASUVORK5CYII="/>
 <clipPath id="clip-2">
 <path clip-rule="nonzero" d="M 67.28125 5.480469 L 498.519531 5.480469 L 498.519531 455.398438 L 67.28125 455.398438 Z M 67.28125 5.480469 "/>
 </clipPath>
@@ -118,7 +118,7 @@
 <path fill-rule="nonzero" fill="rgb(100%, 100%, 100%)" fill-opacity="1" d="M 67.28125 455.398438 L 498.519531 455.398438 L 498.519531 5.480469 L 67.28125 5.480469 Z M 67.28125 455.398438 "/>
 </g>
 <g clip-path="url(#clip-1)">
-<use xlink:href="#source-468" transform="matrix(8.000739, 0, 0, 8.347286, 82.882165, 21.75666)"/>
+<use xlink:href="#source-164" transform="matrix(8.000739, 0, 0, 8.347286, 82.882165, 21.75666)"/>
 </g>
 <path fill-rule="nonzero" fill="rgb(100%, 54.901961%, 0%)" fill-opacity="0.8" d="M 156.78125 341.894531 C 156.78125 346.636719 149.671875 346.636719 149.671875 341.894531 C 149.671875 337.15625 156.78125 337.15625 156.78125 341.894531 "/>
 <path fill-rule="nonzero" fill="rgb(100%, 54.901961%, 0%)" fill-opacity="0.8" d="M 186.9375 337.804688 C 186.9375 342.546875 179.828125 342.546875 179.828125 337.804688 C 179.828125 333.066406 186.9375 333.066406 186.9375 337.804688 "/>
