@@ -55,7 +55,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -210,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="growing-decision-trees" class="level2">
 <h2 class="anchored" data-anchor-id="growing-decision-trees">Growing decision trees</h2>
 <div class="column" style="width:40%;">
-<p>Decision trees are grown by recursively splitting a set of training data.</p>
+<p>Decision trees are grown by recursively splitting a set of training data <span class="citation" data-cites="breiman2017classification">(<a href="#ref-breiman2017classification" role="doc-biblioref">Breiman 2017</a>)</span>.</p>
 </div>
 <div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
@@ -339,11 +358,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Was this the best possible split? Let’s find out.</p>
 <ul>
 <li><p>Open <code>classwork/02-trees_and_forests.qmd</code></p></li>
-<li><p>Calculate the total impurity of splitting along bill length of 45 mm.</p></li>
+<li><p>Complete exercise 1.</p></li>
 <li><p><strong>Reminder</strong>: Red sticky note if you’d like help, green sticky note when you are finished.</p></li>
 <li><p><strong>Hint</strong>: the answer is 0.492340868530637</p></li>
 </ul>
-<p>. . .</p>
+</section>
+<section id="regression-trees" class="level2">
+<h2 class="anchored" data-anchor-id="regression-trees">Regression trees</h2>
+<div class="column" style="width:40%;">
+<p>Impurity is based on variance:</p>
+<p><span class="math display">\[\sum_{i=1}^n \frac{(y_i - \bar{y})^2}{n-1}\]</span></p>
+<ul>
+<li><p><span class="math inline">\(\bar{y}\)</span>: mean of <span class="math inline">\(y_i\)</span> in the node.</p></li>
+<li><p><span class="math inline">\(n\)</span>: no. of observations in the node.</p></li>
+</ul>
+</div>
+<div class="column" style="width:59%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-6-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="survival-trees" class="level2">
+<h2 class="anchored" data-anchor-id="survival-trees">Survival trees</h2>
+<div class="column" style="width:40%;">
+<p>Log-rank stat measures split quality <span class="citation" data-cites="ishwaran2008random">(<a href="#ref-ishwaran2008random" role="doc-biblioref">Ishwaran et al. 2008</a>)</span>:</p>
+<p><span class="math display">\[\frac{ \sum_{j=1}^J O_{j } - E_{j}}{\sqrt{\sum_{j=1}^J V_{j}}}\]</span> <span class="math inline">\(O\)</span> is observed and <span class="math inline">\(E\)</span> expected events in the node at time <span class="math inline">\(j\)</span>. <span class="math inline">\(V\)</span> is variance.</p>
+</div>
+<div class="column" style="width:59%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-7-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="keep-growing" class="level2">
 <h2 class="anchored" data-anchor-id="keep-growing">Keep growing?</h2>
@@ -356,7 +414,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-6-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-8-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -379,7 +437,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-7-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-9-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -403,7 +461,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-8-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-10-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -423,7 +481,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-9-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-11-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -444,7 +502,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-10-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-12-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -503,23 +561,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 
-<div id="qnxevtspce" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#qnxevtspce table {
+<div id="hchsydxtsz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hchsydxtsz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#qnxevtspce thead, #qnxevtspce tbody, #qnxevtspce tfoot, #qnxevtspce tr, #qnxevtspce td, #qnxevtspce th {
+#hchsydxtsz thead, #hchsydxtsz tbody, #hchsydxtsz tfoot, #hchsydxtsz tr, #hchsydxtsz td, #hchsydxtsz th {
   border-style: none;
 }
 
-#qnxevtspce p {
+#hchsydxtsz p {
   margin: 0;
   padding: 0;
 }
 
-#qnxevtspce .gt_table {
+#hchsydxtsz .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -545,12 +603,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_caption {
+#hchsydxtsz .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#qnxevtspce .gt_title {
+#hchsydxtsz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -562,7 +620,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#qnxevtspce .gt_subtitle {
+#hchsydxtsz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -574,7 +632,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#qnxevtspce .gt_heading {
+#hchsydxtsz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -586,13 +644,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_bottom_border {
+#hchsydxtsz .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_col_headings {
+#hchsydxtsz .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -607,7 +665,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_col_heading {
+#hchsydxtsz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -627,7 +685,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#qnxevtspce .gt_column_spanner_outer {
+#hchsydxtsz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -639,15 +697,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#qnxevtspce .gt_column_spanner_outer:first-child {
+#hchsydxtsz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#qnxevtspce .gt_column_spanner_outer:last-child {
+#hchsydxtsz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#qnxevtspce .gt_column_spanner {
+#hchsydxtsz .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -659,11 +717,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#qnxevtspce .gt_spanner_row {
+#hchsydxtsz .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#qnxevtspce .gt_group_heading {
+#hchsydxtsz .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -689,7 +747,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#qnxevtspce .gt_empty_group_heading {
+#hchsydxtsz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -704,15 +762,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#qnxevtspce .gt_from_md > :first-child {
+#hchsydxtsz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#qnxevtspce .gt_from_md > :last-child {
+#hchsydxtsz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#qnxevtspce .gt_row {
+#hchsydxtsz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -731,7 +789,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#qnxevtspce .gt_stub {
+#hchsydxtsz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -744,7 +802,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#qnxevtspce .gt_stub_row_group {
+#hchsydxtsz .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -758,15 +816,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#qnxevtspce .gt_row_group_first td {
+#hchsydxtsz .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#qnxevtspce .gt_row_group_first th {
+#hchsydxtsz .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#qnxevtspce .gt_summary_row {
+#hchsydxtsz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -776,16 +834,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#qnxevtspce .gt_first_summary_row {
+#hchsydxtsz .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_first_summary_row.thick {
+#hchsydxtsz .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#qnxevtspce .gt_last_summary_row {
+#hchsydxtsz .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -795,7 +853,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_grand_summary_row {
+#hchsydxtsz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -805,7 +863,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#qnxevtspce .gt_first_grand_summary_row {
+#hchsydxtsz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -815,7 +873,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_last_grand_summary_row_top {
+#hchsydxtsz .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -825,11 +883,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_striped {
+#hchsydxtsz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#qnxevtspce .gt_table_body {
+#hchsydxtsz .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -838,7 +896,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_footnotes {
+#hchsydxtsz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -852,7 +910,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_footnote {
+#hchsydxtsz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -861,7 +919,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#qnxevtspce .gt_sourcenotes {
+#hchsydxtsz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -875,7 +933,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#qnxevtspce .gt_sourcenote {
+#hchsydxtsz .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -883,63 +941,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#qnxevtspce .gt_left {
+#hchsydxtsz .gt_left {
   text-align: left;
 }
 
-#qnxevtspce .gt_center {
+#hchsydxtsz .gt_center {
   text-align: center;
 }
 
-#qnxevtspce .gt_right {
+#hchsydxtsz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#qnxevtspce .gt_font_normal {
+#hchsydxtsz .gt_font_normal {
   font-weight: normal;
 }
 
-#qnxevtspce .gt_font_bold {
+#hchsydxtsz .gt_font_bold {
   font-weight: bold;
 }
 
-#qnxevtspce .gt_font_italic {
+#hchsydxtsz .gt_font_italic {
   font-style: italic;
 }
 
-#qnxevtspce .gt_super {
+#hchsydxtsz .gt_super {
   font-size: 65%;
 }
 
-#qnxevtspce .gt_footnote_marks {
+#hchsydxtsz .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#qnxevtspce .gt_asterisk {
+#hchsydxtsz .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#qnxevtspce .gt_indent_1 {
+#hchsydxtsz .gt_indent_1 {
   text-indent: 5px;
 }
 
-#qnxevtspce .gt_indent_2 {
+#hchsydxtsz .gt_indent_2 {
   text-indent: 10px;
 }
 
-#qnxevtspce .gt_indent_3 {
+#hchsydxtsz .gt_indent_3 {
   text-indent: 15px;
 }
 
-#qnxevtspce .gt_indent_4 {
+#hchsydxtsz .gt_indent_4 {
   text-indent: 20px;
 }
 
-#qnxevtspce .gt_indent_5 {
+#hchsydxtsz .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -954,17 +1012,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </thead>
   <tbody class="gt_table_body">
     <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">leaf_1</th>
-<td headers="stub_1_1 Adelie" class="gt_row gt_right">0.02</td>
-<td headers="stub_1_1 Chinstrap" class="gt_row gt_right">0.04</td>
-<td headers="stub_1_1 Gentoo" class="gt_row gt_right">0.94</td></tr>
+<td headers="stub_1_1 Adelie" class="gt_row gt_right" style="background-color: #008B8B; color: #FFFFFF;">0.02</td>
+<td headers="stub_1_1 Chinstrap" class="gt_row gt_right" style="background-color: #008B8B; color: #FFFFFF;">0.04</td>
+<td headers="stub_1_1 Gentoo" class="gt_row gt_right" style="background-color: #008B8B; color: #FFFFFF;">0.94</td></tr>
     <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">leaf_2</th>
-<td headers="stub_1_2 Adelie" class="gt_row gt_right">0.06</td>
-<td headers="stub_1_2 Chinstrap" class="gt_row gt_right">0.92</td>
-<td headers="stub_1_2 Gentoo" class="gt_row gt_right">0.02</td></tr>
+<td headers="stub_1_2 Adelie" class="gt_row gt_right" style="background-color: #A020F0; color: #FFFFFF;">0.06</td>
+<td headers="stub_1_2 Chinstrap" class="gt_row gt_right" style="background-color: #A020F0; color: #FFFFFF;">0.92</td>
+<td headers="stub_1_2 Gentoo" class="gt_row gt_right" style="background-color: #A020F0; color: #FFFFFF;">0.02</td></tr>
     <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">leaf_3</th>
-<td headers="stub_1_3 Adelie" class="gt_row gt_right">0.97</td>
-<td headers="stub_1_3 Chinstrap" class="gt_row gt_right">0.03</td>
-<td headers="stub_1_3 Gentoo" class="gt_row gt_right">0.00</td></tr>
+<td headers="stub_1_3 Adelie" class="gt_row gt_right" style="background-color: #FF8C00; color: #000000;">0.97</td>
+<td headers="stub_1_3 Chinstrap" class="gt_row gt_right" style="background-color: #FF8C00; color: #000000;">0.03</td>
+<td headers="stub_1_3 Gentoo" class="gt_row gt_right" style="background-color: #FF8C00; color: #000000;">0.00</td></tr>
   </tbody>
   
   
@@ -985,6 +1043,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="leaves-for-other-types-of-trees" class="level2">
+<h2 class="anchored" data-anchor-id="leaves-for-other-types-of-trees">Leaves for other types of trees</h2>
+<ul>
+<li><p>For regression, leaves store the mean value of the outcome.</p></li>
+<li><p>For survival, leaves store:</p>
+<ul>
+<li><p>cumulative hazard function</p></li>
+<li><p>survival function</p></li>
+<li><p>summary score (e.g., no. of expected events)</p></li>
+</ul></li>
+</ul>
+</section>
 <section id="planting-seeds-for-causal-trees" class="level2">
 <h2 class="anchored" data-anchor-id="planting-seeds-for-causal-trees">Planting seeds for causal trees</h2>
 <p>Suppose we have outcome <span class="math inline">\(Y\)</span> and treatment <span class="math inline">\(W\in\{0, 1\}\)</span>.</p>
@@ -996,8 +1066,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="random-forests" class="level1">
 <h1>Random forests</h1>
-<section id="expert-of-committee" class="level2">
-<h2 class="anchored" data-anchor-id="expert-of-committee">Expert of committee?</h2>
+<section id="expert-or-committee" class="level2">
+<h2 class="anchored" data-anchor-id="expert-or-committee">Expert or committee?</h2>
 <p>If we have to make a yes/no decision, who should make it?</p>
 <div class="incremental">
 <ul class="incremental">
@@ -1033,13 +1103,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="random-forest-recipe" class="level2">
 <h2 class="anchored" data-anchor-id="random-forest-recipe">Random forest recipe</h2>
-<p>The weak expert approach for decision trees:</p>
+<p>The weak expert approach for decision trees <span class="citation" data-cites="breiman2001random">(<a href="#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span>:</p>
 <ul>
-<li><p>Grow each tree with a random subset of the training data.</p>
-<ul>
-<li>“In-bag” means in the random subset</li>
-<li>“Out-of-bag” means not in the subset</li>
-</ul></li>
+<li><p>Grow each tree with a random subset of the training data.</p></li>
 <li><p>Evaluate a random subset of predictors when splitting data.</p></li>
 </ul>
 <p>These random elements help make the trees more independent while keeping their prediction accuracy better than random guesses.</p>
@@ -1106,12 +1172,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="random-forest-predictions" class="level2">
 <h2 class="anchored" data-anchor-id="random-forest-predictions">Random forest predictions</h2>
-<p>To get a prediction from the random forest,</p>
+<p>To get a prediction from the random forest with <span class="math inline">\(B\)</span> trees,</p>
 <ul>
 <li><p>predict the outcome with each tree</p></li>
-<li><p>take the majority vote</p></li>
+<li><p>take the mean of the predictions</p></li>
 </ul>
-<p>In situations where trees predictions are continuous and you can’t take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree’s predictions.</p>
+<p><span class="math display">\[\hat{y}_i = \frac{1}{B}\sum_{b=1}^{B} \hat{y}_b(i)\]</span></p>
+</section>
+<section id="out-of-bag" class="level2">
+<h2 class="anchored" data-anchor-id="out-of-bag">Out-of-bag</h2>
+<p><span class="citation" data-cites="breiman1996out">Breiman (<a href="#ref-breiman1996out" role="doc-biblioref">1996</a>)</span> discusses “out-of-bag” estimation.</p>
+<ul>
+<li><p>‘bag’: the bootstrapped sample used to grow a tree</p></li>
+<li><p>‘out-of-bag’: the observations that were not in the bootstrap sample</p></li>
+<li><p>out-of-bag prediction error: nearly optimal estimate of the forest’s external prediction error</p></li>
+</ul>
+<p>With conventional bootstrap sampling, each observation has about a 36.8% chance of being out-of-bag for each tree.</p>
 </section>
 <section id="how-to-get-out-of-bag-predictions" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-get-out-of-bag-predictions">How to get out-of-bag predictions</h2>
@@ -1136,25 +1212,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="out-of-bag-predictions" class="level2">
 <h2 class="anchored" data-anchor-id="out-of-bag-predictions">Out-of-bag predictions</h2>
 <p>Final out-of-bag predictions:</p>
-<p><span class="math display">\[\frac{\text{out-of-bag predictions}}{\text{out-of-bag denominator}}\]</span></p>
+<p><span class="math display">\[\hat{y}_i^{\text{oob}} = \frac{1}{|B_i|}\sum_{b \in B_i}\hat{y}_b\]</span></p>
 <ul>
-<li><p>With conventional bootstrap sampling, each observation has about a 36.8% chance of being out-of-bag for each tree.</p></li>
-<li><p>Out-of-bag predictions give an unbiased view of the forest’s prediction on new data</p></li>
-<li><p>This allows for variable importance estimates and (we’ll see this later) valid inference in causal forests.</p></li>
+<li><span class="math inline">\(B_i\)</span> is the set of trees where <span class="math inline">\(i\)</span> is out of bag</li>
 </ul>
+<p>Out-of-bag estimation plays a pivotal role in variable importance estimates and inference with causal random forests.</p>
 </section>
 <section id="variable-importance" class="level2">
 <h2 class="anchored" data-anchor-id="variable-importance">Variable importance</h2>
 <div class="column" style="width:30%;">
 <p>First compute out-of-bag prediction accuracy.</p>
-<p>In this case, classification accuracy is 96%</p>
+<p>Here, classification accuracy is 96%</p>
 </div>
 <div class="column" style="width:69%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-13-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-15-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1172,7 +1247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-14-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-16-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1190,7 +1265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-15-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-17-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1208,7 +1283,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-16-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p><img src="02-trees_and_forests_files/figure-html/unnamed-chunk-18-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1224,9 +1299,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Bill length: 0.96 - 0.63 = 0.33</p></li>
 </ul>
 <p><span class="math inline">\(\Rightarrow\)</span> flippers more important than bills for species prediction.</p>
+<p><strong>Note</strong>: Details on limitations in <span class="citation" data-cites="strobl2007bias">Strobl et al. (<a href="#ref-strobl2007bias" role="doc-biblioref">2007</a>)</span></p>
+</section>
+<section id="your-turn-3" class="level2">
+<h2 class="anchored" data-anchor-id="your-turn-3">Your turn</h2>
+<p>Complete exercise 3.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-breiman1996out" class="csl-entry" role="listitem">
+Breiman, Leo. 1996. <span>“Out-of-Bag Estimation.”</span>
+</div>
+<div id="ref-breiman2001random" class="csl-entry" role="listitem">
+———. 2001. <span>“Random Forests.”</span> <em>Machine Learning</em> 45: 5–32.
+</div>
+<div id="ref-breiman2017classification" class="csl-entry" role="listitem">
+———. 2017. <span>“Classification and Regression Trees.”</span>
+</div>
+<div id="ref-ishwaran2008random" class="csl-entry" role="listitem">
+Ishwaran, Hemant, Udaya B Kogalur, Eugene H Blackstone, and Michael S Lauer. 2008. <span>“Random Survival Forests.”</span>
+</div>
+<div id="ref-strobl2007bias" class="csl-entry" role="listitem">
+Strobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007. <span>“Bias in Random Forest Variable Importance Measures: Illustrations, Sources and a Solution.”</span> <em>BMC Bioinformatics</em> 8: 1–21.
+</div>
+</div>
 
 
 </section>

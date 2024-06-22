@@ -563,15 +563,15 @@ Byron C. Jaeger, PhD
 <span id="cb1-13"><a href="#cb1-13"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
-   expr       min        lq      mean    median        uq       max neval cld
-   ODRF 3523.8859 3669.7335 3674.5940 3706.1862 3718.4377 3754.7265     5  a 
- ranger   20.9567   22.7149   24.4645   22.9315   26.7886   28.9308     5   b</code></pre>
+   expr       min        lq       mean   median        uq       max neval cld
+   ODRF 3571.7562 3711.5112 3702.25270 3722.025 3732.6053 3773.3657     5  a 
+ ranger   20.6516   21.4896   27.57974   21.989   25.2287   48.5398     5   b</code></pre>
 </div>
 </div>
 </section>
 <section id="why-so-slow" class="slide level2">
 <h2>Why so slow?</h2>
-<p>Suppose we’re given <span class="math inline">\(p\)</span> predictors, each with <span class="math inline">\(k\)</span> unique values.</p>
+<p>Suppose we’re given <span class="math inline">\(p\)</span> continuous predictors, each with <span class="math inline">\(k\)</span> unique values.</p>
 <ul>
 <li><p>If predictor has <span class="math inline">\(k\)</span> unique values <span class="math inline">\(\Rightarrow\)</span> max <span class="math inline">\(k-2\)</span> potential splits</p></li>
 <li><p>At most, <span class="math inline">\(p \cdot (k-2)\)</span> axis-based splits to assess</p></li>
@@ -610,9 +610,9 @@ Byron C. Jaeger, PhD
 <span id="cb3-11"><a href="#cb3-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
-   expr    min       lq      mean  median       uq     max neval cld
-    glm  1.753  2.08445  2.551564  2.2695  2.46785 16.5628   100  a 
- ranger 19.277 19.93555 20.556177 20.1971 20.55415 36.4619   100   b</code></pre>
+   expr     min       lq      mean   median       uq     max neval cld
+    glm  1.7644  2.17035  2.543723  2.37145  2.52560 19.8735   100  a 
+ ranger 19.5321 20.31135 20.990783 20.57210 20.77865 37.5845   100   b</code></pre>
 </div>
 </div>
 <p>1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩</p>
@@ -649,9 +649,9 @@ Byron C. Jaeger, PhD
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
    expr       min        lq       mean    median        uq       max neval cld
-   ODRF 3567.0566 3690.7493 3675.39144 3693.2975 3707.2891 3718.5647     5  a 
-  aorsf   44.8671   48.9122   56.46038   51.6710   57.6359   79.2157     5   b
- ranger   21.0694   21.5283   22.62312   21.5341   22.6977   26.2861     5   b</code></pre>
+   ODRF 3540.8292 3721.2370 3714.38962 3753.8662 3776.0013 3780.0144     5  a 
+  aorsf   39.1224   41.6434   51.17836   44.1699   57.6122   73.3439     5   b
+ ranger   21.0272   21.5199   22.69840   22.1287   22.2456   26.5706     5   b</code></pre>
 </div>
 </div>
 </section>
@@ -846,7 +846,7 @@ $ Class                            &lt;fct&gt; Control, Control, Control, Contro
                  N trees: 500
       N predictors total: 130
    N predictors per node: 12
- Average leaves per tree: 13.094
+ Average leaves per tree: 13.118
 Min observations in leaf: 5
           OOB stat value: 0.89
            OOB stat type: AUC-ROC
@@ -863,7 +863,7 @@ Min observations in leaf: 5
 </section>
 <section id="partial-dependence" class="slide level2">
 <h2>Partial dependence</h2>
-<p><strong>big idea</strong>: Interpret a model by evaluating its predictions on special data.</p>
+<p><strong>Purpose</strong>: Interpret a model by evaluating its predictions on special data.</p>
 <p><strong>Example</strong>: Expected prediction from the model as a function of age.</p>
 <p><strong>Pseudo-code</strong>: <code>for i in seq(min_age, max_age)</code>:</p>
 <ul>
@@ -884,11 +884,11 @@ Min observations in leaf: 5
         |------------ Probability ------------|
   Value      Mean    Median    25th %    75th %
  &lt;char&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;
-   5.04 0.2292983 0.1931633 0.1195408 0.3144244
-   5.37 0.2348429 0.1986864 0.1240737 0.3230236
-   5.75 0.2523429 0.2171855 0.1351420 0.3457929
-   6.18 0.2857471 0.2509648 0.1603631 0.3870524
-   6.50 0.3095428 0.2710737 0.1851320 0.4075356
+   5.04 0.2289781 0.1909107 0.1219569 0.3173935
+   5.37 0.2349259 0.1965919 0.1241136 0.3251669
+   5.75 0.2513727 0.2118122 0.1349814 0.3528321
+   6.18 0.2843050 0.2464631 0.1613582 0.3984072
+   6.50 0.3074606 0.2659016 0.1825196 0.4170013
 
  Predicted probability for top 1 predictors </code></pre>
 </div>
@@ -921,14 +921,14 @@ Min observations in leaf: 5
 <span id="cb14-3"><a href="#cb14-3"></a>                     <span class="at">verbose_progress =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Selecting variables: 38.0% ~ time remaining: 5 seconds 
-Selecting variables: 95.3% ~ time remaining: 0 seconds 
+Selecting variables: 94.6% ~ time remaining: 0 seconds 
 Selecting variables: 100%</code></pre>
 </div>
 </div>
 </section>
-<section id="want-to-go-faster" class="slide level2">
-<h2>Want to go faster?</h2>
-<p>You can reduce the number of trees and increase terminal node size if you’d like to speed this process up</p>
+<section id="faster" class="slide level2">
+<h2>Faster</h2>
+<p><strong>If needed</strong>, reduce <code>n_tree</code> and increase <code>leaf_min_obs</code> to speed this up</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>fit_light <span class="ot">&lt;-</span> <span class="fu">orsf_update</span>(fit, <span class="at">n_tree =</span> <span class="dv">100</span>, <span class="at">leaf_min_obs =</span> <span class="dv">20</span>)</span>
 <span id="cb16-2"><a href="#cb16-2"></a></span>
@@ -1012,18 +1012,17 @@ Selecting variables: 100%</code></pre>
 <p>Why do we pre-process data?</p>
 <ul>
 <li><p>Some models require special data format</p></li>
+<li><p>Impute missing values correctly</p></li>
 <li><p>Sometimes its helpful to apply transformations to data prior to modeling</p></li>
 </ul>
 <p>We’ll train our pre-processing steps using the <code>recipes</code> package</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">library</span>(recipes)</span>
-<span id="cb20-2"><a href="#cb20-2"></a>vars_picked <span class="ot">&lt;-</span> <span class="fu">aorsf_select_vars</span>(train, Class <span class="sc">~</span> .)</span>
-<span id="cb20-3"><a href="#cb20-3"></a></span>
-<span id="cb20-4"><a href="#cb20-4"></a><span class="co"># Makes the recipe steps</span></span>
-<span id="cb20-5"><a href="#cb20-5"></a>recipe_steps <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="at">data =</span> train, Class <span class="sc">~</span> .) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-6"><a href="#cb20-6"></a>  <span class="fu">step_select</span>(<span class="fu">all_of</span>(vars_picked)) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-7"><a href="#cb20-7"></a>  <span class="fu">step_impute_knn</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-8"><a href="#cb20-8"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="co"># Makes the recipe steps</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>recipe_steps <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="at">data =</span> train, Class <span class="sc">~</span> .) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">step_impute_knn</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="training-the-recipe" class="slide level2">
@@ -1086,9 +1085,9 @@ Selecting variables: 100%</code></pre>
 <pre><code># A tibble: 3 × 4
   model  .metric .estimator .estimate
   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-1 aorsf  roc_auc binary         0.902
-2 odrf   roc_auc binary         0.905
-3 ranger roc_auc binary         0.886</code></pre>
+1 aorsf  roc_auc binary         0.936
+2 odrf   roc_auc binary         0.939
+3 ranger roc_auc binary         0.918</code></pre>
 </div>
 </div>
 </section>

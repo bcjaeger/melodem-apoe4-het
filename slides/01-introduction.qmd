@@ -133,7 +133,7 @@ While you're working on exercises,
 
 ## Goals
 
-Half the battle of learning is organization. We're going to get organized.
+Get our data organized.
 
 - Build familiarity with R/Rstudio and git/GitHub
 
@@ -188,10 +188,11 @@ pkgs <-
     "glue", "grf", "aorsf", "glmnet", "xgboost", "randomForestSRC",
     "party", "riskRegression", "survival", "officer", "flextable", 
     "table.glue", "gtsummary", "usethis", "cli", "ggforce",
-    "rpart", "rpart.plot", "ranger", "withr", "gt", 'recipes', 
-    'butcher', 'sandwich', 'lmtest')
+    "rpart", "rpart.plot", "ranger", "withr", "gt", "recipes", 
+    "butcher", "sandwich", "lmtest", "gbm", "officedown")
 
 install.packages(pkgs)
+
 ```
 
 ## Pull!
@@ -325,13 +326,15 @@ We are going to add your data to the pipeline, carefully.
 
 ::: {.column width="50%"}
 
-6. Modify the code showen here in `_targets.R`, replacing `zzzz` with the name of your data.
+6. Copy/paste code shown here to `_targets.R`, just beneath the line that starts with `# real data cohorts`. 
 
-7. Save the `_targets.R` file
+7. Replace `zzzz` with the name of your data. 
 
-8. Run `tar_make()` in the R console. 
+8. Save the `_targets.R` file
 
-9. run `tar_read(data_zzzz)`, where `zzzz` is your data name.
+9. Run `tar_make()` in the R console. 
+
+
 
 :::
 
@@ -370,10 +373,10 @@ data_zzzz_tar <- tar_target(
 
 ## Your turn 
 
-We are going to add your data to the pipeline, carefully.
+10. run `tar_read(data_zzzz)`, where `zzzz` is your data name.
 
 ```{r echo=TRUE, eval=FALSE}
-data_sim
+tar_read(data_sim)
 ```
 
 
@@ -577,11 +580,11 @@ data_clean.melodem_data <- function(data){
 
 ## Your data
 
-- Your data's first class is the name you picked, e.g., `regards`, and second class is `melodem_data`. Verify by running `class()`
+- Your data's first class is `melodem` plus the name you picked, e.g., `melodem_regards`, and second class is `melodem_data`. Verify by running `class()`
 
 - When you run `data_clean()` with, e.g., the `regards` data,
 
-    + R will first look for a function called `data_clean.regards`
+    + R will look for a function called `data_clean.melodem_regards`
     + If it doesn't exist, R runs `data_clean.melodem_data`
 
 TLDR: If you don't write a specific function for `data_clean`, `data_derive`, etc. for your data, then these functions will not do anything to your data.

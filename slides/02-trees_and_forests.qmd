@@ -67,7 +67,7 @@ Data were collected and made available by [Dr. Kristen Gorman](https://www.uaf.e
 
 :::{.column width="40%"}
 
-Decision trees are grown by recursively splitting a set of training data.
+Decision trees are grown by recursively splitting a set of training data [@breiman2017classification].
 
 :::
 
@@ -122,7 +122,7 @@ gini_right
 
 :::{.column width="59%"}
 
-```{r penguin-fig-axis-1,  }
+```{r penguin-fig-axis-1}
 penguin_figs$axis_1
 ```
 
@@ -193,18 +193,106 @@ Was this the best possible split? Let's find out.
 
 - Open `classwork/02-trees_and_forests.qmd`
 
-- Calculate the total impurity of splitting along bill length of 45 mm.
+- Complete exercise 1.
 
 - **Reminder**: Red sticky note if you'd like help, green sticky note when you are finished.
 
 - **Hint**: the answer is 0.492340868530637
 
-. . .
-
 ```{r ex-1}
 #| echo: false
 # countdown::countdown(minutes = 5, id = "ex-1")
 ```
+
+## Regression trees
+
+:::{.column width="40%"}
+
+Impurity is based on variance: 
+
+$$\sum_{i=1}^n \frac{(y_i - \bar{y})^2}{n-1}$$
+
+- $\bar{y}$: mean of $y_i$ in the node. 
+
+- $n$: no. of observations in the node.
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=4.5, fig.width=5}
+
+library(patchwork)
+
+split_bad <- penguins %>% 
+  mutate(node = if_else(species =="Adelie",
+                        'Right node',
+                        'Left node')) %>% 
+  ggplot(aes(x=node, y=bill_length_mm)) + 
+  geom_boxplot() + 
+  labs(x = "", y = "Good split") + 
+  theme_bw() +
+  theme(text = element_text(size = 17),
+        panel.grid = element_blank())
+
+split_good <- penguins %>% 
+  mutate(node = if_else(bill_depth_mm > 19,
+                        'Right node',
+                        'Left node')) %>% 
+  ggplot(aes(x=node, y=bill_length_mm)) + 
+  geom_boxplot()  + 
+  labs(x = "", y = "Bad split") + 
+  theme_bw() + 
+  theme(text = element_text(size = 17),
+        panel.grid = element_blank())
+
+split_bad / split_good
+
+```
+
+:::
+
+## Survival trees
+
+:::{.column width="40%"}
+
+Log-rank stat measures split quality [@ishwaran2008random]: 
+
+$$\frac{ \sum_{j=1}^J O_{j } - E_{j}}{\sqrt{\sum_{j=1}^J V_{j}}}$$
+$O$ is observed and $E$ expected events in the node at time $j$. $V$ is variance.
+
+
+:::
+
+:::{.column width="59%"}
+
+```{r fig.height=4.5, fig.width=5}
+
+library(tidycmprsk)
+library(ggsurvfit)
+
+set.seed(1234)
+trial$rando <- factor(rbinom(nrow(trial), size = 1, prob = 1/2))
+
+split_bad <- 
+  cuminc(Surv(ttdeath, death_cr) ~ rando, trial) %>%
+  ggcuminc(outcome = "death from cancer") + 
+  labs(x = "", y = "Bad split") + 
+  theme(legend.position = "",
+        panel.grid = element_blank())
+
+split_good <- 
+  cuminc(Surv(ttdeath, death_cr) ~ trt, trial) %>%
+  ggcuminc(outcome = "death from cancer") + 
+  labs(x = "", y = "Good split") + 
+  theme(legend.position = "",
+        panel.grid = element_blank())
+
+split_bad / split_good
+
+```
+
+:::
 
 ## Keep growing?
 
@@ -433,6 +521,7 @@ The same partitions, visualized as a binary tree.
 As a reminder, here is our 'hand-made' leaf data
 
 ```{r}
+
 mutate(
   penguins,
   node = case_when(
@@ -449,7 +538,11 @@ mutate(
   mutate(across(c(Adelie, Chinstrap, Gentoo),
                 ~round(.x, digits = 2))) %>% 
   gt::gt(rowname_col = 'node') %>% 
-  gt::tab_options(table.font.size = "85%")
+  gt::tab_options(table.font.size = "85%") %>% 
+  gt::data_color(method = 'factor', rows = 1, palette = "cyan4") %>% 
+  gt::data_color(method = 'factor', rows = 2, palette = "purple") %>% 
+  gt::data_color(method = 'factor', rows = 3, palette = "darkorange")
+
 
 ```
 :::
@@ -461,6 +554,18 @@ knitr::include_graphics('img/rpart_plot_classif.png')
 
 ```
 :::
+
+## Leaves for other types of trees
+
+- For regression, leaves store the mean value of the outcome. 
+
+- For survival, leaves store:
+
+    + cumulative hazard function
+    
+    + survival function
+    
+    + summary score (e.g., no. of expected events)
 
 ## Planting seeds for causal trees
 
@@ -476,7 +581,7 @@ But how do we get $\hat\tau_i \mid x_i$? More on this later...
 
 # Random forests
 
-## Expert of committee?
+## Expert or committee?
 
 If we have to make a yes/no decision, who should make it? 
 
@@ -515,12 +620,9 @@ Why? Weak expert majority is right ~92% of the time
 
 ## Random forest recipe
 
-The weak expert approach for decision trees:
+The weak expert approach for decision trees [@breiman2001random]:
 
 - Grow each tree with a random subset of the training data.
-
-    + "In-bag" means in the random subset
-    + "Out-of-bag" means not in the subset
 
 - Evaluate a random subset of predictors when splitting data.
 
@@ -560,13 +662,25 @@ penguin_figs$axis_3d + ggplot2::ggtitle("500 randomized trees")
 
 ## Random forest predictions
 
-To get a prediction from the random forest, 
+To get a prediction from the random forest with $B$ trees, 
 
 - predict the outcome with each tree
 
-- take the majority vote
+- take the mean of the predictions
 
-In situations where trees predictions are continuous and you can't take a majority vote, e.g., predicted 10-year risk for dementia, just take the mean of the tree's predictions.
+$$\hat{y}_i = \frac{1}{B}\sum_{b=1}^{B} \hat{y}_b(i)$$
+
+## Out-of-bag
+
+@breiman1996out discusses "out-of-bag" estimation.
+
+- 'bag': the bootstrapped sample used to grow a tree
+
+- 'out-of-bag': the observations that were not in the bootstrap sample
+
+- out-of-bag prediction error: nearly optimal estimate of the forest's external prediction error
+
+With conventional bootstrap sampling, each observation has about a 36.8% chance of being out-of-bag for each tree. 
 
 ## How to get out-of-bag predictions
 
@@ -592,20 +706,18 @@ In situations where trees predictions are continuous and you can't take a majori
 
 Final out-of-bag predictions:
 
-$$\frac{\text{out-of-bag predictions}}{\text{out-of-bag denominator}}$$
+$$\hat{y}_i^{\text{oob}} = \frac{1}{|B_i|}\sum_{b \in B_i}\hat{y}_b$$
 
-- With conventional bootstrap sampling, each observation has about a 36.8% chance of being out-of-bag for each tree.
+- $B_i$ is the set of trees where $i$ is out of bag
 
-- Out-of-bag predictions give an unbiased view of the forest's prediction on new data
-
-- This allows for variable importance estimates and (we'll see this later) valid inference in causal forests.
+Out-of-bag estimation plays a pivotal role in variable importance estimates and inference with causal random forests.
 
 ## Variable importance
 
 :::{.column width="30%"}
 First compute out-of-bag prediction accuracy.
 
-In this case, classification accuracy is 96%
+Here, classification accuracy is 96%
 :::
 
 
@@ -672,5 +784,18 @@ $$\text{Variable importance} = \text{initial accuracy} - \text{permuted accuracy
 
 $\Rightarrow$ flippers more important than bills for species prediction.
 
+**Note**: Details on limitations in @strobl2007bias
+
+## Your turn
+
+Complete exercise 3.
+
+```{r ex-3}
+#| echo: false
+# countdown::countdown(minutes = 5, id = "ex-1")
+```
 
 ## References
+
+::: {#refs}
+:::

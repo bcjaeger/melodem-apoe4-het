@@ -104,13 +104,15 @@ fit_slides
 ```
 
 
+
+
 ## Exercise 2
 
 Fit your own decision tree to the `penguins` data
 
 1. Use `formula = species ~ .` to incorporate all predictors on the right hand side of the formula.
 
-1. Set a maximum depth of the tree using `control = rpart.control(maxdepth = your_choice)`
+1. Set a maximum depth of your choice using `control = rpart.control(maxdepth = your_choice)`. You should probably keep `maxdepth` below 5 if you want to make your tree interpretable.
 
 1. View your decision tree by running `rpart.plot`
 
@@ -123,6 +125,27 @@ library(rpart.plot)
 #              control = ???)
 
 # rpart.plot(fit)
+
+```
+
+## Exercise 3
+
+Fit a random forest to the `penguins` data using the `ranger` package.
+
+- Use `formula = species ~ .` to use all the variables
+
+- Use `importance = 'permutation'` to compute variable importance
+
+```{r}
+
+library(ranger)
+
+# fit_ranger <- ranger(formula = ???,
+#                      data = penguins,
+#                      importance = ???)
+
+## print out the variable importance values
+# fit_ranger$variable.importance
 
 ```
 

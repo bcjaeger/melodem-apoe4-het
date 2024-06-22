@@ -81,7 +81,8 @@ pkgs <-
     "party", "riskRegression", "survival", "officer", "flextable", 
     "table.glue", "gtsummary", "usethis", "cli", "ggforce",
     "rpart", "rpart.plot", "ranger", "withr", "gt", "recipes", 
-    "butcher", "sandwich", "lmtest", "gbm")
+    "butcher", "sandwich", "lmtest", "gbm", "officedown",
+    "ggsurvfit", "tidycmprsk")
 
 # identify what packages are not installed
 pkgs_needed <- setdiff(
