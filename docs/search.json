@@ -1880,7 +1880,7 @@
     "href": "slides/03-oblique_forests.html#evaluating-in-test-data",
     "title": "Oblique random forests with aorsf",
     "section": "Evaluating in test data",
-    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.939\n3 ranger roc_auc binary         0.918"
+    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.946\n3 ranger roc_auc binary         0.918"
   },
   {
     "objectID": "slides/03-oblique_forests.html#training-the-recipe",

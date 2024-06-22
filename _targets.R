@@ -86,17 +86,21 @@ fit_grf_sim_tar <- tar_target(
 
 # real data model targets (to be added as an exercise)
 
+
 # Shar-eable targets ------------------------------------------------------
 
-orsf_smry_sim_tar <- tar_target(
-  orsf_smry_sim,
+orsf_shareable_sim_tar <- tar_target(
+  orsf_shareable_sim,
   orsf_summarize(fit_orsf_sim)
 )
 
-grf_smry_sim_tar <- tar_target(
-  grf_smry_sim,
+grf_shareable_sim_tar <- tar_target(
+  grf_shareable_sim,
   grf_summarize(fit_grf_sim)
 )
+
+# uncomment and run line below to save shareables
+# write_shareables(.names = c("orsf_shareable_sim", "grf_shareable_sim"))
 
 # real data share-able targets (to be added as an exercise)
 
@@ -129,8 +133,8 @@ targets <- list(
   data_sim_tar,
   fit_orsf_sim_tar,
   fit_grf_sim_tar,
-  orsf_smry_sim_tar,
-  grf_smry_sim_tar
+  orsf_shareable_sim_tar,
+  grf_shareable_sim_tar
 )
 
 

@@ -136,6 +136,8 @@ Fit a random forest to the `penguins` data using the `ranger` package.
 
 - Use `importance = 'permutation'` to compute variable importance
 
+Discuss with your neighbor. What variable is most important? Why do you think it's the most important variable?
+
 ```{r}
 
 library(ranger)
