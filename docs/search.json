@@ -780,8 +780,8 @@
     "objectID": "slides/04-causal_forests.html#overview",
     "href": "slides/04-causal_forests.html#overview",
     "title": "Causal random forests with grf",
-    "section": "",
-    "text": "Robinson’s residual-on-residual regression\n\nCausal trees\nCausal random forest\nCausal random survival forest\n\nInference with causal random forests\n\nConditional average treatment effect (CATE)\nBest linear projection (BLP)\nRank weighted average treatment effect (RATE)"
+    "section": "Overview",
+    "text": "Overview\n\nRobinson’s residual-on-residual regression\n\nCausal trees\nCausal random forest\nCausal random survival forest\n\nInference with causal random forests\n\nConditional average treatment effect (CATE)\nBest linear projection (BLP)\nRank weighted average treatment effect (RATE)"
   },
   {
     "objectID": "slides/04-causal_forests.html#background",
@@ -1166,7 +1166,7 @@
     "href": "slides/04-causal_forests.html#fitting-the-forest",
     "title": "Causal random forests with grf",
     "section": "Fitting the forest",
-    "text": "Fitting the forest\nThird, fit the causal survival forest:\n\nfit_grf &lt;- causal_survival_forest(\n  X = data_grf$X, # covariates\n  Y = data_grf$Y, # time to event\n  W = data_grf$W, # treatment status\n  D = data_grf$D, # event status\n  horizon = 3, # 3-year horizon\n  # treatment effect will be\n  # measured in terms of the\n  # restricted mean survival time\n  target = 'RMST' \n)\n\nfit_grf\n\nGRF forest object of type causal_survival_forest \nNumber of trees: 2000 \nNumber of training samples: 2500 \nVariable importance: \n    1     2     3     4     5 \n0.198 0.530 0.115 0.138 0.019"
+    "text": "Fitting the forest\nThird, fit the causal survival forest:\n\nfit_grf &lt;- causal_survival_forest(\n  X = data_grf$X, # covariates\n  Y = data_grf$Y, # time to event\n  W = data_grf$W, # treatment status\n  D = data_grf$D, # event status\n  horizon = 3, # 3-year horizon\n  # treatment effect will be\n  # measured in terms of the\n  # restricted mean survival time\n  target = 'RMST' \n)\n\nfit_grf\n\nGRF forest object of type causal_survival_forest \nNumber of trees: 2000 \nNumber of training samples: 1000 \nVariable importance: \n    1     2     3     4     5 \n0.156 0.555 0.157 0.108 0.024"
   },
   {
     "objectID": "slides/04-causal_forests.html#validate-what-youve-learned",
@@ -1180,7 +1180,7 @@
     "href": "slides/04-causal_forests.html#get-gamma-scores",
     "title": "Causal random forests with grf",
     "section": "Get \\(\\Gamma\\) scores",
-    "text": "Get \\(\\Gamma\\) scores\nRemember the \\(\\Gamma_i\\)’s that provide conditional estimates of \\(\\tau\\)? Let’s get them.\n\n# pull the augmented CATEs from the fitted grf object\ngammas &lt;- get_scores(fit_grf)\n\n\nWith gammas, we can compute ATE manually\n\n\nmean(gammas) \n\n[1] -0.4372923\n\n\n\nVerify this is what the grf function gives\n\n\naverage_treatment_effect(fit_grf)\n\n   estimate     std.err \n-0.43729231  0.04196198"
+    "text": "Get \\(\\Gamma\\) scores\nRemember the \\(\\Gamma_i\\)’s that provide conditional estimates of \\(\\tau\\)? Let’s get them.\n\n# pull the augmented CATEs from the fitted grf object\ngammas &lt;- get_scores(fit_grf)\n\n\nWith gammas, we can compute ATE manually\n\n\nmean(gammas) \n\n[1] -2.595928\n\n\n\nVerify this is what the grf function gives\n\n\naverage_treatment_effect(fit_grf)\n\n   estimate     std.err \n-2.59592779  0.02503859"
   },
   {
     "objectID": "slides/04-causal_forests.html#robinsons-residual-on-residual-regression",
@@ -1313,7 +1313,7 @@
     "href": "slides/04-causal_forests.html#estimating-the-ate",
     "title": "Causal random forests with grf",
     "section": "Estimating the ATE",
-    "text": "Estimating the ATE\nFirst, we’ll prepare the data:\n\n# loads packages and R functions\ntargets::tar_load_globals()\n\n# loads a specific target\ntar_load(data_sim)\n\nSecond, coerce data to grf format:\n\n# helper function for grf data prep \ndata_grf &lt;- data_coerce_grf(data_sim$values)\n\n# just a view of the X matrix\nhead(data_grf$X, n = 2)\n\n          age biomarker_1  biomarker_2 biomarker_3 sex_female\n[1,] 66.27077   0.5851853  0.007190105  0.08550595          1\n[2,] 65.51047   1.1224445 -0.750371586  0.36835322          1"
+    "text": "Estimating the ATE\nFirst, we’ll prepare the data:\n\n# loads packages and R functions\ntargets::tar_load_globals()\n\n# loads a specific target\ntar_load(data_sim)\n\nSecond, coerce data to grf format:\n\n# helper function for grf data prep \ndata_grf &lt;- data_coerce_grf(data_sim$values)\n\n# just a view of the X matrix\nhead(data_grf$X, n = 2)\n\n          age biomarker_1 biomarker_2 biomarker_3 sex_female\n[1,] 66.27077   0.7473138 -0.74236839  -1.7127343          1\n[2,] 65.51047  -0.5621949 -0.05134715   0.5464561          1"
   },
   {
     "objectID": "slides/04-causal_forests.html#your-turn",
@@ -1341,7 +1341,7 @@
     "href": "slides/04-causal_forests.html#what-happens-underneath-the-grf-hood",
     "title": "Causal random forests with grf",
     "section": "What happens underneath the grf hood",
-    "text": "What happens underneath the grf hood\nHere’s how you can replicate grf results:\n\n\nlmtest::coeftest(fit_blp, \n                 vcov = sandwich::vcovCL, \n                 type = 'HC3')\n\n\nt test of coefficients:\n\n              Estimate Std. Error t value Pr(&gt;|t|)   \n(Intercept) -1.7605791  0.5488236 -3.2079 0.001354 **\nage          0.0201407  0.0084055  2.3961 0.016642 * \nbiomarker_1 -0.0526611  0.0422813 -1.2455 0.213066   \nbiomarker_2 -0.0075579  0.0438237 -0.1725 0.863089   \nbiomarker_3 -0.0680319  0.0436954 -1.5570 0.119608   \nsex_female   0.0429797  0.0838533  0.5126 0.608306   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n\nbest_linear_projection(fit_grf, data_grf$X)\n\n\nBest linear projection of the conditional average treatment effect.\nConfidence intervals are cluster- and heteroskedasticity-robust (HC3):\n\n              Estimate Std. Error t value Pr(&gt;|t|)   \n(Intercept) -1.7605791  0.5488236 -3.2079 0.001354 **\nage          0.0201407  0.0084055  2.3961 0.016642 * \nbiomarker_1 -0.0526611  0.0422813 -1.2455 0.213066   \nbiomarker_2 -0.0075579  0.0438237 -0.1725 0.863089   \nbiomarker_3 -0.0680319  0.0436954 -1.5570 0.119608   \nsex_female   0.0429797  0.0838533  0.5126 0.608306   \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+    "text": "What happens underneath the grf hood\nHere’s how you can replicate grf results:\n\n\nlmtest::coeftest(fit_blp, \n                 vcov = sandwich::vcovCL, \n                 type = 'HC3')\n\n\nt test of coefficients:\n\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.7678573  0.2927282 -9.4554 &lt; 2.2e-16 ***\nage          0.0029772  0.0046684  0.6377  0.523798    \nbiomarker_1 -0.1264781  0.0326652 -3.8719  0.000115 ***\nbiomarker_2 -0.0350418  0.0197590 -1.7735  0.076458 .  \nbiomarker_3 -0.0052493  0.0205146 -0.2559  0.798096    \nsex_female  -0.0414831  0.0495542 -0.8371  0.402724    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n\nbest_linear_projection(fit_grf, data_grf$X)\n\n\nBest linear projection of the conditional average treatment effect.\nConfidence intervals are cluster- and heteroskedasticity-robust (HC3):\n\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.7678573  0.2927282 -9.4554 &lt; 2.2e-16 ***\nage          0.0029772  0.0046684  0.6377  0.523798    \nbiomarker_1 -0.1264781  0.0326652 -3.8719  0.000115 ***\nbiomarker_2 -0.0350418  0.0197590 -1.7735  0.076458 .  \nbiomarker_3 -0.0052493  0.0205146 -0.2559  0.798096    \nsex_female  -0.0414831  0.0495542 -0.8371  0.402724    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
   },
   {
     "objectID": "slides/04-causal_forests.html#your-turn-1",
@@ -1439,7 +1439,7 @@
     "href": "slides/04-causal_forests.html#estimating-rate-from-cate",
     "title": "Causal random forests with grf",
     "section": "Estimating RATE from CATE",
-    "text": "Estimating RATE from CATE\nAn intuitive way to assign treatment priority is to use the CATE: \\(\\hat\\tau(X_i)\\)\n\n\\(\\hat\\tau(X_i)\\) should not be estimated and evaluated using the same data\nUse split-sample estimation or cross-fitting (Yadlowsky et al. 2021).\n\nAs a preliminary step, we’ll split our data in to training and testing sets\n\ntrain_index &lt;- sample(x = nrow(data_sim$values), size = 1250)\n\ndata_trn &lt;- data_sim$values[train_index, ]\ndata_tst &lt;- data_sim$values[-train_index, ]\n\ndata_trn_grf &lt;- data_coerce_grf(data_trn)\ndata_tst_grf &lt;- data_coerce_grf(data_tst)"
+    "text": "Estimating RATE from CATE\nAn intuitive way to assign treatment priority is to use the CATE: \\(\\hat\\tau(X_i)\\)\n\n\\(\\hat\\tau(X_i)\\) should not be estimated and evaluated using the same data\nUse split-sample estimation or cross-fitting (Yadlowsky et al. 2021).\n\nAs a preliminary step, we’ll split our data in to training and testing sets\n\ntrain_index &lt;- sample(x = nrow(data_sim$values), \n                      size = nrow(data_sim$values)/2)\n\ndata_trn &lt;- data_sim$values[train_index, ]\ndata_tst &lt;- data_sim$values[-train_index, ]\n\ndata_trn_grf &lt;- data_coerce_grf(data_trn)\ndata_tst_grf &lt;- data_coerce_grf(data_tst)"
   },
   {
     "objectID": "slides/04-causal_forests.html#how-to-evaluate-treatment-prioritization",
@@ -1684,7 +1684,7 @@
     "href": "slides/03-oblique_forests.html#but-r-is-not-small",
     "title": "Oblique random forests with aorsf",
     "section": "But \\(R\\) is not small",
-    "text": "But \\(R\\) is not small\nIt takes \\(\\approx\\) 2.5ms for 1 oblique split, &lt;20ms to fit 500 axis-based trees…\n\n# compare time for 1 oblique split to 500 axis-based trees\nmicrobenchmark(\n  # 1 oblique split\n  glm = glm(I(species == 'Adelie') ~ bill_length_mm + flipper_length_mm,\n            family = 'binomial', \n            data = penguins),\n  # 500 axis based trees\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500)\n)\n\nUnit: milliseconds\n   expr     min       lq      mean   median       uq     max neval cld\n    glm  1.7644  2.17035  2.543723  2.37145  2.52560 19.8735   100  a \n ranger 19.5321 20.31135 20.990783 20.57210 20.77865 37.5845   100   b\n\n\n1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩"
+    "text": "But \\(R\\) is not small\nIt takes \\(\\approx\\) 2.5ms for 1 oblique split, $$20ms to fit 500 axis-based trees…\n\n# compare time for 1 oblique split to 500 axis-based trees\nmicrobenchmark(\n  # 1 oblique split\n  glm = glm(I(species == 'Adelie') ~ bill_length_mm + flipper_length_mm,\n            family = 'binomial', \n            data = penguins),\n  # 500 axis based trees\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500)\n)\n\nUnit: milliseconds\n   expr     min       lq      mean   median       uq     max neval cld\n    glm  1.7644  2.17035  2.543723  2.37145  2.52560 19.8735   100  a \n ranger 19.5321 20.31135 20.990783 20.57210 20.77865 37.5845   100   b\n\n\n1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩"
   },
   {
     "objectID": "slides/03-oblique_forests.html#accelerating-a-model",
@@ -1880,7 +1880,7 @@
     "href": "slides/03-oblique_forests.html#evaluating-in-test-data",
     "title": "Oblique random forests with aorsf",
     "section": "Evaluating in test data",
-    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.946\n3 ranger roc_auc binary         0.918"
+    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.942\n3 ranger roc_auc binary         0.918"
   },
   {
     "objectID": "slides/03-oblique_forests.html#training-the-recipe",
@@ -2007,5 +2007,12 @@
     "title": "Oblique random forests with aorsf",
     "section": "Faster",
     "text": "Faster\nIf needed, reduce n_tree and increase leaf_min_obs to speed this up\n\nfit_light &lt;- orsf_update(fit, n_tree = 100, leaf_min_obs = 20)\n\norsf_vars_light &lt;- orsf_vs(fit_light, n_predictor_min = 1, verbose_progress = TRUE)\n\nSelecting variables: 100%"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#to-the-pipeline",
+    "href": "slides/04-causal_forests.html#to-the-pipeline",
+    "title": "Causal random forests with grf",
+    "section": "To the pipeline",
+    "text": "To the pipeline\n\nCopy/paste this code into your _targets.R file.\n\n\n# in _targets.R, you should see this comment: \n\n# real data model targets (to be added as an exercise). \n\n# Paste this code right beneath that.\n\ngrf_shareable_zzzz_tar &lt;- tar_target(\n  grf_shareable_zzzz,\n  grf_summarize(fit_grf_zzzz)\n)\n\n\nModify this code, replacing zzzz with the name of your dataset."
   }
 ]

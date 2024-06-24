@@ -223,7 +223,7 @@ If $R$ is small, we can do okay with this!
     
 ## But $R$ is not small
 
-It takes $\approx$ 2.5ms for 1 oblique split, <20ms to fit 500 axis-based trees...
+It takes $\approx$ 2.5ms for 1 oblique split, $\approx$20ms to fit 500 axis-based trees...
 
 
 ```{r, echo=TRUE, cache=TRUE}
@@ -676,12 +676,11 @@ preds %>%
 
 ## To the pipeline
 
-
 - Copy/paste this code into your `_targets.R` file. 
 
 ```{r, eval=FALSE, echo=TRUE}
 
-# Around line 87 of the file, you should see this comment: 
+# in _targets.R, you should see this comment: 
 
 # real data model targets (to be added as an exercise). 
 

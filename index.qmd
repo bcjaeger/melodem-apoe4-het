@@ -30,7 +30,7 @@ For efficiency during the workshop, please ensure the names of the required vari
 - Age should be named ‘age’ and should be numeric with age in years.
 - Sex should be named ‘sex’ and should include values of ‘male’ or ‘female’. This does not need to be binary if your data have a large sample (i.e., > 250 observations with >10 dementia events) of people who do not identify in either of those two categories
 
-Data sets *should* have as many predictors of dementia risk possible. Predictors would include any variable that 
+Data sets *should* have as many predictors as possible. Predictors would include any variable that 
 
 - May be associated with dementia risk 
 - May be associated with APOE4 status

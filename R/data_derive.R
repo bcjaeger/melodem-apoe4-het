@@ -37,7 +37,7 @@ data_derive.melodem_sim <- function(data){
 
   dt[, apoe4 := factor(apoe4,
                        levels = c(0, 1),
-                       labels = c("normal", "elevated"))]
+                       labels = c("non_carrier", "carrier"))]
 
   dt[, censor_time := runif(.N, 0, pred_horizon * 2/3)]
 

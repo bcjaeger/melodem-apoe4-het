@@ -896,7 +896,8 @@ As a preliminary step, we'll split our data in to training and testing sets
 
 ```{r, echo=TRUE}
 
-train_index <- sample(x = nrow(data_sim$values), size = 1250)
+train_index <- sample(x = nrow(data_sim$values), 
+                      size = nrow(data_sim$values)/2)
 
 data_trn <- data_sim$values[train_index, ]
 data_tst <- data_sim$values[-train_index, ]
@@ -1034,6 +1035,30 @@ Complete Exercise 4
 #| echo: false
 # countdown::countdown(minutes = 5, id = "ex-1")
 ```
+
+## To the pipeline
+
+
+- Copy/paste this code into your `_targets.R` file. 
+
+```{r, eval=FALSE, echo=TRUE}
+
+# in _targets.R, you should see this comment: 
+
+# real data model targets (to be added as an exercise). 
+
+# Paste this code right beneath that.
+
+grf_shareable_zzzz_tar <- tar_target(
+  grf_shareable_zzzz,
+  grf_summarize(fit_grf_zzzz)
+)
+
+```
+
+- Modify this code, replacing `zzzz` with the name of your dataset.
+
+
 
 ## References
 

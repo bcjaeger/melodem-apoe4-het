@@ -595,7 +595,7 @@ Byron C. Jaeger, PhD
 </section>
 <section id="but-r-is-not-small" class="slide level2">
 <h2>But <span class="math inline">\(R\)</span> is not small</h2>
-<p>It takes <span class="math inline">\(\approx\)</span> 2.5ms for 1 oblique split, &lt;20ms to fit 500 axis-based trees…</p>
+<p>It takes <span class="math inline">\(\approx\)</span> 2.5ms for 1 oblique split, $$20ms to fit 500 axis-based trees…</p>
 <div class="cell" data-layout-align="center" data-hash="03-oblique_forests_cache/revealjs/unnamed-chunk-6_7239afe235b053c0489e9019b7118f19">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># compare time for 1 oblique split to 500 axis-based trees</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="fu">microbenchmark</span>(</span>
@@ -1086,7 +1086,7 @@ Selecting variables: 100%</code></pre>
   model  .metric .estimator .estimate
   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
 1 aorsf  roc_auc binary         0.936
-2 odrf   roc_auc binary         0.946
+2 odrf   roc_auc binary         0.942
 3 ranger roc_auc binary         0.918</code></pre>
 </div>
 </div>

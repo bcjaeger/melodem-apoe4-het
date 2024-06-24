@@ -102,8 +102,6 @@ grf_shareable_sim_tar <- tar_target(
 # uncomment and run line below to save shareables
 # write_shareables(.names = c("orsf_shareable_sim", "grf_shareable_sim"))
 
-# real data share-able targets (to be added as an exercise)
-
 
 # Manuscript targets ------------------------------------------------------
 
