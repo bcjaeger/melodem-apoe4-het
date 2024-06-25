@@ -195,7 +195,7 @@ Was this the best possible split? Let's find out.
 
 - Complete exercise 1.
 
-- **Reminder**: Red sticky note if you'd like help, green sticky note when you are finished.
+- **Reminder**: pink sticky note if you'd like help, blue sticky note when you are finished.
 
 - **Hint**: the answer is 0.492340868530637
 

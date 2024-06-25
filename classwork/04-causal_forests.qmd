@@ -126,8 +126,6 @@ best_linear_projection(fit_grf, A = ones)
 
 - Why or why not?
 
-## Exercise 3
-
 Estimate the BLP of the conditional treatment effect from your forest on to all the covariates used by the forest:
 
 ```{r}
@@ -144,7 +142,7 @@ best_linear_projection(fit_grf, A = data_grf$X)
 
 - Do your results change if you use `target = "RMST"` versus `target = "survival.probability"` when you fit your forest?
 
-## Exercise 4
+## Exercise 3
 
 Split your sample intro a training and testing set, then
 

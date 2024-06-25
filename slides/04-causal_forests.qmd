@@ -663,7 +663,7 @@ average_treatment_effect(fit_grf)
 
 Open `classwork/04-causal_forests.qmd` and complete Exercise 1
 
-- **Reminder**: Red sticky note for help, green sticky when you finish.
+- **Reminder**: Pink sticky note for help, blue sticky when you finish.
 
 - **Note**: the `data_coerce_grf()` function can save you lots of time.
 
@@ -722,16 +722,7 @@ Complete Exercise 2
 
 ```{r ex-2}
 #| echo: false
-countdown::countdown(minutes = 5, id = "ex-1")
-```
-
-## Your turn
-
-Complete Exercise 3
-
-```{r ex-3}
-#| echo: false
-countdown::countdown(minutes = 5, id = "ex-1")
+countdown::countdown(minutes = 5, id = "ex-2")
 ```
 
 ## Rank-Weighted Average Treatment Effect

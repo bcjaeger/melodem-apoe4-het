@@ -16,7 +16,7 @@ The workshop focuses on the use of random forests to predict dementia risk and i
 Data sets **must** have the following characteristics:
 
 - a right-censored time-to-dementia outcome.
-- data on APOE4 (any vs none, at minimum).
+- data on APOE4 (carrier vs non-carrier).
 - data on age and sex.
 - You personally are able to access it from the venue in France (e.g., Wifi, hard drive) 
 

@@ -124,9 +124,9 @@ Each lecture includes time for questions/discussion.
 
 While you're working on exercises,
 
-- Place **red** sticky note on the back of your laptop if you want **help**.
+- Place **pink** sticky note on the back of your laptop if you want **help**.
 
-- Place **green** sticky note on the back of your laptop when you are **done**
+- Place **blue** sticky note on the back of your laptop when you are **done**
 
 
 # Part 1: Introduction and data management
