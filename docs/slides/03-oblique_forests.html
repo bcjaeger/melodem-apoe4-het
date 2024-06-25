@@ -404,6 +404,8 @@
       margin-right: 0; 
     }
   </style>
+  <link href="../site_libs/countdown-0.4.0/countdown.css" rel="stylesheet">
+  <script src="../site_libs/countdown-0.4.0/countdown.js"></script>
 </head>
 <body class="quarto-light">
 <script src="https://use.fontawesome.com/5235085b15.js"></script>
@@ -860,6 +862,14 @@ Min observations in leaf: 5
 <section id="your-turn" class="slide level2">
 <h2>Your turn</h2>
 <p>Open <code>classwork/03-oblique_forests.qmd</code> and complete Exercise 1</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="countdown" id="ex-1" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
 </section>
 <section id="partial-dependence" class="slide level2">
 <h2>Partial dependence</h2>
@@ -905,6 +915,14 @@ Min observations in leaf: 5
 <section id="your-turn-1" class="slide level2">
 <h2>Your turn</h2>
 <p>Complete exercise 2</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="countdown" id="ex-2" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
 </section>
 <section id="variable-selection" class="slide level2">
 <h2>Variable selection</h2>
@@ -921,7 +939,7 @@ Min observations in leaf: 5
 <span id="cb14-3"><a href="#cb14-3"></a>                     <span class="at">verbose_progress =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Selecting variables: 38.0% ~ time remaining: 5 seconds 
-Selecting variables: 94.6% ~ time remaining: 0 seconds 
+Selecting variables: 95.3% ~ time remaining: 0 seconds 
 Selecting variables: 100%</code></pre>
 </div>
 </div>
@@ -973,6 +991,14 @@ Selecting variables: 100%</code></pre>
 <section id="your-turn-2" class="slide level2">
 <h2>Your turn</h2>
 <p>Complete exercise 3</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="countdown" id="ex-3" data-update-every="1" tabindex="0" style="right:0;bottom:0;">
+<div class="countdown-controls"><button class="countdown-bump-down">−</button><button class="countdown-bump-up">+</button></div>
+<code class="countdown-time"><span class="countdown-digits minutes">05</span><span class="countdown-digits colon">:</span><span class="countdown-digits seconds">00</span></code>
+</div>
+</div>
+</div>
 </section>
 <section id="compare-models" class="slide level2">
 <h2>Compare models</h2>
@@ -1086,7 +1112,7 @@ Selecting variables: 100%</code></pre>
   model  .metric .estimator .estimate
   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
 1 aorsf  roc_auc binary         0.936
-2 odrf   roc_auc binary         0.942
+2 odrf   roc_auc binary         0.940
 3 ranger roc_auc binary         0.918</code></pre>
 </div>
 </div>
@@ -1097,7 +1123,7 @@ Selecting variables: 100%</code></pre>
 <li>Copy/paste this code into your <code>_targets.R</code> file.</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Around line 87 of the file, you should see this comment: </span></span>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># in _targets.R, you should see this comment: </span></span>
 <span id="cb26-2"><a href="#cb26-2"></a></span>
 <span id="cb26-3"><a href="#cb26-3"></a><span class="co"># real data model targets (to be added as an exercise). </span></span>
 <span id="cb26-4"><a href="#cb26-4"></a></span>

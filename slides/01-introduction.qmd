@@ -189,7 +189,8 @@ pkgs <-
     "party", "riskRegression", "survival", "officer", "flextable", 
     "table.glue", "gtsummary", "usethis", "cli", "ggforce",
     "rpart", "rpart.plot", "ranger", "withr", "gt", "recipes", 
-    "butcher", "sandwich", "lmtest", "gbm", "officedown")
+    "butcher", "sandwich", "lmtest", "gbm", "officedown", "Matrix",
+    "ggsurvfit", "tidycmprsk", "here", "tarchetypes", "targets")
 
 install.packages(pkgs)
 
@@ -240,7 +241,7 @@ create_from_github(
 
 
 ```{r ex-1-1}
-# countdown::countdown(minutes = 5, id = "ex-1-1")
+countdown::countdown(minutes = 5, id = "ex-1-1")
 ```
 
 ## Start with data management
@@ -291,7 +292,7 @@ We are going to add your data to the pipeline, carefully.
 . . .
 
 ```{r ex-1-2}
-# countdown::countdown(minutes = 3, id = "ex-1-2")
+countdown::countdown(minutes = 3, id = "ex-1-2")
 ```
 
 ## Your turn 
@@ -315,7 +316,7 @@ git branch -b regards
 ```
 
 ```{r ex-1-3}
-# countdown::countdown(minutes = 3, id = "ex-1-3")
+countdown::countdown(minutes = 3, id = "ex-1-3")
 ```
 
 ## Your turn 
@@ -366,7 +367,7 @@ data_zzzz_tar <- tar_target(
 
 
 ```{r ex-1-4}
-# countdown::countdown(minutes = 5, id = "ex-1-4")
+countdown::countdown(minutes = 5, id = "ex-1-4")
 ```
 
 ---
