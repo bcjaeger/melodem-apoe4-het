@@ -18,3 +18,29 @@ check_names <- function(data, expected_names){
   }
 
 }
+
+check_fctr_levels <- function(x, name, expected_levels){
+
+  if(!is.factor(x)){
+    x <- as.factor(x)
+  }
+
+  x_levels <- levels(x)
+
+  missing_levels <- setdiff(expected_levels, x_levels)
+
+  if(!is_empty(missing_levels)){
+    stop("missing levels in ", name, ": ",
+         glue::glue_collapse(missing_levels, sep = ', ', last = ' and '),
+         call. = FALSE)
+  }
+
+  extra_levels <- setdiff(x_levels, expected_levels)
+
+  if(!is_empty(extra_levels)){
+    warning("extra levels in ", name, ": ",
+         glue::glue_collapse(extra_levels, sep = ', ', last = ' and '),
+         call. = FALSE)
+  }
+
+}

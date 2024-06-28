@@ -26,6 +26,14 @@ data_prepare <- function(file_name, ...){
   check_names(output$values,
               c("age", "sex", "apoe4", "time", "status"))
 
+  check_fctr_levels(output$values$sex,
+                    name = 'sex',
+                    expected_levels = c('male', 'female'))
+  check_fctr_levels(output$values$apoe4,
+                    name = 'apoe4',
+                    expected_levels = c("carrier", "non_carrier"))
+
+
   output
 
 }

@@ -1789,7 +1789,7 @@
     "href": "slides/03-oblique_forests.html#variable-selection",
     "title": "Oblique random forests with aorsf",
     "section": "Variable selection",
-    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 24.8% ~ time remaining: 9 seconds \nSelecting variables: 51.9% ~ time remaining: 6 seconds \nSelecting variables: 84.5% ~ time remaining: 2 seconds \nSelecting variables: 100%"
+    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 39.5% ~ time remaining: 5 seconds \nSelecting variables: 100%"
   },
   {
     "objectID": "slides/03-oblique_forests.html#your-turn",
@@ -1880,7 +1880,7 @@
     "href": "slides/03-oblique_forests.html#evaluating-in-test-data",
     "title": "Oblique random forests with aorsf",
     "section": "Evaluating in test data",
-    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.937\n3 ranger roc_auc binary         0.918"
+    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.939\n3 ranger roc_auc binary         0.918"
   },
   {
     "objectID": "slides/03-oblique_forests.html#training-the-recipe",
@@ -2006,7 +2006,7 @@
     "href": "slides/03-oblique_forests.html#faster",
     "title": "Oblique random forests with aorsf",
     "section": "Faster",
-    "text": "Faster\nIf needed, reduce n_tree and increase leaf_min_obs to speed this up\n\nfit_light &lt;- orsf_update(fit, n_tree = 100, leaf_min_obs = 20)\n\norsf_vars_light &lt;- orsf_vs(fit_light, n_predictor_min = 1, verbose_progress = TRUE)\n\nSelecting variables: 58.9% ~ time remaining: 2 seconds \nSelecting variables: 100%"
+    "text": "Faster\nIf needed, reduce n_tree and increase leaf_min_obs to speed this up\n\nfit_light &lt;- orsf_update(fit, n_tree = 100, leaf_min_obs = 20)\n\norsf_vars_light &lt;- orsf_vs(fit_light, n_predictor_min = 1, verbose_progress = TRUE)\n\nSelecting variables: 100%"
   },
   {
     "objectID": "slides/04-causal_forests.html#to-the-pipeline",
@@ -2055,7 +2055,7 @@
     "href": "slides/03-oblique_forests.html#compare-computational-efficiency",
     "title": "Oblique random forests with aorsf",
     "section": "Compare computational efficiency",
-    "text": "Compare computational efficiency\n‘Many splits’ is slower\n\nmicrobenchmark::microbenchmark(\n  rando = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, n_retry = 500,\n               split_rule = 'cstat', split_min_stat = .6,\n               control = control_rando),\n  accel = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, split_rule = 'cstat',\n               split_min_stat = .6),\n  times = 5\n)\n\nUnit: milliseconds\n  expr       min        lq      mean    median        uq       max neval cld\n rando 1318.1576 1327.4487 1360.8449 1335.2448 1341.1535 1482.2197     5  a \n accel  116.7222  117.5235  122.1374  123.2239  126.1809  127.0365     5   b"
+    "text": "Compare computational efficiency\n‘Many splits’ is slower\n\nmicrobenchmark::microbenchmark(\n  rando = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, n_retry = 500,\n               split_rule = 'cstat', split_min_stat = .6,\n               control = control_rando),\n  accel = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, split_rule = 'cstat',\n               split_min_stat = .6),\n  times = 5\n)\n\nUnit: milliseconds\n  expr       min        lq      mean    median        uq      max neval cld\n rando 1064.6546 1071.5542 1101.0412 1082.9368 1083.2717 1202.789     5  a \n accel   97.9391   98.1073  100.8861  102.2995  102.7636  103.321     5   b"
   },
   {
     "objectID": "slides/03-oblique_forests.html#compare-out-of-bag-prediction-accuracy",
@@ -2070,5 +2070,12 @@
     "title": "MELODEM data workshop",
     "section": "Options",
     "text": "Options\nThis workshop heavily leverages R, but you may prefer not to.\n\nYou can partner up with an R user\nYou can use the simulated data (makes exercises much easier)\nYou can relax and get ☕ during exercises\n\nLearning under stress may not be ideal. Do what works best for you.\nI will do my part to make the concepts taught here R-agnostic so that you can learn plenty of valuable things no matter what language you use."
+  },
+  {
+    "objectID": "slides/03-oblique_forests.html#data-1",
+    "href": "slides/03-oblique_forests.html#data-1",
+    "title": "Oblique random forests with aorsf",
+    "section": "Data",
+    "text": "Data"
   }
 ]

@@ -16,7 +16,7 @@ data_exclude.melodem_data <- function(data, age_range = NULL){
 }
 
 data_exclude.melodem_sim <- function(data,
-                             age_range = NULL){
+                                     age_range = NULL){
 
   # demonstrate what an exclusion function would do
 
