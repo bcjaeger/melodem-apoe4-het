@@ -7,6 +7,9 @@
 #' @return
 #' @author bcjaeger
 #' @export
+
+# data <- tar_read(data_sim)
+
 fit_orsf_clsf <- function(data, select_variables = TRUE) {
 
   # stop if the data aren't created using data_prep()

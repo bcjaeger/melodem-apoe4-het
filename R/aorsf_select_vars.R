@@ -8,9 +8,12 @@
 
 aorsf_select_vars <- function(data, formula, ...){
 
+  outcome <- as.character(as.list(formula)[[2]])
+
   fit <- orsf(data = data, formula = formula, ...)
-  vars <- orsf_vs(fit, n_predictor_min = 1)
+  vars <- orsf_vs(fit, n_predictor_min = 2)
   top <- which.max(vars$stat_value)
-  c("apoe4", vars$variables_included[top][[1]])
+
+  c(outcome, vars$predictors_included[top][[1]])
 
 }
