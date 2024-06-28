@@ -24,12 +24,14 @@ fit_orsf_clsf <- function(data, select_variables = TRUE) {
 
     vars <- aorsf_select_vars(data = data$values,
                               formula = apoe4 ~ . - time - status,
+                              na_action = "impute_meanmode",
                               verbose_progress = TRUE)
 
   }
 
   # fit the finalized orsf model
   fit <- orsf(apoe4 ~ .,
+              na_action = "impute_meanmode",
               data = select(data$values, all_of(vars)))
 
   # all fit functions should return a model
