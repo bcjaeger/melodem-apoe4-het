@@ -683,6 +683,10 @@ Byron C. Jaeger, PhD
 </section>
 <section id="data" class="slide level2">
 <h2>Data</h2>
+<iframe width="1280" height="550" src="https://modeldata.tidymodels.org/reference/ad_data.html#details" title="ad docs"></iframe>
+</section>
+<section id="data-1" class="slide level2">
+<h2>Data</h2>
 <p>I’ll use Alzheimer’s disease data (<code>ad_data</code>) from the <code>modeldata</code> package.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(modeldata)</span>
@@ -824,10 +828,6 @@ $ Class                            &lt;fct&gt; Control, Control, Control, Contro
 </div>
 </div>
 </section>
-<section id="data-1" class="slide level2">
-<h2>Data</h2>
-<iframe width="1280" height="550" src="https://modeldata.tidymodels.org/reference/ad_data.html#details" title="ad docs"></iframe>
-</section>
 <section id="model-fitting" class="slide level2">
 <h2>Model fitting</h2>
 <div class="column" style="width:44%;">
@@ -916,9 +916,9 @@ Min observations in leaf: 5
 <span id="cb13-10"><a href="#cb13-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
-  expr       min        lq      mean    median        uq      max neval cld
- rando 1064.6546 1071.5542 1101.0412 1082.9368 1083.2717 1202.789     5  a 
- accel   97.9391   98.1073  100.8861  102.2995  102.7636  103.321     5   b</code></pre>
+  expr       min        lq      mean    median        uq       max neval cld
+ rando 1060.3647 1066.7972 1099.2190 1082.6617 1085.0276 1201.2440     5  a 
+ accel   99.1885   99.4957  102.7126   99.9612  102.8241  112.0933     5   b</code></pre>
 </div>
 </div>
 </section>
@@ -1018,7 +1018,7 @@ Min observations in leaf: 5
 <span id="cb23-2"><a href="#cb23-2"></a>                     <span class="at">n_predictor_min =</span> <span class="dv">1</span>, </span>
 <span id="cb23-3"><a href="#cb23-3"></a>                     <span class="at">verbose_progress =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Selecting variables: 39.5% ~ time remaining: 5 seconds 
+<pre><code>Selecting variables: 40.3% ~ time remaining: 4 seconds 
 Selecting variables: 100%</code></pre>
 </div>
 </div>
@@ -1191,7 +1191,7 @@ Selecting variables: 100%</code></pre>
   model  .metric .estimator .estimate
   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
 1 aorsf  roc_auc binary         0.936
-2 odrf   roc_auc binary         0.939
+2 odrf   roc_auc binary         0.947
 3 ranger roc_auc binary         0.918</code></pre>
 </div>
 </div>

@@ -307,6 +307,13 @@ microbenchmark(
 
 ## Data
 
+
+```{=html}
+<iframe width="1280" height="550" src="https://modeldata.tidymodels.org/reference/ad_data.html#details" title="ad docs"></iframe>
+```
+
+## Data
+
 I'll use Alzheimer's disease data (`ad_data`) from the `modeldata` package.
 
 ```{r, echo=TRUE}
@@ -316,12 +323,6 @@ glimpse(ad_data, width = 100)
 
 ```
 
-## Data
-
-
-```{=html}
-<iframe width="1280" height="550" src="https://modeldata.tidymodels.org/reference/ad_data.html#details" title="ad docs"></iframe>
-```
 
 
 ## Model fitting
