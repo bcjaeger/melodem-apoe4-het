@@ -1,4 +1,7 @@
 
+#' @description
+#' create simulated data that can be shared
+#'
 
 simulate_workshop_data <- function(name,
                                    n_obs = 2000,

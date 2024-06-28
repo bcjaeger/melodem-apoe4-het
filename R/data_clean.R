@@ -1,5 +1,11 @@
 
-
+#' @description
+#' clean data if needed.
+#'
+#' @details
+#'   By clean, what we really mean is modify existing columns.
+#'   To create existing columns, see `R/data_derive.R`
+#'
 
 data_clean <- function(data){
 

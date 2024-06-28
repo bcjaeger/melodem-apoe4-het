@@ -1,4 +1,8 @@
 
+#' @description
+#' Produce figures that demo decision trees and random forests
+#'
+
 viz_penguins <- function() {
 
   penguins <- drop_na(penguins)

@@ -1,4 +1,7 @@
 
+#' @description
+#' helper functions to organize abbreviations in table footnotes
+#'
 
 abbrvs_paste <- function(strings){
 

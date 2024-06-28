@@ -1,12 +1,8 @@
-#' .. content for \description{} (no empty lines) ..
+
+#' @description
+#' a function to pool data that likely won't be used
 #'
-#' .. content for \details{} ..
-#'
-#' @title
-#' @param ...
-#' @return
-#' @author bcjaeger
-#' @export
+
 data_pool <- function(...) {
 
   .dots <- list(...)

@@ -1,4 +1,8 @@
 
+#' @description
+#' catch data with names that don't match the data set reqs
+#'
+
 check_names <- function(data, expected_names){
 
   missing_names <- setdiff(expected_names, names(data))

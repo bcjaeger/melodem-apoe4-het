@@ -1,12 +1,8 @@
-#' .. content for \description{} (no empty lines) ..
+#' @description
+#' protect your data by asserting conditions that ensure it isn't committed
+#' to be pushed to github.
 #'
-#' .. content for \details{} ..
-#'
-#' @title
-
-#' @return
 #' @author bcjaeger
-#' @export
 assert_data_safety <- function() {
 
   if(!dir.exists('data/sensitive')){

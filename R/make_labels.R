@@ -10,8 +10,7 @@
 make_labels <- function(...) {
 
   cohorts <- c(
-    sim = "Simulation une",
-    sim_2 = "Simulation deux"
+    sim = "Simulated data"
   )
 
   variables <- c(

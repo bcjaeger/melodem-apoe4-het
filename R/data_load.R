@@ -1,4 +1,14 @@
 
+#' @description
+#'  General purpose loader function for melodem conference
+#'
+#' @param file_path a string that says where your data are.
+#'
+#' @details
+#'  SAS or csv files are allowed. Data should be stored in the
+#'  `data/sensitive` folder unless you are using the simulated data.
+#'
+#' @author bcjaeger
 
 data_load <- function(file_path){
 

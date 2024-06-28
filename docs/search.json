@@ -2014,5 +2014,26 @@
     "title": "Causal random forests with grf",
     "section": "To the pipeline",
     "text": "To the pipeline\n\nCopy/paste this code into your _targets.R file.\n\n\n# in _targets.R, you should see this comment: \n\n# real data model targets (to be added as an exercise). \n\n# Paste this code right beneath that.\n\ngrf_shareable_zzzz_tar &lt;- tar_target(\n  grf_shareable_zzzz,\n  grf_summarize(fit_grf_zzzz)\n)\n\n\nModify this code, replacing zzzz with the name of your dataset."
+  },
+  {
+    "objectID": "slides/01-introduction.html#schedule",
+    "href": "slides/01-introduction.html#schedule",
+    "title": "MELODEM data workshop",
+    "section": "Schedule",
+    "text": "Schedule\nSession 1: Friday, 4:00pm - 5:30pm\n\nIntroduction, data management\n\nSession 2a: Saturday 9:30am - 11:00am\n\nDecision trees and random forests\nBreak from 10:45am - 11:00am"
+  },
+  {
+    "objectID": "slides/01-introduction.html#schedule-1",
+    "href": "slides/01-introduction.html#schedule-1",
+    "title": "MELODEM data workshop",
+    "section": "Schedule",
+    "text": "Schedule\nSession 2b: Saturday 11:00am - 12:30am\n\nOblique random forests\nLunch from 12:30pm - 2:00pm\n\nSession 3: Saturday 2:00pm - 5:30pm\n\nCausal random forests\nBreak from 3:45pm - 4:00pm\nFinish slides or get a head start on collaboration"
+  },
+  {
+    "objectID": "slides/01-introduction.html#schedule-2",
+    "href": "slides/01-introduction.html#schedule-2",
+    "title": "MELODEM data workshop",
+    "section": "Schedule",
+    "text": "Schedule\nSession 4: Sunday 9:30am - 12:30 pm\n\nDiscuss manuscript aims, GitHub issues (30m)\nWork in small groups (45m)\nBreak from 10:45am - 11:00am\n\nSession 5: Sunday 2:00pm - 4:00 pm\n\nProgress updates and discussion (30m)\nWork in small groups (90m)"
   }
 ]

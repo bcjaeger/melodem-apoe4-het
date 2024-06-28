@@ -1,4 +1,6 @@
 
+#' generic print function for melodem data objects.
+
 print.melodem_data <- function(x, ...){
 
   header <- " melodem workshop data values "

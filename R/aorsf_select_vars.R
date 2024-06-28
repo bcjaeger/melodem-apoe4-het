@@ -1,4 +1,10 @@
 
+#' @description
+#' helper function for variable selection with aorsf
+#'
+#' @details
+#'  requires aorsf version 0.1.4 or higher!
+#'
 
 aorsf_select_vars <- function(data, formula, ...){
 

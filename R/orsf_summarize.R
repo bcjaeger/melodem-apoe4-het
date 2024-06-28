@@ -1,16 +1,11 @@
-#' .. content for \description{} (no empty lines) ..
+#' @description
+#' runs the univariate summary function from aorsf and returns it as a tibble
 #'
-#' .. content for \details{} ..
-#'
-#' @title
-#' @param fit_orsf
-#' @return
 #' @author bcjaeger
-#' @export
 orsf_summarize <- function(fit_orsf) {
 
   smry_pd <- as.data.table(orsf_summarize_uni(fit_orsf))
 
-  smry_pd
+  as_tibble(smry_pd)
 
 }

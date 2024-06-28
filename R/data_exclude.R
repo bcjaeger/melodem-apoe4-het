@@ -1,7 +1,7 @@
 
-# for debugging:
-# age_min = 55
-# age_max = 80
+#' @description
+#' apply exclusions to melodem data if needed.
+#'
 
 data_exclude <- function(data, age_range = NULL){
 

@@ -1,4 +1,9 @@
 
+#' @description
+#' a customized verion of grf::causal_survival_forest that allows you
+#' to use oblique random forests instead of axis-based random forests to
+#' estimate the conditional mean of Y
+#'
 
 causal_survival_forest_custom <- function(
     X, Y, W, D,

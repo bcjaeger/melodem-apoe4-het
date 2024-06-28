@@ -1,5 +1,7 @@
 
-
+#' @description
+#' derive new columns in your data if needed
+#' @author bcjaeger
 
 
 data_derive <- function(data){
@@ -19,8 +21,6 @@ data_derive.melodem_sim <- function(data){
   pred_horizon <- 10
 
   dt <- data$values
-
-  # browser()
 
   dt[, apoe4_prob := inv_logit(
     biomarker_1/3 + biomarker_2/4 + biomarker_1 * biomarker_3/4

@@ -1,16 +1,18 @@
-#' .. content for \description{} (no empty lines) ..
+#' @title Inferences from grf object
+#' @description
+#'   the `best_linear_projection()` function from `grf` doesn't return
+#'   output that easily converts to a data frame, so this function handles
+#'   coercion and tidying.
 #'
-#' .. content for \details{} ..
+#' @param fit_grf a causal random forest object
 #'
-#' @title
-#' @param fit_grf_sim
-#' @return
+#' @return a `tibble` with grf summary info
+#'
 #' @author bcjaeger
-#' @export
-infer_grf_blp <- function(fit_grf_sim) {
+infer_grf_blp <- function(fit_grf) {
 
-  blp <- fit_grf_sim %>%
-    best_linear_projection(A = fit_grf_sim$X.orig)
+  blp <- fit_grf %>%
+    best_linear_projection(A = fit_grf$X.orig)
 
   tibble(
     blp_term = rownames(blp),

@@ -1,19 +1,30 @@
-#' .. content for \description{} (no empty lines) ..
+#' @title fit a causal random survival forest
 #'
-#' .. content for \details{} ..
+#' @description
+#'  A helper function to make fitting the causal forest more streamlined.
 #'
-#' @title
-#' @param data
-#' @param w_propensity
-#' @return
+#' @param data a dataset to fit the causal random forest to. Must be
+#'   a melodem class of data.
+#'
+#' @param fit_orsf an oblique random forest object
+#'
+#' @param horizon see help page for causal random forest by running
+#'  `?grf::causal_random_forest`
+#'
+#' @param target see help page for causal random forest by running
+#'  `?grf::causal_random_forest`
+#'
+#' @return a causal random forest object
+#'
 #' @author bcjaeger
-#' @export
 
 # for debugging
 # data <- tar_read(data_sim)
 # fit_aorsf <- tar_read(fit_aorsf_sim)
 
-fit_grf_surv <- function(data, fit_orsf, horizon = NULL) {
+fit_grf_surv <- function(data, fit_orsf,
+                         horizon = NULL,
+                         target = "RMST") {
 
   # stop if the data aren't created using data_prep()
   stopifnot(inherits(data, 'melodem_data'))
@@ -31,7 +42,7 @@ fit_grf_surv <- function(data, fit_orsf, horizon = NULL) {
     D = data_grf$D,
     W.hat = fit_orsf$pred_oobag[, 2],
     horizon = horizon,
-    target = 'RMST'
+    target = target
   )
 
   fit_grf

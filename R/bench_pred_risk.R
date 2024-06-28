@@ -4,20 +4,11 @@
 #' @param data dataset to benchmark with
 #' @param test_prop what proportion of data to set aside for testing
 
-# tar_load(data_pooled)
-# subset <- 'sim'
 
-bench_pred_risk <- function(data_pooled,
-                            subset,
+bench_pred_risk <- function(data,
                             test_prop = 1/2) {
 
-  data_all <- data_pooled$values
-
-  if(subset != 'overall'){
-    data_all %<>% filter(cohort == subset)
-  }
-
-  data_all$cohort <- NULL
+  data_all <- data$values
 
   test_index <- sample(x = seq(nrow(data_all)),
                        size = round(nrow(data_all) * test_prop),
@@ -86,7 +77,6 @@ bench_pred_risk <- function(data_pooled,
 
   out <- score %>%
     mutate(model = as.character(model),
-           subset = subset,
            .before = cstat)
 
   out

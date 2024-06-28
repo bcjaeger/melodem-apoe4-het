@@ -39,7 +39,7 @@ Welcome!
 
 Wi-Fi network name
 
-`TODO-ADD-LATER`
+`CF-Bellinglise`
 
 </center>
 
@@ -53,7 +53,7 @@ Wi-Fi network name
 
 Wi-Fi password
 
-`TODO-ADD-LATER`
+`BELLINGLISE2005`
 
 </center>
 
@@ -74,51 +74,50 @@ I study risk <br/> prediction + machine learning
 ![](img/run_R_kids.png){width=90%}
 :::
 
-## Schedule for day 1: Morning
+## Schedule
 
-*Introduction, data management (75m)*
+*Session 1: Friday, 4:00pm - 5:30pm*
 
-- Break (15m)
+- Introduction, data management
 
-*Decision trees and random forests (75m)*
+*Session 2a: Saturday 9:30am - 11:00am*
 
-- Break (15m)
+- Decision trees and random forests
 
-**Lunch (1 hour)**
+- Break from 10:45am - 11:00am
 
-:::footer
-Each lecture is 75m and this includes time for questions/discussion.
-:::
 
-## Schedule for day 1: Afternoon
+## Schedule
 
-*Oblique random forests (75m)*
+*Session 2b: Saturday 11:00am - 12:30am*
 
-- Break (15m)
+- Oblique random forests
 
-*Causal random forests (75m)*
+- Lunch from 12:30pm - 2:00pm
 
-- Break (15m)
+*Session 3: Saturday 2:00pm - 5:30pm*
 
-**Collaboration (1 hour)**
+- Causal random forests
 
-:::footer
-Each lecture includes time for questions/discussion.
-:::
+- Break from 3:45pm - 4:00pm
 
-## Schedule for day 2: Morning
+- Finish slides or get a head start on collaboration
 
-*Review and discuss manuscript aims (30m)*
+## Schedule
 
-- Align on aims and responsibilities
+*Session 4: Sunday 9:30am - 12:30 pm*
 
-*Three break-out sessions (60m each)*
+- Discuss manuscript aims, GitHub issues (30m)
 
-- Work independently or in small groups (45m)
-- Progress updates (10m)
-- Break (5m)
+- Work in small groups (45m)
 
-**Wrap-up (30m)**
+- Break from 10:45am - 11:00am
+
+*Session 5: Sunday 2:00pm - 4:00 pm*
+
+- Progress updates and discussion (30m)
+
+- Work in small groups (90m)
 
 ## Sticky notes
 
