@@ -871,22 +871,98 @@ Min observations in leaf: 5
 </div>
 </div>
 </section>
+<section id="random-splits" class="slide level2">
+<h2>Random splits</h2>
+<p>Compare ‘random splits’ to the accelerated regression approach.</p>
+<ul>
+<li>Create <em>random linear combinations</em></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>f_rando <span class="ot">&lt;-</span> <span class="cf">function</span>(x_node, y_node, w_node){</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="fu">ncol</span>(x_node)), <span class="at">ncol=</span><span class="dv">1</span>) </span>
+<span id="cb11-3"><a href="#cb11-3"></a>}</span>
+<span id="cb11-4"><a href="#cb11-4"></a></span>
+<span id="cb11-5"><a href="#cb11-5"></a>control_rando <span class="ot">&lt;-</span> <span class="fu">orsf_control_classification</span>(f_rando)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Keep making them until a split is found that is ‘good enough’</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>fit_rando <span class="ot">=</span> <span class="fu">orsf</span>(ad_data, <span class="at">formula =</span> Class <span class="sc">~</span> ., </span>
+<span id="cb12-2"><a href="#cb12-2"></a>                 <span class="at">tree_seeds =</span> <span class="dv">1</span>, </span>
+<span id="cb12-3"><a href="#cb12-3"></a>                 <span class="at">n_retry =</span> <span class="dv">100</span>,</span>
+<span id="cb12-4"><a href="#cb12-4"></a>                 <span class="at">split_rule =</span> <span class="st">'cstat'</span>, </span>
+<span id="cb12-5"><a href="#cb12-5"></a>                 <span class="at">split_min_stat =</span> .<span class="dv">6</span>,</span>
+<span id="cb12-6"><a href="#cb12-6"></a>                 <span class="at">control =</span> control_rando)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="compare-computational-efficiency" class="slide level2">
+<h2>Compare computational efficiency</h2>
+<p>‘Many splits’ is slower</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>microbenchmark<span class="sc">::</span><span class="fu">microbenchmark</span>(</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="at">rando =</span> <span class="fu">orsf</span>(ad_data, <span class="at">formula =</span> Class <span class="sc">~</span> ., </span>
+<span id="cb13-3"><a href="#cb13-3"></a>               <span class="at">tree_seeds =</span> <span class="dv">1</span>, <span class="at">n_retry =</span> <span class="dv">500</span>,</span>
+<span id="cb13-4"><a href="#cb13-4"></a>               <span class="at">split_rule =</span> <span class="st">'cstat'</span>, <span class="at">split_min_stat =</span> .<span class="dv">6</span>,</span>
+<span id="cb13-5"><a href="#cb13-5"></a>               <span class="at">control =</span> control_rando),</span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="at">accel =</span> <span class="fu">orsf</span>(ad_data, <span class="at">formula =</span> Class <span class="sc">~</span> ., </span>
+<span id="cb13-7"><a href="#cb13-7"></a>               <span class="at">tree_seeds =</span> <span class="dv">1</span>, <span class="at">split_rule =</span> <span class="st">'cstat'</span>,</span>
+<span id="cb13-8"><a href="#cb13-8"></a>               <span class="at">split_min_stat =</span> .<span class="dv">6</span>),</span>
+<span id="cb13-9"><a href="#cb13-9"></a>  <span class="at">times =</span> <span class="dv">5</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unit: milliseconds
+  expr       min        lq      mean    median        uq       max neval cld
+ rando 1318.1576 1327.4487 1360.8449 1335.2448 1341.1535 1482.2197     5  a 
+ accel  116.7222  117.5235  122.1374  123.2239  126.1809  127.0365     5   b</code></pre>
+</div>
+</div>
+</section>
+<section id="compare-out-of-bag-prediction-accuracy" class="slide level2">
+<h2>Compare out-of-bag prediction accuracy</h2>
+<ul>
+<li>Out-of-bag C-statistic for random splits:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>fit_rando<span class="sc">$</span>eval_oobag<span class="sc">$</span>stat_values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] 0.7875307</code></pre>
+</div>
+</div>
+<ul>
+<li>Out-of-bag C-statistic for accelerated regression:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>fit_accel<span class="sc">$</span>eval_oobag<span class="sc">$</span>stat_values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] 0.8968304</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\Rightarrow\)</span> accelerated regression is faster and more accurate</p>
+</section>
 <section id="partial-dependence" class="slide level2">
 <h2>Partial dependence</h2>
-<p><strong>Purpose</strong>: Interpret a model by evaluating its predictions on special data.</p>
-<p><strong>Example</strong>: Expected prediction from the model as a function of age.</p>
-<p><strong>Pseudo-code</strong>: <code>for i in seq(min_age, max_age)</code>:</p>
-<ul>
-<li><p>Set all values of <code>age</code> to <code>i</code> in the training data</p></li>
-<li><p>Compute out-of-bag predictions for training data</p></li>
-<li><p>Save the mean prediction and <code>i</code></p></li>
-</ul>
+<p><strong>Purpose</strong>: Interpret a model.</p>
+<p><strong>Description</strong>: Expected prediction from a model as a function of a single predictor or multiple predictors. The expectation is marginalized over the values of all other predictors, giving something like a multivariable adjusted estimate of the model’s prediction.</p>
+<p><strong>Example</strong>: Expected 10-year mortality risk as a function of age.</p>
+<p><strong>Pseudo-code</strong>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="cf">for</span> i <span class="cf">in</span> <span class="fu">seq</span>(min_age, max_age){</span>
+<span id="cb19-2"><a href="#cb19-2"></a>  </span>
+<span id="cb19-3"><a href="#cb19-3"></a> <span class="sc">-</span> Set all values of age to i <span class="cf">in</span> the training data</span>
+<span id="cb19-4"><a href="#cb19-4"></a> <span class="sc">-</span> Compute out<span class="sc">-</span>of<span class="sc">-</span>bag predictions <span class="cf">for</span> training data</span>
+<span id="cb19-5"><a href="#cb19-5"></a> <span class="sc">-</span> Save the mean prediction and i</span>
+<span id="cb19-6"><a href="#cb19-6"></a>  </span>
+<span id="cb19-7"><a href="#cb19-7"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="single-variable-summary" class="slide level2">
 <h2>Single variable summary</h2>
 <p>Similar to <code>summary()</code>, <code>orsf_summarize_uni()</code> computes out-of-bag partial dependence on the number of variables you request.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">orsf_summarize_uni</span>(fit, <span class="at">n_variables =</span> <span class="dv">1</span>, <span class="at">class =</span> <span class="st">"Impaired"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">orsf_summarize_uni</span>(fit, <span class="at">n_variables =</span> <span class="dv">1</span>, <span class="at">class =</span> <span class="st">"Impaired"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 -- tau (VI Rank: 1) ----------------------------
@@ -908,10 +984,10 @@ Min observations in leaf: 5
 <h2>Multi-variable summary</h2>
 <p>See if predictors interact (they don’t in this case)</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>pd <span class="ot">&lt;-</span> <span class="fu">orsf_pd_oob</span>(fit, <span class="fu">pred_spec_auto</span>(tau, Genotype))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>pd <span class="ot">&lt;-</span> <span class="fu">orsf_pd_oob</span>(fit, <span class="fu">pred_spec_auto</span>(tau, Genotype))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
-<img data-src="03-oblique_forests_files/figure-revealjs/unnamed-chunk-13-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="03-oblique_forests_files/figure-revealjs/unnamed-chunk-20-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
 <section id="your-turn-1" class="slide level2">
 <h2>Your turn</h2>
 <p>Complete exercise 2</p>
@@ -934,12 +1010,13 @@ Min observations in leaf: 5
 <li><p>Repeat until &lt; <code>n_predictor_min</code> predictors left.</p></li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>orsf_vars <span class="ot">&lt;-</span> <span class="fu">orsf_vs</span>(fit, </span>
-<span id="cb14-2"><a href="#cb14-2"></a>                     <span class="at">n_predictor_min =</span> <span class="dv">1</span>, </span>
-<span id="cb14-3"><a href="#cb14-3"></a>                     <span class="at">verbose_progress =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>orsf_vars <span class="ot">&lt;-</span> <span class="fu">orsf_vs</span>(fit, </span>
+<span id="cb23-2"><a href="#cb23-2"></a>                     <span class="at">n_predictor_min =</span> <span class="dv">1</span>, </span>
+<span id="cb23-3"><a href="#cb23-3"></a>                     <span class="at">verbose_progress =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Selecting variables: 38.0% ~ time remaining: 5 seconds 
-Selecting variables: 95.3% ~ time remaining: 0 seconds 
+<pre><code>Selecting variables: 24.8% ~ time remaining: 9 seconds 
+Selecting variables: 51.9% ~ time remaining: 6 seconds 
+Selecting variables: 84.5% ~ time remaining: 2 seconds 
 Selecting variables: 100%</code></pre>
 </div>
 </div>
@@ -948,11 +1025,12 @@ Selecting variables: 100%</code></pre>
 <h2>Faster</h2>
 <p><strong>If needed</strong>, reduce <code>n_tree</code> and increase <code>leaf_min_obs</code> to speed this up</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>fit_light <span class="ot">&lt;-</span> <span class="fu">orsf_update</span>(fit, <span class="at">n_tree =</span> <span class="dv">100</span>, <span class="at">leaf_min_obs =</span> <span class="dv">20</span>)</span>
-<span id="cb16-2"><a href="#cb16-2"></a></span>
-<span id="cb16-3"><a href="#cb16-3"></a>orsf_vars_light <span class="ot">&lt;-</span> <span class="fu">orsf_vs</span>(fit_light, <span class="at">n_predictor_min =</span> <span class="dv">1</span>, <span class="at">verbose_progress =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>fit_light <span class="ot">&lt;-</span> <span class="fu">orsf_update</span>(fit, <span class="at">n_tree =</span> <span class="dv">100</span>, <span class="at">leaf_min_obs =</span> <span class="dv">20</span>)</span>
+<span id="cb25-2"><a href="#cb25-2"></a></span>
+<span id="cb25-3"><a href="#cb25-3"></a>orsf_vars_light <span class="ot">&lt;-</span> <span class="fu">orsf_vs</span>(fit_light, <span class="at">n_predictor_min =</span> <span class="dv">1</span>, <span class="at">verbose_progress =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Selecting variables: 100%</code></pre>
+<pre><code>Selecting variables: 58.9% ~ time remaining: 2 seconds 
+Selecting variables: 100%</code></pre>
 </div>
 </div>
 </section>
@@ -961,19 +1039,19 @@ Selecting variables: 100%</code></pre>
 <p>Plot the history of performance and variables included.</p>
 <div class="column" style="width:49%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>max_auc <span class="ot">&lt;-</span> orsf_vars <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(stat_value)) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">slice</span>(<span class="dv">1</span>)</span>
-<span id="cb18-4"><a href="#cb18-4"></a></span>
-<span id="cb18-5"><a href="#cb18-5"></a>fig <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(orsf_vars) <span class="sc">+</span> </span>
-<span id="cb18-6"><a href="#cb18-6"></a>  <span class="fu">aes</span>(<span class="at">x =</span> n_predictors,</span>
-<span id="cb18-7"><a href="#cb18-7"></a>      <span class="at">y =</span> stat_value) <span class="sc">+</span> </span>
-<span id="cb18-8"><a href="#cb18-8"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb18-9"><a href="#cb18-9"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb18-10"><a href="#cb18-10"></a>              <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb18-11"><a href="#cb18-11"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> max_auc, </span>
-<span id="cb18-12"><a href="#cb18-12"></a>             <span class="at">size =</span> <span class="dv">3</span>, </span>
-<span id="cb18-13"><a href="#cb18-13"></a>             <span class="at">color =</span> <span class="st">'purple'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>max_auc <span class="ot">&lt;-</span> orsf_vars <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(stat_value)) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-3"><a href="#cb27-3"></a>  <span class="fu">slice</span>(<span class="dv">1</span>)</span>
+<span id="cb27-4"><a href="#cb27-4"></a></span>
+<span id="cb27-5"><a href="#cb27-5"></a>fig <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(orsf_vars) <span class="sc">+</span> </span>
+<span id="cb27-6"><a href="#cb27-6"></a>  <span class="fu">aes</span>(<span class="at">x =</span> n_predictors,</span>
+<span id="cb27-7"><a href="#cb27-7"></a>      <span class="at">y =</span> stat_value) <span class="sc">+</span> </span>
+<span id="cb27-8"><a href="#cb27-8"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb27-9"><a href="#cb27-9"></a>  <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb27-10"><a href="#cb27-10"></a>              <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb27-11"><a href="#cb27-11"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> max_auc, </span>
+<span id="cb27-12"><a href="#cb27-12"></a>             <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb27-13"><a href="#cb27-13"></a>             <span class="at">color =</span> <span class="st">'purple'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div class="column" style="width:49%;">
@@ -981,7 +1059,7 @@ Selecting variables: 100%</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03-oblique_forests_files/figure-revealjs/unnamed-chunk-17-1.svg" style="width:100.0%"></p>
+<p><img data-src="03-oblique_forests_files/figure-revealjs/unnamed-chunk-24-1.svg" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
@@ -1023,14 +1101,14 @@ Selecting variables: 100%</code></pre>
 </ul>
 <p>So, always evaluate prediction models with data that is “new”</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">library</span>(rsample)</span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="co"># make the split: 50% training data, 50% testing</span></span>
-<span id="cb19-4"><a href="#cb19-4"></a>split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(<span class="at">data =</span> ad_data, <span class="at">prop =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="co"># get the training data</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a>train <span class="ot">&lt;-</span> <span class="fu">training</span>(split)</span>
-<span id="cb19-7"><a href="#cb19-7"></a><span class="co"># get the testing data</span></span>
-<span id="cb19-8"><a href="#cb19-8"></a>test <span class="ot">&lt;-</span> <span class="fu">testing</span>(split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">library</span>(rsample)</span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="co"># make the split: 50% training data, 50% testing</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a>split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(<span class="at">data =</span> ad_data, <span class="at">prop =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="co"># get the training data</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a>train <span class="ot">&lt;-</span> <span class="fu">training</span>(split)</span>
+<span id="cb28-7"><a href="#cb28-7"></a><span class="co"># get the testing data</span></span>
+<span id="cb28-8"><a href="#cb28-8"></a>test <span class="ot">&lt;-</span> <span class="fu">testing</span>(split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="pre-processing" class="slide level2">
@@ -1043,12 +1121,12 @@ Selecting variables: 100%</code></pre>
 </ul>
 <p>We’ll train our pre-processing steps using the <code>recipes</code> package</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">library</span>(recipes)</span>
-<span id="cb20-2"><a href="#cb20-2"></a></span>
-<span id="cb20-3"><a href="#cb20-3"></a><span class="co"># Makes the recipe steps</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a>recipe_steps <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="at">data =</span> train, Class <span class="sc">~</span> .) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">step_impute_knn</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-6"><a href="#cb20-6"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">library</span>(recipes)</span>
+<span id="cb29-2"><a href="#cb29-2"></a></span>
+<span id="cb29-3"><a href="#cb29-3"></a><span class="co"># Makes the recipe steps</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a>recipe_steps <span class="ot">&lt;-</span> <span class="fu">recipe</span>(<span class="at">data =</span> train, Class <span class="sc">~</span> .) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-5"><a href="#cb29-5"></a>  <span class="fu">step_impute_knn</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-6"><a href="#cb29-6"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="training-the-recipe" class="slide level2">
@@ -1058,17 +1136,17 @@ Selecting variables: 100%</code></pre>
 <li>train the recipe</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># train the recipe steps with training data</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>recipe_trained <span class="ot">&lt;-</span> <span class="fu">prep</span>(recipe_steps, <span class="at">training =</span> train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co"># train the recipe steps with training data</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>recipe_trained <span class="ot">&lt;-</span> <span class="fu">prep</span>(recipe_steps, <span class="at">training =</span> train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>use it to process the training and testing data.</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># apply the recipe steps to process training data</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>train_processed <span class="ot">&lt;-</span> <span class="fu">bake</span>(recipe_trained, <span class="at">new_data =</span> train)</span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="co"># apply the exact same steps to the testing data</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a>test_processed <span class="ot">&lt;-</span> <span class="fu">bake</span>(recipe_trained, <span class="at">new_data =</span> test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># apply the recipe steps to process training data</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>train_processed <span class="ot">&lt;-</span> <span class="fu">bake</span>(recipe_trained, <span class="at">new_data =</span> train)</span>
+<span id="cb31-3"><a href="#cb31-3"></a><span class="co"># apply the exact same steps to the testing data</span></span>
+<span id="cb31-4"><a href="#cb31-4"></a>test_processed <span class="ot">&lt;-</span> <span class="fu">bake</span>(recipe_trained, <span class="at">new_data =</span> test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="fitting-models" class="slide level2">
@@ -1079,32 +1157,32 @@ Selecting variables: 100%</code></pre>
 </ul>
 <p>With these packages, we make a model <em>specification</em>, and then <em>fit</em> it.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(parsnip)</span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">library</span>(bonsai)</span>
-<span id="cb23-3"><a href="#cb23-3"></a></span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="co"># make model specifications</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a>ranger_spec <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">mode =</span> <span class="st">'classification'</span>, <span class="at">engine =</span> <span class="st">'ranger'</span>)</span>
-<span id="cb23-6"><a href="#cb23-6"></a>aorsf_spec  <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">mode =</span> <span class="st">'classification'</span>, <span class="at">engine =</span> <span class="st">'aorsf'</span>)</span>
-<span id="cb23-7"><a href="#cb23-7"></a></span>
-<span id="cb23-8"><a href="#cb23-8"></a><span class="co"># fit them</span></span>
-<span id="cb23-9"><a href="#cb23-9"></a>ranger_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(ranger_spec, <span class="at">data =</span> train_processed, <span class="at">formula =</span> Class <span class="sc">~</span> .)</span>
-<span id="cb23-10"><a href="#cb23-10"></a>aorsf_fit  <span class="ot">&lt;-</span> <span class="fu">fit</span>(aorsf_spec,  <span class="at">data =</span> train_processed, <span class="at">formula =</span> Class <span class="sc">~</span> .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">library</span>(parsnip)</span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="fu">library</span>(bonsai)</span>
+<span id="cb32-3"><a href="#cb32-3"></a></span>
+<span id="cb32-4"><a href="#cb32-4"></a><span class="co"># make model specifications</span></span>
+<span id="cb32-5"><a href="#cb32-5"></a>ranger_spec <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">mode =</span> <span class="st">'classification'</span>, <span class="at">engine =</span> <span class="st">'ranger'</span>)</span>
+<span id="cb32-6"><a href="#cb32-6"></a>aorsf_spec  <span class="ot">&lt;-</span> <span class="fu">rand_forest</span>(<span class="at">mode =</span> <span class="st">'classification'</span>, <span class="at">engine =</span> <span class="st">'aorsf'</span>)</span>
+<span id="cb32-7"><a href="#cb32-7"></a></span>
+<span id="cb32-8"><a href="#cb32-8"></a><span class="co"># fit them</span></span>
+<span id="cb32-9"><a href="#cb32-9"></a>ranger_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(ranger_spec, <span class="at">data =</span> train_processed, <span class="at">formula =</span> Class <span class="sc">~</span> .)</span>
+<span id="cb32-10"><a href="#cb32-10"></a>aorsf_fit  <span class="ot">&lt;-</span> <span class="fu">fit</span>(aorsf_spec,  <span class="at">data =</span> train_processed, <span class="at">formula =</span> Class <span class="sc">~</span> .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="evaluating-in-test-data" class="slide level2">
 <h2>Evaluating in test data</h2>
 <p>We predict probabilities for observations in the testing data, and evaluate discrimination using the <code>yardstick</code> package:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">aorsf =</span> aorsf_fit, <span class="at">ranger =</span> ranger_fit) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">predict</span>(.x, <span class="at">new_data =</span> test_processed, <span class="at">type =</span> <span class="st">'prob'</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">mutate</span>(.x, <span class="at">truth =</span> test_processed<span class="sc">$</span>Class)) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">'model'</span>)</span>
-<span id="cb24-5"><a href="#cb24-5"></a></span>
-<span id="cb24-6"><a href="#cb24-6"></a><span class="fu">library</span>(yardstick)</span>
-<span id="cb24-7"><a href="#cb24-7"></a></span>
-<span id="cb24-8"><a href="#cb24-8"></a>preds <span class="sc">%&gt;%</span> </span>
-<span id="cb24-9"><a href="#cb24-9"></a>  <span class="fu">group_by</span>(model) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-10"><a href="#cb24-10"></a>  <span class="fu">roc_auc</span>(<span class="at">truth =</span> truth, .pred_Impaired)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>preds <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">aorsf =</span> aorsf_fit, <span class="at">ranger =</span> ranger_fit) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2"></a>  <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">predict</span>(.x, <span class="at">new_data =</span> test_processed, <span class="at">type =</span> <span class="st">'prob'</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="#cb33-3"></a>  <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">mutate</span>(.x, <span class="at">truth =</span> test_processed<span class="sc">$</span>Class)) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-4"><a href="#cb33-4"></a>  <span class="fu">bind_rows</span>(<span class="at">.id =</span> <span class="st">'model'</span>)</span>
+<span id="cb33-5"><a href="#cb33-5"></a></span>
+<span id="cb33-6"><a href="#cb33-6"></a><span class="fu">library</span>(yardstick)</span>
+<span id="cb33-7"><a href="#cb33-7"></a></span>
+<span id="cb33-8"><a href="#cb33-8"></a>preds <span class="sc">%&gt;%</span> </span>
+<span id="cb33-9"><a href="#cb33-9"></a>  <span class="fu">group_by</span>(model) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-10"><a href="#cb33-10"></a>  <span class="fu">roc_auc</span>(<span class="at">truth =</span> truth, .pred_Impaired)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
@@ -1112,7 +1190,7 @@ Selecting variables: 100%</code></pre>
   model  .metric .estimator .estimate
   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
 1 aorsf  roc_auc binary         0.936
-2 odrf   roc_auc binary         0.940
+2 odrf   roc_auc binary         0.937
 3 ranger roc_auc binary         0.918</code></pre>
 </div>
 </div>
@@ -1123,16 +1201,16 @@ Selecting variables: 100%</code></pre>
 <li>Copy/paste this code into your <code>_targets.R</code> file.</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># in _targets.R, you should see this comment: </span></span>
-<span id="cb26-2"><a href="#cb26-2"></a></span>
-<span id="cb26-3"><a href="#cb26-3"></a><span class="co"># real data model targets (to be added as an exercise). </span></span>
-<span id="cb26-4"><a href="#cb26-4"></a></span>
-<span id="cb26-5"><a href="#cb26-5"></a><span class="co"># Paste this code right beneath that.</span></span>
-<span id="cb26-6"><a href="#cb26-6"></a></span>
-<span id="cb26-7"><a href="#cb26-7"></a>fit_aorsf_zzzz_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(</span>
-<span id="cb26-8"><a href="#cb26-8"></a>  fit_aorsf_zzzz,</span>
-<span id="cb26-9"><a href="#cb26-9"></a>  <span class="fu">fit_orsf_clsf</span>(<span class="at">data =</span> data_zzzz)</span>
-<span id="cb26-10"><a href="#cb26-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># in _targets.R, you should see this comment: </span></span>
+<span id="cb35-2"><a href="#cb35-2"></a></span>
+<span id="cb35-3"><a href="#cb35-3"></a><span class="co"># real data model targets (to be added as an exercise). </span></span>
+<span id="cb35-4"><a href="#cb35-4"></a></span>
+<span id="cb35-5"><a href="#cb35-5"></a><span class="co"># Paste this code right beneath that.</span></span>
+<span id="cb35-6"><a href="#cb35-6"></a></span>
+<span id="cb35-7"><a href="#cb35-7"></a>fit_aorsf_zzzz_tar <span class="ot">&lt;-</span> <span class="fu">tar_target</span>(</span>
+<span id="cb35-8"><a href="#cb35-8"></a>  fit_aorsf_zzzz,</span>
+<span id="cb35-9"><a href="#cb35-9"></a>  <span class="fu">fit_orsf_clsf</span>(<span class="at">data =</span> data_zzzz)</span>
+<span id="cb35-10"><a href="#cb35-10"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Modify this code, replacing <code>zzzz</code> with the name of your dataset.</li>

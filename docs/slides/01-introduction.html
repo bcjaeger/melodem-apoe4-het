@@ -441,6 +441,17 @@ Byron C. Jaeger, PhD
 <p><img data-src="img/run_R_kids.png" style="width:90.0%"></p>
 </div>
 </section>
+<section id="options" class="slide level2">
+<h2>Options</h2>
+<p>This workshop heavily leverages R, but you may prefer not to.</p>
+<ul>
+<li><p>You can partner up with an R user</p></li>
+<li><p>You can use the simulated data (makes exercises much easier)</p></li>
+<li><p>You can relax and get ☕ during exercises</p></li>
+</ul>
+<p>Learning under stress may not be ideal. Do what works best for you.</p>
+<p>I will do my part to make the concepts taught here R-agnostic so that you can learn plenty of valuable things no matter what language you use.</p>
+</section>
 <section id="schedule" class="slide level2">
 <h2>Schedule</h2>
 <p><em>Session 1: Friday, 4:00pm - 5:30pm</em></p>
@@ -713,13 +724,13 @@ Byron C. Jaeger, PhD
 <div class="cell-output cell-output-stdout">
 <pre><code>-------------------------------------- sim -------------------------------------- 
 # A tibble: 1,000 × 8
-   time status apoe4    sex      age biomarker_1 biomarker_2 biomarker_3
-  &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
-1 0.530      1 elevated female  66.3      0.747      -0.742       -1.71 
-2 0.855      0 normal   female  65.5     -0.562      -0.0513       0.546
-3 0.120      1 elevated male    71.4      0.0133     -0.184        0.826
-4 1.16       1 elevated female  59.5      0.795      -1.32        -1.28 
-5 5.84       0 normal   female  58.5     -0.293       0.191        2.54 
+   time status apoe4       sex      age biomarker_1 biomarker_2 biomarker_3
+  &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;       &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+1 0.530      1 carrier     female  66.3      0.747      -0.742       -1.71 
+2 0.855      0 non_carrier female  65.5     -0.562      -0.0513       0.546
+3 0.120      1 carrier     male    71.4      0.0133     -0.184        0.826
+4 1.16       1 carrier     female  59.5      0.795      -1.32        -1.28 
+5 5.84       0 non_carrier female  58.5     -0.293       0.191        2.54 
 # ℹ 995 more rows
 
  ----------------------------------  exclusions  ---------------------------------- 

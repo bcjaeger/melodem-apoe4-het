@@ -144,7 +144,7 @@
     "href": "slides/01-introduction.html#your-turn-4",
     "title": "MELODEM data workshop",
     "section": "Your turn",
-    "text": "Your turn\n\nrun tar_read(data_zzzz), where zzzz is your data name.\n\n\ntar_read(data_sim)\n\n\n\n-------------------------------------- sim -------------------------------------- \n# A tibble: 1,000 × 8\n   time status apoe4    sex      age biomarker_1 biomarker_2 biomarker_3\n  &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;    &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;\n1 0.530      1 elevated female  66.3      0.747      -0.742       -1.71 \n2 0.855      0 normal   female  65.5     -0.562      -0.0513       0.546\n3 0.120      1 elevated male    71.4      0.0133     -0.184        0.826\n4 1.16       1 elevated female  59.5      0.795      -1.32        -1.28 \n5 5.84       0 normal   female  58.5     -0.293       0.191        2.54 \n# ℹ 995 more rows\n\n ----------------------------------  exclusions  ---------------------------------- \n# A tibble: 1 × 2\n  label            n_obs\n  &lt;glue&gt;           &lt;int&gt;\n1 sim participants  1000"
+    "text": "Your turn\n\nrun tar_read(data_zzzz), where zzzz is your data name.\n\n\ntar_read(data_sim)\n\n\n\n-------------------------------------- sim -------------------------------------- \n# A tibble: 1,000 × 8\n   time status apoe4       sex      age biomarker_1 biomarker_2 biomarker_3\n  &lt;dbl&gt;  &lt;int&gt; &lt;fct&gt;       &lt;fct&gt;  &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;\n1 0.530      1 carrier     female  66.3      0.747      -0.742       -1.71 \n2 0.855      0 non_carrier female  65.5     -0.562      -0.0513       0.546\n3 0.120      1 carrier     male    71.4      0.0133     -0.184        0.826\n4 1.16       1 carrier     female  59.5      0.795      -1.32        -1.28 \n5 5.84       0 non_carrier female  58.5     -0.293       0.191        2.54 \n# ℹ 995 more rows\n\n ----------------------------------  exclusions  ---------------------------------- \n# A tibble: 1 × 2\n  label            n_obs\n  &lt;glue&gt;           &lt;int&gt;\n1 sim participants  1000"
   },
   {
     "objectID": "slides/01-introduction.html#data-management",
@@ -1789,7 +1789,7 @@
     "href": "slides/03-oblique_forests.html#variable-selection",
     "title": "Oblique random forests with aorsf",
     "section": "Variable selection",
-    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 38.0% ~ time remaining: 5 seconds \nSelecting variables: 95.3% ~ time remaining: 0 seconds \nSelecting variables: 100%"
+    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 24.8% ~ time remaining: 9 seconds \nSelecting variables: 51.9% ~ time remaining: 6 seconds \nSelecting variables: 84.5% ~ time remaining: 2 seconds \nSelecting variables: 100%"
   },
   {
     "objectID": "slides/03-oblique_forests.html#your-turn",
@@ -1880,7 +1880,7 @@
     "href": "slides/03-oblique_forests.html#evaluating-in-test-data",
     "title": "Oblique random forests with aorsf",
     "section": "Evaluating in test data",
-    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.940\n3 ranger roc_auc binary         0.918"
+    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.937\n3 ranger roc_auc binary         0.918"
   },
   {
     "objectID": "slides/03-oblique_forests.html#training-the-recipe",
@@ -1908,7 +1908,7 @@
     "href": "slides/03-oblique_forests.html#partial-dependence",
     "title": "Oblique random forests with aorsf",
     "section": "Partial dependence",
-    "text": "Partial dependence\nPurpose: Interpret a model by evaluating its predictions on special data.\nExample: Expected prediction from the model as a function of age.\nPseudo-code: for i in seq(min_age, max_age):\n\nSet all values of age to i in the training data\nCompute out-of-bag predictions for training data\nSave the mean prediction and i"
+    "text": "Partial dependence\nPurpose: Interpret a model.\nDescription: Expected prediction from a model as a function of a single predictor or multiple predictors. The expectation is marginalized over the values of all other predictors, giving something like a multivariable adjusted estimate of the model’s prediction.\nExample: Expected 10-year mortality risk as a function of age.\nPseudo-code:\n\nfor i in seq(min_age, max_age){\n  \n - Set all values of age to i in the training data\n - Compute out-of-bag predictions for training data\n - Save the mean prediction and i\n  \n}"
   },
   {
     "objectID": "slides/01-introduction.html#goals",
@@ -2006,7 +2006,7 @@
     "href": "slides/03-oblique_forests.html#faster",
     "title": "Oblique random forests with aorsf",
     "section": "Faster",
-    "text": "Faster\nIf needed, reduce n_tree and increase leaf_min_obs to speed this up\n\nfit_light &lt;- orsf_update(fit, n_tree = 100, leaf_min_obs = 20)\n\norsf_vars_light &lt;- orsf_vs(fit_light, n_predictor_min = 1, verbose_progress = TRUE)\n\nSelecting variables: 100%"
+    "text": "Faster\nIf needed, reduce n_tree and increase leaf_min_obs to speed this up\n\nfit_light &lt;- orsf_update(fit, n_tree = 100, leaf_min_obs = 20)\n\norsf_vars_light &lt;- orsf_vs(fit_light, n_predictor_min = 1, verbose_progress = TRUE)\n\nSelecting variables: 58.9% ~ time remaining: 2 seconds \nSelecting variables: 100%"
   },
   {
     "objectID": "slides/04-causal_forests.html#to-the-pipeline",
@@ -2035,5 +2035,40 @@
     "title": "MELODEM data workshop",
     "section": "Schedule",
     "text": "Schedule\nSession 4: Sunday 9:30am - 12:30 pm\n\nDiscuss manuscript aims, GitHub issues (30m)\nWork in small groups (45m)\nBreak from 10:45am - 11:00am\n\nSession 5: Sunday 2:00pm - 4:00 pm\n\nProgress updates and discussion (30m)\nWork in small groups (90m)"
+  },
+  {
+    "objectID": "slides/03-oblique_forests.html#random-splits",
+    "href": "slides/03-oblique_forests.html#random-splits",
+    "title": "Oblique random forests with aorsf",
+    "section": "Random splits",
+    "text": "Random splits\nCompare ‘random splits’ to the accelerated regression approach.\n\nCreate random linear combinations\n\n\nf_rando &lt;- function(x_node, y_node, w_node){\n  matrix(runif(ncol(x_node)), ncol=1) \n}\n\ncontrol_rando &lt;- orsf_control_classification(f_rando)\n\n\nKeep making them until a split is found that is ‘good enough’\n\n\nfit_rando = orsf(ad_data, formula = Class ~ ., \n                 tree_seeds = 1, \n                 n_retry = 100,\n                 split_rule = 'cstat', \n                 split_min_stat = .6,\n                 control = control_rando)"
+  },
+  {
+    "objectID": "slides/03-oblique_forests.html#random-splits-1",
+    "href": "slides/03-oblique_forests.html#random-splits-1",
+    "title": "Oblique random forests with aorsf",
+    "section": "Random splits",
+    "text": "Random splits\n‘Many splits’ is slower\n\nmicrobenchmark::microbenchmark(\n  fit_rando = orsf(ad_data, formula = Class ~ ., \n                   tree_seeds = 1, n_retry = 100,\n                   split_rule = 'cstat', split_min_stat = .6,\n                   control = control_rando),\n  fit_accel = orsf(ad_data, formula = Class ~ ., \n                   tree_seeds = 1, split_rule = 'cstat',\n                   split_min_stat = .6),\n  times = 5\n)\n\nUnit: milliseconds\n      expr      min       lq     mean   median       uq      max neval cld\n fit_rando 873.7455 875.2297 876.8263 876.4218 877.2717 881.4626     5  a \n fit_accel  97.6814  98.1465  99.4148 100.0926 100.1371 101.0164     5   b"
+  },
+  {
+    "objectID": "slides/03-oblique_forests.html#compare-computational-efficiency",
+    "href": "slides/03-oblique_forests.html#compare-computational-efficiency",
+    "title": "Oblique random forests with aorsf",
+    "section": "Compare computational efficiency",
+    "text": "Compare computational efficiency\n‘Many splits’ is slower\n\nmicrobenchmark::microbenchmark(\n  rando = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, n_retry = 500,\n               split_rule = 'cstat', split_min_stat = .6,\n               control = control_rando),\n  accel = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, split_rule = 'cstat',\n               split_min_stat = .6),\n  times = 5\n)\n\nUnit: milliseconds\n  expr       min        lq      mean    median        uq       max neval cld\n rando 1318.1576 1327.4487 1360.8449 1335.2448 1341.1535 1482.2197     5  a \n accel  116.7222  117.5235  122.1374  123.2239  126.1809  127.0365     5   b"
+  },
+  {
+    "objectID": "slides/03-oblique_forests.html#compare-out-of-bag-prediction-accuracy",
+    "href": "slides/03-oblique_forests.html#compare-out-of-bag-prediction-accuracy",
+    "title": "Oblique random forests with aorsf",
+    "section": "Compare out-of-bag prediction accuracy",
+    "text": "Compare out-of-bag prediction accuracy\n\nOut-of-bag C-statistic for random splits:\n\n\nfit_rando$eval_oobag$stat_values\n\n          [,1]\n[1,] 0.7875307\n\n\n\nOut-of-bag C-statistic for accelerated regression:\n\n\nfit_accel$eval_oobag$stat_values\n\n          [,1]\n[1,] 0.8968304\n\n\n\\(\\Rightarrow\\) accelerated regression is faster and more accurate"
+  },
+  {
+    "objectID": "slides/01-introduction.html#options",
+    "href": "slides/01-introduction.html#options",
+    "title": "MELODEM data workshop",
+    "section": "Options",
+    "text": "Options\nThis workshop heavily leverages R, but you may prefer not to.\n\nYou can partner up with an R user\nYou can use the simulated data (makes exercises much easier)\nYou can relax and get ☕ during exercises\n\nLearning under stress may not be ideal. Do what works best for you.\nI will do my part to make the concepts taught here R-agnostic so that you can learn plenty of valuable things no matter what language you use."
   }
 ]

@@ -74,6 +74,20 @@ I study risk <br/> prediction + machine learning
 ![](img/run_R_kids.png){width=90%}
 :::
 
+## Options
+
+This workshop heavily leverages R, but you may prefer not to.
+
+- You can partner up with an R user 
+
+- You can use the simulated data (makes exercises much easier)
+
+- You can relax and get ☕ during exercises
+
+Learning under stress may not be ideal. Do what works best for you.
+
+I will do my part to make the concepts taught here R-agnostic so that you can learn plenty of valuable things no matter what language you use.
+
 ## Schedule
 
 *Session 1: Friday, 4:00pm - 5:30pm*

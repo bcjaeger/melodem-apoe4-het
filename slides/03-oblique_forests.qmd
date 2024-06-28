@@ -353,19 +353,109 @@ Open `classwork/03-oblique_forests.qmd` and complete Exercise 1
 countdown::countdown(minutes = 5, id = "ex-1")
 ```
 
+## Random splits
+
+Compare 'random splits' to the accelerated regression approach.
+
+- Create *random linear combinations*
+
+```{r, echo=TRUE}
+
+f_rando <- function(x_node, y_node, w_node){
+  matrix(runif(ncol(x_node)), ncol=1) 
+}
+
+control_rando <- orsf_control_classification(f_rando)
+
+```
+
+- Keep making them until a split is found that is 'good enough'
+
+```{r, echo=TRUE}
+
+fit_rando = orsf(ad_data, formula = Class ~ ., 
+                 tree_seeds = 1, 
+                 n_retry = 100,
+                 split_rule = 'cstat', 
+                 split_min_stat = .6,
+                 control = control_rando)
+
+```
+
+
+## Compare computational efficiency
+
+'Many splits' is slower
+
+```{r, echo=TRUE}
+
+microbenchmark::microbenchmark(
+  rando = orsf(ad_data, formula = Class ~ ., 
+               tree_seeds = 1, n_retry = 500,
+               split_rule = 'cstat', split_min_stat = .6,
+               control = control_rando),
+  accel = orsf(ad_data, formula = Class ~ ., 
+               tree_seeds = 1, split_rule = 'cstat',
+               split_min_stat = .6),
+  times = 5
+)
+
+```
+
+## Compare out-of-bag prediction accuracy
+
+
+```{r}
+
+fit_rando = orsf(ad_data, formula = Class ~ ., 
+                 tree_seeds = 1, n_retry = 500,
+                 split_rule = 'cstat', split_min_stat = .6,
+                 control = control_rando)
+
+fit_accel = orsf(ad_data, formula = Class ~ ., 
+                 tree_seeds = 1, split_rule = 'cstat',
+                 split_min_stat = .6)
+
+```
+
+- Out-of-bag C-statistic for random splits:
+
+```{r, echo=TRUE}
+fit_rando$eval_oobag$stat_values
+```
+
+- Out-of-bag C-statistic for accelerated regression:
+
+```{r, echo=TRUE}
+fit_accel$eval_oobag$stat_values
+```
+
+$\Rightarrow$ accelerated regression is faster and more accurate
+
 ## Partial dependence
 
-**Purpose**: Interpret a model by evaluating its predictions on special data.
+**Purpose**: Interpret a model.
 
-**Example**: Expected prediction from the model as a function of age. 
+**Description**: Expected prediction from a model as a function of a single predictor or multiple predictors. The expectation is marginalized over the values of all other predictors, giving something like a multivariable adjusted estimate of the model’s prediction.
 
-**Pseudo-code**: `for i in seq(min_age, max_age)`:
+**Example**: Expected 10-year mortality risk as a function of age. 
 
-- Set all values of `age` to `i` in the training data
 
-- Compute out-of-bag predictions for training data
+**Pseudo-code**:
 
-- Save the mean prediction and `i`
+```{r, echo=TRUE, eval=FALSE}
+
+for i in seq(min_age, max_age){
+  
+ - Set all values of age to i in the training data
+ - Compute out-of-bag predictions for training data
+ - Save the mean prediction and i
+  
+}
+```
+
+
+
 
 ## Single variable summary
 

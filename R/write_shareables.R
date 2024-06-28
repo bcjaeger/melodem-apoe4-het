@@ -4,8 +4,6 @@
 #'  write shareable outputs to a .rds file in the shareable directory
 #'
 
-last <- function(x) x[length(x)]
-
 write_shareables <- function(.names){
 
   stopifnot(is.character(.names))
