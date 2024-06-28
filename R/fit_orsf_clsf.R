@@ -1,12 +1,13 @@
-#' .. content for \description{} (no empty lines) ..
+#' @description
+#' Fit an oblique random forest to predict probability of apoe4 status.
 #'
-#' .. content for \details{} ..
+#' @param data dataset to be used for fitting the oblique random forest
+#' @param select_variables if `TRUE`, variable selection is run. If `FALSE`,
+#'   no variable selection is run.
 #'
-#' @title
-#' @param data
-#' @return
+#' @return an oblique random forest object
+#'
 #' @author bcjaeger
-#' @export
 
 # data <- tar_read(data_sim)
 
