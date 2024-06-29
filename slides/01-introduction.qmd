@@ -421,10 +421,10 @@ data_prepare <- function(file_name, ...){
     data_clean() %>%
     data_derive() %>%
     data_select() %>%
+    data_recode(labels = labels) %>%
     data_exclude(...)
-
-  check_names(output$values,
-              c("age", "sex", "apoe4", "time", "status"))
+  
+  # checks not shown
 
   output
 
@@ -563,7 +563,9 @@ Here's a look at the generic function for cleaning an object of class `sim`:
 ```{r, echo=TRUE, eval=FALSE}
 
 data_clean.melodem_sim <- function(data){
-  dt <- as.data.table(data$values)
+
+  dt <- data_clean_minimal(data$values)
+
   dt[, age := age * 5 + 65]
   dt[, sex := fifelse(sex > 0, 1, 0)]
   dt[, sex := factor(sex, levels = c(0, 1),
@@ -586,7 +588,7 @@ Here's the generic function for cleaning an object of class `melodem_data`:
 
 data_clean.melodem_data <- function(data){
 
-  data
+  data_clean_minimal(data)
 
 }
 
@@ -613,4 +615,3 @@ For the rest of this session,
 
 - If you finish early, help someone else!
 
-At a minimum, make sure your data have time/status for dementia, apoe4, age, and sex, so that you will be able to use your data for the rest of the workshop.

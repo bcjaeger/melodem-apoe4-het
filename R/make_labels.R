@@ -24,7 +24,8 @@ make_labels <- function(...) {
   )
 
   levels <- list(
-    sex = c("male" = "Men", "female" = "Women")
+    sex = c("male" = "Men", "female" = "Women"),
+    apoe4 = c("non_carrier" = "Non carrier", "carrier" = "Carrier")
   )
 
   abbreviations <- c(

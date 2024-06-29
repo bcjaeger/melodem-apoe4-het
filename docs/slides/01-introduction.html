@@ -752,10 +752,10 @@ Byron C. Jaeger, PhD
 <span id="cb9-4"><a href="#cb9-4"></a>    <span class="fu">data_clean</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb9-5"><a href="#cb9-5"></a>    <span class="fu">data_derive</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb9-6"><a href="#cb9-6"></a>    <span class="fu">data_select</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>    <span class="fu">data_exclude</span>(...)</span>
-<span id="cb9-8"><a href="#cb9-8"></a></span>
-<span id="cb9-9"><a href="#cb9-9"></a>  <span class="fu">check_names</span>(output<span class="sc">$</span>values,</span>
-<span id="cb9-10"><a href="#cb9-10"></a>              <span class="fu">c</span>(<span class="st">"age"</span>, <span class="st">"sex"</span>, <span class="st">"apoe4"</span>, <span class="st">"time"</span>, <span class="st">"status"</span>))</span>
+<span id="cb9-7"><a href="#cb9-7"></a>    <span class="fu">data_recode</span>(<span class="at">labels =</span> labels) <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>    <span class="fu">data_exclude</span>(...)</span>
+<span id="cb9-9"><a href="#cb9-9"></a>  </span>
+<span id="cb9-10"><a href="#cb9-10"></a>  <span class="co"># checks not shown</span></span>
 <span id="cb9-11"><a href="#cb9-11"></a></span>
 <span id="cb9-12"><a href="#cb9-12"></a>  output</span>
 <span id="cb9-13"><a href="#cb9-13"></a></span>
@@ -865,14 +865,16 @@ Byron C. Jaeger, PhD
 <p>Here’s a look at the generic function for cleaning an object of class <code>sim</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>data_clean.melodem_sim <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
-<span id="cb14-2"><a href="#cb14-2"></a>  dt <span class="ot">&lt;-</span> <span class="fu">as.data.table</span>(data<span class="sc">$</span>values)</span>
-<span id="cb14-3"><a href="#cb14-3"></a>  dt[, age <span class="sc">:</span><span class="er">=</span> age <span class="sc">*</span> <span class="dv">5</span> <span class="sc">+</span> <span class="dv">65</span>]</span>
-<span id="cb14-4"><a href="#cb14-4"></a>  dt[, sex <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(sex <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)]</span>
-<span id="cb14-5"><a href="#cb14-5"></a>  dt[, sex <span class="sc">:</span><span class="er">=</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb14-6"><a href="#cb14-6"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>))]</span>
-<span id="cb14-7"><a href="#cb14-7"></a>  data<span class="sc">$</span>values <span class="ot">&lt;-</span> dt</span>
-<span id="cb14-8"><a href="#cb14-8"></a>  data</span>
-<span id="cb14-9"><a href="#cb14-9"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  dt <span class="ot">&lt;-</span> <span class="fu">data_clean_minimal</span>(data<span class="sc">$</span>values)</span>
+<span id="cb14-4"><a href="#cb14-4"></a></span>
+<span id="cb14-5"><a href="#cb14-5"></a>  dt[, age <span class="sc">:</span><span class="er">=</span> age <span class="sc">*</span> <span class="dv">5</span> <span class="sc">+</span> <span class="dv">65</span>]</span>
+<span id="cb14-6"><a href="#cb14-6"></a>  dt[, sex <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(sex <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)]</span>
+<span id="cb14-7"><a href="#cb14-7"></a>  dt[, sex <span class="sc">:</span><span class="er">=</span> <span class="fu">factor</span>(sex, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb14-8"><a href="#cb14-8"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"male"</span>, <span class="st">"female"</span>))]</span>
+<span id="cb14-9"><a href="#cb14-9"></a>  data<span class="sc">$</span>values <span class="ot">&lt;-</span> dt</span>
+<span id="cb14-10"><a href="#cb14-10"></a>  data</span>
+<span id="cb14-11"><a href="#cb14-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="how-1" class="slide level2">
@@ -883,7 +885,7 @@ Byron C. Jaeger, PhD
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>data_clean.melodem_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data){</span>
 <span id="cb15-2"><a href="#cb15-2"></a></span>
-<span id="cb15-3"><a href="#cb15-3"></a>  data</span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">data_clean_minimal</span>(data)</span>
 <span id="cb15-4"><a href="#cb15-4"></a></span>
 <span id="cb15-5"><a href="#cb15-5"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -908,7 +910,6 @@ Byron C. Jaeger, PhD
 <li><p>If you already did these operations before the workshop, move the code you used into the corresponding function.</p></li>
 <li><p>If you finish early, help someone else!</p></li>
 </ul>
-<p>At a minimum, make sure your data have time/status for dementia, apoe4, age, and sex, so that you will be able to use your data for the rest of the workshop.</p>
 
 <div class="footer footer-default">
 <p>Slides available at <a href="https://bcjaeger.github.io/melodem-apoe4-het/" class="uri">https://bcjaeger.github.io/melodem-apoe4-het/</a></p>

@@ -15,12 +15,13 @@
 #' @author bcjaeger
 #'
 
-data_prepare <- function(file_name, ...){
+data_prepare <- function(file_name, labels, ...){
 
   output <- data_load(file_name) %>%
     data_clean() %>%
     data_derive() %>%
     data_select() %>%
+    data_recode(labels = labels) %>%
     data_exclude(...)
 
   check_names(output$values,
@@ -29,6 +30,7 @@ data_prepare <- function(file_name, ...){
   check_fctr_levels(output$values$sex,
                     name = 'sex',
                     expected_levels = c('male', 'female'))
+
   check_fctr_levels(output$values$apoe4,
                     name = 'apoe4',
                     expected_levels = c("carrier", "non_carrier"))

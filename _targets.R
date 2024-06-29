@@ -46,7 +46,11 @@ assert_data_safety()
 
 # Globals -----------------------------------------------------------------
 
+# indicates what version the paper is at
 manuscript_version <- 1
+
+# stores data on what things are called
+labels <- make_labels()
 
 # slides targets ----------------------------------------------------------
 
@@ -64,7 +68,7 @@ file_sim_tar <- tar_target(
 
 data_sim_tar <- tar_target(
   data_sim,
-  data_prepare(file_sim)
+  data_prepare(file_sim, labels)
 )
 
 # real data cohorts (to be added as an exercise)
@@ -143,7 +147,6 @@ tar_hook_before(
     # code run (quietly) before each target
     lapply(list.files("./R", full.names = TRUE), source)
     source("conflicts.R")
-    labels <- make_labels()
   },
   names = everything()
 )
