@@ -269,8 +269,8 @@
     "objectID": "slides/04-causal_forests.html#overview",
     "href": "slides/04-causal_forests.html#overview",
     "title": "Causal random forests with grf",
-    "section": "",
-    "text": "Robinson’s residual-on-residual regression\n\nCausal trees\nCausal random forest\nCausal random survival forest\n\nInference with causal random forests\n\nConditional average treatment effect (CATE)\nBest linear projection (BLP)\nRank weighted average treatment effect (RATE)"
+    "section": "Overview",
+    "text": "Overview\n\nRobinson’s residual-on-residual regression\n\nCausal trees\nCausal random forest\nCausal random survival forest\n\nInference with causal random forests\n\nConditional average treatment effect (CATE)\nBest linear projection (BLP)\nRank weighted average treatment effect (RATE)"
   },
   {
     "objectID": "slides/04-causal_forests.html#the-partially-linear-model",
@@ -445,14 +445,14 @@
     "href": "slides/04-causal_forests.html#fitting-the-forest",
     "title": "Causal random forests with grf",
     "section": "Fitting the forest",
-    "text": "Fitting the forest\nThird, fit the causal survival forest:\n\nfit_grf &lt;- causal_survival_forest(\n  X = data_grf$X, # covariates\n  Y = data_grf$Y, # time to event\n  W = data_grf$W, # treatment status\n  D = data_grf$D, # event status\n  horizon = 3, # 3-year horizon\n  # treatment effect will be\n  # measured in terms of the\n  # restricted mean survival time\n  target = 'RMST' \n)\n\nfit_grf\n\nGRF forest object of type causal_survival_forest \nNumber of trees: 2000 \nNumber of training samples: 1000 \nVariable importance: \n    1     2     3     4     5 \n0.156 0.555 0.157 0.108 0.024"
+    "text": "Fitting the forest\nThird, fit the causal survival forest:\n\nfit_grf &lt;- causal_survival_forest(\n  X = data_grf$X, # covariates\n  Y = data_grf$Y, # time to event\n  W = data_grf$W, # treatment status\n  D = data_grf$D, # event status\n  horizon = 3, # 3-year horizon\n  # treatment effect will be\n  # measured in terms of the\n  # restricted mean survival time\n  target = 'RMST' \n)\n\nfit_grf\n\nGRF forest object of type causal_survival_forest \nNumber of trees: 2000 \nNumber of training samples: 1000 \nVariable importance: \n    1     2     3     4     5 \n0.149 0.560 0.148 0.123 0.020"
   },
   {
     "objectID": "slides/04-causal_forests.html#get-gamma-scores",
     "href": "slides/04-causal_forests.html#get-gamma-scores",
     "title": "Causal random forests with grf",
     "section": "Get \\(\\Gamma\\) scores",
-    "text": "Get \\(\\Gamma\\) scores\nRemember the \\(\\Gamma_i\\)’s that provide conditional estimates of \\(\\tau\\)? Let’s get them.\n\n# pull the augmented CATEs from the fitted grf object\ngammas &lt;- get_scores(fit_grf)\n\n\nWith gammas, we can compute ATE manually\n\n\nmean(gammas) \n\n[1] -2.595928\n\n\n\nVerify this is what the grf function gives\n\n\naverage_treatment_effect(fit_grf)\n\n   estimate     std.err \n-2.59592779  0.02503859"
+    "text": "Get \\(\\Gamma\\) scores\nRemember the \\(\\Gamma_i\\)’s that provide conditional estimates of \\(\\tau\\)? Let’s get them.\n\n# pull the augmented CATEs from the fitted grf object\ngammas &lt;- get_scores(fit_grf)\n\n\nWith gammas, we can compute ATE manually\n\n\nmean(gammas) \n\n[1] -2.596136\n\n\n\nVerify this is what the grf function gives\n\n\naverage_treatment_effect(fit_grf)\n\n   estimate     std.err \n-2.59613637  0.02468187"
   },
   {
     "objectID": "slides/04-causal_forests.html#your-turn",
@@ -473,7 +473,7 @@
     "href": "slides/04-causal_forests.html#what-happens-underneath-the-grf-hood",
     "title": "Causal random forests with grf",
     "section": "What happens underneath the grf hood",
-    "text": "What happens underneath the grf hood\nHere’s how you can replicate grf results:\n\n\nlmtest::coeftest(fit_blp, \n                 vcov = sandwich::vcovCL, \n                 type = 'HC3')\n\n\nt test of coefficients:\n\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.7678573  0.2927282 -9.4554 &lt; 2.2e-16 ***\nage          0.0029772  0.0046684  0.6377  0.523798    \nbiomarker_1 -0.1264781  0.0326652 -3.8719  0.000115 ***\nbiomarker_2 -0.0350418  0.0197590 -1.7735  0.076458 .  \nbiomarker_3 -0.0052493  0.0205146 -0.2559  0.798096    \nsex_female  -0.0414831  0.0495542 -0.8371  0.402724    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n\nbest_linear_projection(fit_grf, data_grf$X)\n\n\nBest linear projection of the conditional average treatment effect.\nConfidence intervals are cluster- and heteroskedasticity-robust (HC3):\n\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.7678573  0.2927282 -9.4554 &lt; 2.2e-16 ***\nage          0.0029772  0.0046684  0.6377  0.523798    \nbiomarker_1 -0.1264781  0.0326652 -3.8719  0.000115 ***\nbiomarker_2 -0.0350418  0.0197590 -1.7735  0.076458 .  \nbiomarker_3 -0.0052493  0.0205146 -0.2559  0.798096    \nsex_female  -0.0414831  0.0495542 -0.8371  0.402724    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+    "text": "What happens underneath the grf hood\nHere’s how you can replicate grf results:\n\n\nlmtest::coeftest(fit_blp, \n                 vcov = sandwich::vcovCL, \n                 type = 'HC3')\n\n\nt test of coefficients:\n\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.7627108  0.2851404 -9.6890 &lt; 2.2e-16 ***\nage          0.0028813  0.0045228  0.6371 0.5242294    \nbiomarker_1 -0.1251919  0.0323413 -3.8710 0.0001155 ***\nbiomarker_2 -0.0356646  0.0198704 -1.7949 0.0729805 .  \nbiomarker_3 -0.0050577  0.0204804 -0.2470 0.8049951    \nsex_female  -0.0398459  0.0488021 -0.8165 0.4144222    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n\nbest_linear_projection(fit_grf, data_grf$X)\n\n\nBest linear projection of the conditional average treatment effect.\nConfidence intervals are cluster- and heteroskedasticity-robust (HC3):\n\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.7627108  0.2851404 -9.6890 &lt; 2.2e-16 ***\nage          0.0028813  0.0045228  0.6371 0.5242294    \nbiomarker_1 -0.1251919  0.0323413 -3.8710 0.0001155 ***\nbiomarker_2 -0.0356646  0.0198704 -1.7949 0.0729805 .  \nbiomarker_3 -0.0050577  0.0204804 -0.2470 0.8049951    \nsex_female  -0.0398459  0.0488021 -0.8165 0.4144222    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
   },
   {
     "objectID": "slides/04-causal_forests.html#your-turn-1",
@@ -591,8 +591,8 @@
     "objectID": "slides/02-trees_and_forests.html#overview",
     "href": "slides/02-trees_and_forests.html#overview",
     "title": "Decision trees and random forests",
-    "section": "",
-    "text": "Decision trees\n\nGrowing trees\nLeaf nodes\n\nRandom Forests\n\nOut-of-bag predictions\nVariable importance\n\n\n\n\n\nData were collected and made available by Dr. Kristen Gorman and the Palmer Station, a member of the Long Term Ecological Research Network."
+    "section": "Overview",
+    "text": "Overview\n\nDecision trees\n\nGrowing trees\nLeaf nodes\n\nRandom Forests\n\nOut-of-bag predictions\nVariable importance"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#growing-decision-trees",
@@ -697,7 +697,7 @@
     "href": "slides/02-trees_and_forests.html#your-turn-2",
     "title": "Decision trees and random forests",
     "section": "Your turn",
-    "text": "Your turn\nFit your own decision tree to the penguins data.\n\nOpen classwork/02-trees_and_forests.qmd\nComplete Exercise 2\n\n. . .\n\n\n\n−+\n05:00"
+    "text": "Your turn\nFit your own decision tree to the penguins data.\n\nOpen classwork/02-trees_and_forests.qmd\nComplete Exercise 2\n\n\n\n\n\n−+\n05:00"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#from-partition-to-flowchart",
@@ -879,7 +879,7 @@
     "href": "slides/02-trees_and_forests.html#references",
     "title": "Decision trees and random forests",
     "section": "References",
-    "text": "References\n\n\nBreiman, Leo. 1996. “Out-of-Bag Estimation.”\n\n\n———. 2001. “Random Forests.” Machine Learning 45: 5–32.\n\n\n———. 2017. “Classification and Regression Trees.”\n\n\nIshwaran, Hemant, Udaya B Kogalur, Eugene H Blackstone, and Michael S Lauer. 2008. “Random Survival Forests.”\n\n\nStrobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007. “Bias in Random Forest Variable Importance Measures: Illustrations, Sources and a Solution.” BMC Bioinformatics 8: 1–21."
+    "text": "References\n\n\nBreiman, Leo. 1996. “Out-of-Bag Estimation.”\n\n\n———. 2001. “Random Forests.” Machine Learning 45: 5–32.\n\n\n———. 2017. “Classification and Regression Trees.”\n\n\nIshwaran, Hemant, Udaya B Kogalur, Eugene H Blackstone, and Michael S Lauer. 2008. “Random Survival Forests.”\n\n\nStrobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007. “Bias in Random Forest Variable Importance Measures: Illustrations, Sources and a Solution.” BMC Bioinformatics 8: 1–21.\n\n\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/"
   },
   {
     "objectID": "slides/03-oblique_forests.html",
@@ -892,8 +892,8 @@
     "objectID": "slides/03-oblique_forests.html#overview",
     "href": "slides/03-oblique_forests.html#overview",
     "title": "Oblique random forests with aorsf",
-    "section": "",
-    "text": "What does oblique mean?\naorsf\n\nMotivation\nDesign\nBenchmarks\nApplications"
+    "section": "Overview",
+    "text": "Overview\n\nWhat does oblique mean?\naorsf\n\nMotivation\nDesign\nBenchmarks\nApplications"
   },
   {
     "objectID": "slides/03-oblique_forests.html#background",
@@ -1047,7 +1047,7 @@
     "href": "slides/03-oblique_forests.html#compare-computational-efficiency",
     "title": "Oblique random forests with aorsf",
     "section": "Compare computational efficiency",
-    "text": "Compare computational efficiency\n‘Many splits’ is slower\n\nmicrobenchmark::microbenchmark(\n  rando = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, n_retry = 500,\n               split_rule = 'cstat', split_min_stat = .6,\n               control = control_rando),\n  accel = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, split_rule = 'cstat',\n               split_min_stat = .6),\n  times = 5\n)\n\nUnit: milliseconds\n  expr       min        lq      mean    median        uq       max neval cld\n rando 1060.3647 1066.7972 1099.2190 1082.6617 1085.0276 1201.2440     5  a \n accel   99.1885   99.4957  102.7126   99.9612  102.8241  112.0933     5   b"
+    "text": "Compare computational efficiency\n‘Many splits’ is slower\n\nmicrobenchmark::microbenchmark(\n  rando = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, n_retry = 500,\n               split_rule = 'cstat', split_min_stat = .6,\n               control = control_rando),\n  accel = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, split_rule = 'cstat',\n               split_min_stat = .6),\n  times = 5\n)\n\nUnit: milliseconds\n  expr       min        lq      mean   median       uq       max neval cld\n rando 1067.1459 1078.8281 1108.6802 1088.707 1095.048 1213.6718     5  a \n accel   97.7655   98.8434  100.5617  100.597  102.173  103.4297     5   b"
   },
   {
     "objectID": "slides/03-oblique_forests.html#compare-out-of-bag-prediction-accuracy",
@@ -1089,7 +1089,7 @@
     "href": "slides/03-oblique_forests.html#variable-selection",
     "title": "Oblique random forests with aorsf",
     "section": "Variable selection",
-    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 40.3% ~ time remaining: 4 seconds \nSelecting variables: 100%"
+    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 39.5% ~ time remaining: 5 seconds \nSelecting variables: 100%"
   },
   {
     "objectID": "slides/03-oblique_forests.html#faster",
@@ -1152,7 +1152,7 @@
     "href": "slides/03-oblique_forests.html#evaluating-in-test-data",
     "title": "Oblique random forests with aorsf",
     "section": "Evaluating in test data",
-    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.947\n3 ranger roc_auc binary         0.918"
+    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.943\n3 ranger roc_auc binary         0.918"
   },
   {
     "objectID": "slides/03-oblique_forests.html#to-the-pipeline",
@@ -1160,5 +1160,110 @@
     "title": "Oblique random forests with aorsf",
     "section": "To the pipeline",
     "text": "To the pipeline\n\nCopy/paste this code into your _targets.R file.\n\n\n# in _targets.R, you should see this comment: \n\n# real data model targets (to be added as an exercise). \n\n# Paste this code right beneath that.\n\nfit_aorsf_zzzz_tar &lt;- tar_target(\n  fit_aorsf_zzzz,\n  fit_orsf_clsf(data = data_zzzz)\n)\n\n\nModify this code, replacing zzzz with the name of your dataset."
+  },
+  {
+    "objectID": "slides/03-oblique_forests.html#references",
+    "href": "slides/03-oblique_forests.html#references",
+    "title": "Oblique random forests with aorsf",
+    "section": "References",
+    "text": "References\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/\n\n\n\nBreiman, Leo. 2001. “Random Forests.” Machine Learning 45: 5–32.\n\n\nJaeger, Byron C, Sawyer Welden, Kristin Lenoir, and Nicholas M Pajewski. 2022. “Aorsf: An r Package for Supervised Learning Using the Oblique Random Survival Forest.” Journal of Open Source Software 7 (77): 4705.\n\n\nJaeger, Byron C, Sawyer Welden, Kristin Lenoir, Jaime L Speiser, Matthew W Segar, Ambarish Pandey, and Nicholas M Pajewski. 2024. “Accelerated and Interpretable Oblique Random Survival Forests.” Journal of Computational and Graphical Statistics 33 (1): 192–207.\n\n\nKatuwal, Rakesh, Ponnuthurai Nagaratnam Suganthan, and Le Zhang. 2020. “Heterogeneous Oblique Random Forest.” Pattern Recognition 99: 107078.\n\n\nMenze, Bjoern H, B Michael Kelm, Daniel N Splitthoff, Ullrich Koethe, and Fred A Hamprecht. 2011. “On Oblique Random Forests.” In Machine Learning and Knowledge Discovery in Databases: European Conference, ECML PKDD 2011, Athens, Greece, September 5-9, 2011, Proceedings, Part II 22, 453–69. Springer."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#references",
+    "href": "slides/04-causal_forests.html#references",
+    "title": "Causal random forests with grf",
+    "section": "References",
+    "text": "References\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/\n\n\n\nBreiman, Leo. 2001. “Random Forests.” Machine Learning 45: 5–32.\n\n\nChernozhukov, Victor, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey, and James Robins. 2018. “Double/debiased machine learning for treatment and structural parameters.” The Econometrics Journal 21 (1): C1–68. https://doi.org/10.1111/ectj.12097.\n\n\nCui, Yifan, Michael R Kosorok, Erik Sverdrup, Stefan Wager, and Ruoqing Zhu. 2023. “Estimating Heterogeneous Treatment Effects with Right-Censored Data via Causal Survival Forests.” Journal of the Royal Statistical Society Series B: Statistical Methodology 85 (2): 179–211.\n\n\nRobinson, Peter M. 1988. “Root-n-Consistent Semiparametric Regression.” Econometrica: Journal of the Econometric Society, 931–54.\n\n\nSemenova, Vira, and Victor Chernozhukov. 2021. “Debiased Machine Learning of Conditional Average Treatment Effects and Other Causal Functions.” The Econometrics Journal 24 (2): 264–89.\n\n\nWager, Stefan, and Susan Athey. 2018. “Estimation and Inference of Heterogeneous Treatment Effects Using Random Forests.” Journal of the American Statistical Association 113 (523): 1228–42.\n\n\nYadlowsky, Steve, Scott Fleming, Nigam Shah, Emma Brunskill, and Stefan Wager. 2021. “Evaluating Treatment Prioritization Rules via Rank-Weighted Average Treatment Effects.” arXiv Preprint arXiv:2111.07966."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-robinsons-regression",
+    "href": "slides/04-causal_forests.html#intuition-of-robinsons-regression",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of Robinson’s regression",
+    "text": "Intuition of Robinson’s regression\n\n\n\\(Y - E[Y|X]\\) is a treatment centered Y.\n\\(W - E[W|X]\\) is the usual binary treatment effect in randomized trials"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-robinsons-regression-1",
+    "href": "slides/04-causal_forests.html#intuition-of-robinsons-regression-1",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of Robinson’s regression",
+    "text": "Intuition of Robinson’s regression\n\n\n\\(W - E[W|X]\\) is a continuous exposure for the treatment in observational data\nCentered \\(W\\) impacts how much a person with covariates \\(X\\) influences the \\(\\tau\\) estimate"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-robinsons-regression-2",
+    "href": "slides/04-causal_forests.html#intuition-of-robinsons-regression-2",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of Robinson’s regression",
+    "text": "Intuition of Robinson’s regression\n\n\n\\(Y - E[Y|X]\\) is a treatment centered Y.\n\\(W - E[W|X]\\) is a nuisance parameter. The conditional mean of \\(Y\\) is what matters most for \\(\\tau\\)"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-causal-trees",
+    "href": "slides/04-causal_forests.html#intuition-of-causal-trees",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of causal trees",
+    "text": "Intuition of causal trees\n\n\nEveryone starts at the root"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-causal-trees-1",
+    "href": "slides/04-causal_forests.html#intuition-of-causal-trees-1",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of causal trees",
+    "text": "Intuition of causal trees\n\n\nAssess splits by running Robinson’s regression in each child node.\nRemember: good splits maximize \\[n_L \\cdot n_R \\cdot (\\hat{\\tau}_L-\\hat{\\tau}_R)^2\\]\nIs this a good split?"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-causal-trees-2",
+    "href": "slides/04-causal_forests.html#intuition-of-causal-trees-2",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of causal trees",
+    "text": "Intuition of causal trees\n\n\nAssess splits by running Robinson’s regression in each child node.\nRemember: good splits maximize \\[n_L \\cdot n_R \\cdot (\\hat{\\tau}_L-\\hat{\\tau}_R)^2\\]\nIs this a good split?"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-forest-weights",
+    "href": "slides/04-causal_forests.html#intuition-of-forest-weights",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of forest weights",
+    "text": "Intuition of forest weights\n\n\nStart with a “new” data point: Bill\nInitialize leaf counts and no. of trees as 0."
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-forest-weights-1",
+    "href": "slides/04-causal_forests.html#intuition-of-forest-weights-1",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of forest weights",
+    "text": "Intuition of forest weights\n\n\nDrop Bill down the first tree"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-forest-weights-2",
+    "href": "slides/04-causal_forests.html#intuition-of-forest-weights-2",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of forest weights",
+    "text": "Intuition of forest weights\n\n\nDrop Bill down the first tree\nUpdate counts"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-forest-weights-3",
+    "href": "slides/04-causal_forests.html#intuition-of-forest-weights-3",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of forest weights",
+    "text": "Intuition of forest weights\n\n\nDrop Bill down the second tree\nUpdate counts"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-forest-weights-4",
+    "href": "slides/04-causal_forests.html#intuition-of-forest-weights-4",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of forest weights",
+    "text": "Intuition of forest weights\n\n\nCompute weights\nNote some are 0"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-forest-weights-5",
+    "href": "slides/04-causal_forests.html#intuition-of-forest-weights-5",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of forest weights",
+    "text": "Intuition of forest weights\n\n\nThese are Bill’s “neighbors”\nSome are more neighbor than others"
+  },
+  {
+    "objectID": "slides/04-causal_forests.html#intuition-of-forest-weights-6",
+    "href": "slides/04-causal_forests.html#intuition-of-forest-weights-6",
+    "title": "Causal random forests with grf",
+    "section": "Intuition of forest weights",
+    "text": "Intuition of forest weights\n\n\nNow run Robinson’s regression with these weights\nBill gets his own \\(\\hat\\tau\\) from this."
   }
 ]

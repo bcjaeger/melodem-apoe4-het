@@ -46,17 +46,14 @@ assert_data_safety()
 
 # Globals -----------------------------------------------------------------
 
-# indicates what version the paper is at
 manuscript_version <- 1
 
-# stores data on what things are called
 labels <- make_labels()
 
 # slides targets ----------------------------------------------------------
 
 # these don't need to be made on new systems
-penguin_figs_tar <- tar_target(penguin_figs, viz_penguins(),
-                               cue = tar_cue('never'))
+penguin_figs_tar <- tar_target(penguin_figs, viz_penguins())
 
 # Individual cohort targets -----------------------------------------------
 
@@ -130,7 +127,7 @@ manuscript_tar <- tar_render(
 # Finalize targets --------------------------------------------------------
 
 targets <- list(
-  # penguin_figs_tar,
+  penguin_figs_tar,
   file_sim_tar,
   data_sim_tar,
   fit_orsf_sim_tar,

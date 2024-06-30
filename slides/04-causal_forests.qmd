@@ -318,6 +318,37 @@ library(patchwork)
 
 ```
 
+## Intuition of Robinson's regression
+
+:::{.column width="39%"}
+
+- $Y - E[Y|X]$ is a treatment centered Y.
+
+- $W - E[W|X]$ is the usual binary treatment effect in randomized trials
+
+:::
+
+:::{.column width="60%"}
+
+![](diagram/robin-regress-1.svg){width=7in}
+:::
+
+## Intuition of Robinson's regression
+
+:::{.column width="39%"}
+
+- $W - E[W|X]$ is a continuous exposure for the treatment in observational data
+
+- Centered $W$ impacts how much a person with covariates $X$ influences the $\tau$ estimate
+
+:::
+
+:::{.column width="60%"}
+
+![](diagram/robin-regress-2.svg){width=7in}
+:::
+
+
 # Causal trees
 
 ## How to grow causal trees
@@ -344,6 +375,54 @@ Causal trees use "honesty" and "subsampling" [@wager2018estimation].
     + Decide splitting values for non-leaf nodes.
 
 - **Subsampling**: While @breiman2001random's random forest uses bootstrap sampling with replacement, the causal random forest samples without replacement. 
+
+## Intuition of causal trees
+
+:::{.column width="39%"}
+
+- Everyone starts at the root
+
+:::
+
+:::{.column width="60%"}
+
+![](diagram/causal-tree-1.svg){width=7in}
+:::
+
+## Intuition of causal trees
+
+:::{.column width="39%"}
+
+- Assess splits by running Robinson's regression in each child node.
+
+- Remember: good splits maximize $$n_L \cdot n_R \cdot (\hat{\tau}_L-\hat{\tau}_R)^2$$
+
+- Is this a good split?
+
+
+:::
+
+:::{.column width="60%"}
+
+![](diagram/causal-tree-2.svg){width=7in}
+:::
+
+## Intuition of causal trees
+
+:::{.column width="39%"}
+
+- Assess splits by running Robinson's regression in each child node.
+
+- Remember: good splits maximize $$n_L \cdot n_R \cdot (\hat{\tau}_L-\hat{\tau}_R)^2$$
+
+- Is this a good split?
+
+:::
+
+:::{.column width="60%"}
+
+![](diagram/causal-tree-3.svg){width=7in}
+:::
 
 # Causal random forest
 
@@ -391,6 +470,87 @@ p &= \sum_{i=1}^{n} \frac{1}{B} \sum_{b=1}^{B} Y_i \frac{1\{Xi \in L_b(x)\}} {|L
 
 - $\alpha_i(x) \propto$ no. of times observation $i$ lands in the same leaf as $x$
 
+## Intuition of forest weights
+
+:::{.column width="39%"}
+
+- Start with a "new" data point: Bill
+
+- Initialize leaf counts and no. of trees as 0.
+
+:::
+
+:::{.column width="60%"}
+
+![](diagram/causal-tree-weights-1.svg){width=7in}
+:::
+
+## Intuition of forest weights
+
+:::{.column width="39%"}
+- Drop Bill down the first tree
+:::
+
+:::{.column width="60%"}
+![](diagram/causal-tree-weights-2.svg){width=7in}
+:::
+
+## Intuition of forest weights
+
+:::{.column width="39%"}
+- Drop Bill down the first tree
+- Update counts
+:::
+
+:::{.column width="60%"}
+![](diagram/causal-tree-weights-3.svg){width=7in}
+:::
+
+## Intuition of forest weights
+
+:::{.column width="39%"}
+- Drop Bill down the second tree
+- Update counts
+:::
+
+:::{.column width="60%"}
+![](diagram/causal-tree-weights-4.svg){width=7in}
+:::
+
+## Intuition of forest weights
+
+:::{.column width="39%"}
+- Compute weights
+- Note some are 0
+:::
+
+:::{.column width="60%"}
+![](diagram/causal-tree-weights-5.svg){width=7in}
+:::
+
+## Intuition of forest weights
+
+:::{.column width="39%"}
+- These are Bill's "neighbors"
+- Some are more neighbor than others
+:::
+
+:::{.column width="60%"}
+![](diagram/causal-tree-weights-6.svg){width=7in}
+:::
+
+## Intuition of forest weights
+
+:::{.column width="39%"}
+- Now run Robinson's regression with these weights
+- Bill gets his own $\hat\tau$ from this.
+:::
+
+:::{.column width="60%"}
+![](diagram/causal-tree-weights-7.svg){width=7in}
+:::
+
+
 ## Plug weights in to `lm`
 
 Instead of defining neighborhood boundaries, weight by similarity:
@@ -403,6 +563,7 @@ This forest-localized version of Robinson's regression, paired with honesty and 
 1. Pointwise consistency for the true treatment effect.
 
 2. Asymptotically Gaussian and centered sampling distribution.
+
 
 ## Three main components 
 
