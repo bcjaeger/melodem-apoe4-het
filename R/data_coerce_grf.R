@@ -20,7 +20,7 @@ data_coerce_grf <- function(data,
 
   .name_Y <- name_Y %||% "time"
   .name_D <- name_D %||% "status"
-  .name_W <- name_W %||% "apoe4"
+  .name_W <- name_W %||% "treatment"
 
   stopifnot(is.factor(data[[.name_W]]))
 
@@ -31,8 +31,10 @@ data_coerce_grf <- function(data,
   data_x <- select(data, all_of(.names_X))
 
   recipe_x <- recipe(~ ., data = data_x) %>%
-    step_impute_mode(all_nominal_predictors()) %>%
-    step_impute_mean(all_numeric_predictors()) %>%
+    # step_impute_mode(all_nominal_predictors()) %>%
+    # step_impute_mean(all_numeric_predictors()) %>%
+    step_center(all_numeric_predictors()) %>%
+    step_scale(all_numeric_predictors()) %>%
     step_dummy(all_nominal_predictors()) %>%
     prep() %>%
     butcher()
