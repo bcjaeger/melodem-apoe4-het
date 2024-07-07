@@ -9,10 +9,10 @@
 #' @return a `tibble` with grf summary info
 #'
 #' @author bcjaeger
-infer_grf_blp <- function(fit_grf) {
+infer_grf_blp <- function(fit_grf, vars) {
 
   blp <- fit_grf %>%
-    best_linear_projection(A = fit_grf$X.orig)
+    best_linear_projection(A = fit_grf$X.orig[, vars, drop = FALSE])
 
   tibble(
     blp_term = rownames(blp),
