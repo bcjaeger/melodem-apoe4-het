@@ -272,8 +272,8 @@ file_sim_tar <- tar_target(
   format = 'file'
 )
 
-data_sim_tar <- tar_target(
-  data_sim,
+data_melodem_tar <- tar_target(
+  data_melodem,
   data_prepare(file_sim)
 )
 
@@ -283,7 +283,7 @@ data_sim_tar <- tar_target(
 
 ::: {.column width="50%"}
 
-![](diagram/targets-vis-data_sim.svg){width=90%}
+![](diagram/targets-vis-data_melodem.svg){width=90%}
 
 :::
 :::
@@ -390,7 +390,7 @@ countdown::countdown(minutes = 5, id = "ex-1-4")
 10. run `tar_read(data_zzzz)`, where `zzzz` is your data name.
 
 ```{r echo=TRUE, eval=FALSE}
-tar_read(data_sim)
+tar_read(data_melodem)
 ```
 
 
@@ -398,12 +398,12 @@ tar_read(data_sim)
 withr::with_dir(
   here::here(),
   code = {
-    targets::tar_load(data_sim)
+    targets::tar_load(data_melodem)
     R.utils::sourceDirectory('R') 
   }
 )
 
-data_sim
+data_melodem
 ```
 
 ## Data management
