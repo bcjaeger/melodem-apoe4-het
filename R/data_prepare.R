@@ -6,7 +6,7 @@
 #'  2. Clean (modify existing columns)
 #'  3. Derive (create new columns)
 #'  4. Select (drop columns you don't need for analysis)
-#'  5. Exclude (restric analysis to subset of the data)
+#'  5. Exclude (restrict analysis to subset of the data)
 #'
 #' @details
 #'   if you don't want to apply one or more of these steps, just
@@ -15,25 +15,35 @@
 #' @author bcjaeger
 #'
 
-data_prepare <- function(file_name, labels, ...){
+# targets::tar_load_globals()
+# tar_load(file)
+# labels <- make_labels()
+# trt_var <- Sys.getenv("melodem_data_trt_var")
+# time_var <- Sys.getenv("melodem_data_time_var")
+# status_var <- Sys.getenv("melodem_data_status_var")
 
-  output <- data_load(file_name) %>%
-    data_clean() %>%
+data_prepare <- function(file,
+                         labels,
+                         trt_var,
+                         time_var,
+                         status_var,
+                         ...){
+
+  output <- data_load(file) %>%
+    data_clean(time_var) %>%
     data_derive() %>%
     data_select() %>%
     data_recode(labels = labels) %>%
+    data_rename(trt_var, time_var, status_var) %>%
     data_exclude(...)
 
   check_names(output$values,
-              c("age", "sex", "apoe4", "time", "status"))
+              c("age", "sex", "treatment", "time", "status"))
 
-  check_fctr_levels(output$values$sex,
-                    name = 'sex',
-                    expected_levels = c('male', 'female'))
-
-  check_fctr_levels(output$values$apoe4,
-                    name = 'apoe4',
-                    expected_levels = c("carrier", "non_carrier"))
+  # in case treatment was passed into data_prepare as a 0/1 numeric.
+  if(!is.factor(output$values$treatment)){
+    output$values$treatment %<>% as.factor()
+  }
 
 
   output
