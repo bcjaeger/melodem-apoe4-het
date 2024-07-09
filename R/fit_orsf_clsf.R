@@ -1,5 +1,5 @@
 #' @description
-#' Fit an oblique random forest to predict probability of apoe4 status.
+#' Fit an oblique random forest to predict probability of treatment status.
 #'
 #' @param data dataset to be used for fitting the oblique random forest
 #' @param select_variables if `TRUE`, variable selection is run. If `FALSE`,
@@ -9,7 +9,7 @@
 #'
 #' @author bcjaeger
 
-# data <- tar_read(data_sim)
+# data <- tar_read(data_melodem)
 
 fit_orsf_clsf <- function(data, select_variables = TRUE) {
 
@@ -23,14 +23,14 @@ fit_orsf_clsf <- function(data, select_variables = TRUE) {
   if(select_variables){
 
     vars <- aorsf_select_vars(data = data$values,
-                              formula = apoe4 ~ . - time - status,
+                              formula = treatment ~ . - time - status,
                               na_action = "impute_meanmode",
                               verbose_progress = TRUE)
 
   }
 
   # fit the finalized orsf model
-  fit <- orsf(apoe4 ~ .,
+  fit <- orsf(treatment ~ .,
               na_action = "impute_meanmode",
               data = select(data$values, all_of(vars)))
 

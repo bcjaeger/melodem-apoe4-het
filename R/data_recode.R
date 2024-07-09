@@ -9,10 +9,16 @@
 #' @export
 data_recode <- function(data, labels) {
 
-  data$values %<>%
-    mutate(sex = factor(sex, levels = names(labels$levels$sex)),
-           apoe4 = factor(apoe4, levels = names(labels$levels$apoe4)),
-           across(where(is.character), as.factor))
+  # re-code factor levels that are passed through the labels object
+  fctrs <- names(labels$levels) %>%
+    intersect(names(data$values))
+
+  for(f in fctrs){
+    data$values[[f]] %<>% factor(levels = names(labels$levels[[f]]))
+  }
+
+  # set any remaining character variables to factors
+  data$values %<>% mutate(across(where(is.character), as.factor))
 
   data
 

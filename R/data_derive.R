@@ -16,6 +16,18 @@ data_derive.melodem_data <- function(data){
 
 }
 
+data_derive.melodem_sprint <- function(data){
+
+  data$values %<>% mutate(
+    sex = factor(female,
+                 levels = c(0, 1),
+                 labels = c("male", "female"))
+  )
+
+  data
+
+}
+
 data_derive.melodem_sim <- function(data){
 
   pred_horizon <- 10
@@ -32,7 +44,8 @@ data_derive.melodem_sim <- function(data){
 
   dt[, event_time := rexp(
     .N,
-    rate = 0.01 + apoe4 * (biomarker_1 + abs(min(biomarker_1)))
+    rate = 0.01 +
+      apoe4 * (biomarker_1 + abs(min(biomarker_1)))
   )]
 
   dt[, apoe4 := factor(apoe4,

@@ -33,7 +33,7 @@ withr::with_dir(
     library(tidymodels)
     library(butcher)
     library(grf)
-    targets::tar_load(data_sim)
+    targets::tar_load(data_melodem)
   }
 )
 
@@ -762,7 +762,7 @@ First, we'll prepare the data:
 targets::tar_load_globals()
 
 # loads a specific target
-tar_load(data_sim)
+tar_load(data_melodem)
 ```
 
 Second, coerce data to `grf` format: 
@@ -770,7 +770,7 @@ Second, coerce data to `grf` format:
 ```{r, echo = TRUE}
 
 # helper function for grf data prep 
-data_grf <- data_coerce_grf(data_sim$values)
+data_grf <- data_coerce_grf(data_melodem$values)
 
 # just a view of the X matrix
 head(data_grf$X, n = 2)
@@ -1015,7 +1015,7 @@ Let's use RATE to see how well risk prediction works as a treatment prioritizati
 library(aorsf)
 
 fit_orsf <- orsf(time + status ~ .,
-                 data = data_sim$values,
+                 data = data_melodem$values,
                  oobag_pred_horizon = 3)
 
 # important to use oobag!
@@ -1048,11 +1048,11 @@ As a preliminary step, we'll split our data in to training and testing sets
 
 ```{r, echo=TRUE}
 
-train_index <- sample(x = nrow(data_sim$values), 
-                      size = nrow(data_sim$values)/2)
+train_index <- sample(x = nrow(data_melodem$values), 
+                      size = nrow(data_melodem$values)/2)
 
-data_trn <- data_sim$values[train_index, ]
-data_tst <- data_sim$values[-train_index, ]
+data_trn <- data_melodem$values[train_index, ]
+data_tst <- data_melodem$values[-train_index, ]
 
 data_trn_grf <- data_coerce_grf(data_trn)
 data_tst_grf <- data_coerce_grf(data_tst)

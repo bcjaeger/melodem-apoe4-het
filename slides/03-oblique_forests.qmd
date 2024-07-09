@@ -36,7 +36,7 @@ withr::with_dir(
   code = {
     source("R/aorsf_select_vars.R")
     targets::tar_load(c(penguin_figs,
-                        data_sim))  
+                        data_melodem))  
   }
   
 )

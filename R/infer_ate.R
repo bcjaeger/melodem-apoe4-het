@@ -7,9 +7,9 @@
 #' @return
 #' @author bcjaeger
 #' @export
-infer_ate <- function(fit_grf_sim) {
+infer_ate <- function(fit_grf) {
 
-  ate <- average_treatment_effect(fit_grf_sim)
+  ate <- average_treatment_effect(fit_grf)
 
   tibble(ate_est = ate['estimate'],
          ate_lwr = ate['estimate'] - 1.96 * ate['std.err'],

@@ -25,7 +25,6 @@ tar_option_set(
     "xgboost",    # boosted trees
     "randomForestSRC", # axis based random forests
     "party",           # conditional inference forests
-    "riskRegression",  # evaluates prediction accuracy
     "survival",        # provides the Surv() function
     "ggforce",         # graphics
     "rpart",           # decision trees
@@ -52,56 +51,72 @@ labels <- make_labels()
 
 # slides targets ----------------------------------------------------------
 
-# these don't need to be made on new systems
-penguin_figs_tar <- tar_target(penguin_figs, viz_penguins())
+# these don't need to be made for now
+# penguin_figs_tar <- tar_target(penguin_figs, viz_penguins())
 
-# Individual cohort targets -----------------------------------------------
+# Data management targets -------------------------------------------------
 
-file_sim_tar <- tar_target(
-  file_sim,
-  command = "data/sim-raw.csv",
+# run usethis::edit_r_environ() to access and edit .Renviron variables
+
+# run targets::tar_invalidate(names = c('file', 'data_melodem')) to
+# make targets manually re-make the file and data targets.
+
+file_tar <- tar_target(
+  file,
+  command = Sys.getenv("melodem_data_fpath"),
   format = 'file'
 )
 
-data_sim_tar <- tar_target(
-  data_sim,
-  data_prepare(file_sim, labels)
+data_melodem_tar <- tar_target(
+  data_melodem,
+  data_prepare(file,
+               labels,
+               trt_var = Sys.getenv("melodem_data_trt_var"),
+               time_var = Sys.getenv("melodem_data_time_var"),
+               status_var = Sys.getenv("melodem_data_status_var"))
 )
 
-# real data cohorts (to be added as an exercise)
-
-
+horizon_grid_tar <- tar_target(
+  horizon_grid,
+  create_horizon_grid(data_melodem)
+)
 
 # Model targets -----------------------------------------------------------
 
-fit_orsf_sim_tar <- tar_target(
-  fit_orsf_sim,
-  fit_orsf_clsf(data = data_sim)
+fit_orsf_tar <- tar_target(
+  fit_orsf,
+  fit_orsf_clsf(data = data_melodem,
+                select_variables = FALSE)
 )
 
-fit_grf_sim_tar <- tar_target(
-  fit_grf_sim,
-  fit_grf_surv(data = data_sim,
-               fit_orsf = fit_orsf_sim)
+fit_grf_tar <- tar_target(
+  fit_grf,
+  fit_grf_surv(data = data_melodem,
+               trt_random = Sys.getenv("melodem_trt_random"),
+               fit_orsf = fit_orsf,
+               horizon = horizon_grid),
+  iteration = 'list',
+  pattern = map(horizon_grid)
 )
-
-# real data model targets (to be added as an exercise)
 
 
 # Shar-eable targets ------------------------------------------------------
 
-orsf_shareable_sim_tar <- tar_target(
-  orsf_shareable_sim,
-  orsf_summarize(fit_orsf_sim)
+orsf_shareable_tar <- tar_target(
+  orsf_shareable,
+  orsf_summarize(fit_orsf)
 )
 
-grf_shareable_sim_tar <- tar_target(
-  grf_shareable_sim,
-  grf_summarize(fit_grf_sim)
+grf_shareable_tar <- tar_target(
+  grf_shareable,
+  map_dfr(set_names(fit_grf, horizon_grid),
+          ~grf_summarize(.x, vars = c("age",
+                                      "sex_female")),
+          .id = 'horizon')
 )
 
 # uncomment and run line below to save shareables
-# write_shareables(.names = c("orsf_shareable_sim", "grf_shareable_sim"))
+# write_shareables(.names = c("orsf_shareable", "grf_shareable"))
 
 
 # Manuscript targets ------------------------------------------------------
@@ -127,13 +142,14 @@ manuscript_tar <- tar_render(
 # Finalize targets --------------------------------------------------------
 
 targets <- list(
-  penguin_figs_tar,
-  file_sim_tar,
-  data_sim_tar,
-  fit_orsf_sim_tar,
-  fit_grf_sim_tar,
-  orsf_shareable_sim_tar,
-  grf_shareable_sim_tar
+  # penguin_figs_tar,
+  file_tar,
+  data_melodem_tar,
+  horizon_grid_tar,
+  fit_orsf_tar,
+  fit_grf_tar,
+  orsf_shareable_tar,
+  grf_shareable_tar
 )
 
 
