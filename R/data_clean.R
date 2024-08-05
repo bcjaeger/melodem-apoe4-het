@@ -46,6 +46,10 @@ data_clean_minimal <- function(data, time_var){
 
   }
 
+  # convert logical columns to 0/1 columns
+
+  data_out %<>% mutate(across(where(is.logical), as.numeric))
+
   data_out
 
 }

@@ -73,7 +73,8 @@ data_melodem_tar <- tar_target(
                labels,
                trt_var = Sys.getenv("melodem_data_trt_var"),
                time_var = Sys.getenv("melodem_data_time_var"),
-               status_var = Sys.getenv("melodem_data_status_var"))
+               status_var = Sys.getenv("melodem_data_status_var"),
+               age_range = c(55, 80))
 )
 
 horizon_grid_tar <- tar_target(

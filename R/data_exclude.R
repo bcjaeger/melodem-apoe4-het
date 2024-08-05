@@ -11,6 +11,18 @@ data_exclude <- function(data, age_range = NULL){
 
 data_exclude.melodem_data <- function(data, age_range = NULL){
 
+  if(!is.null(age_range)){
+
+    data$values %<>% filter(age >= min(age_range),
+                            age <= max(age_range))
+
+    data$exclusions %<>% add_row(
+      label = glue("Aged {min(age_range)}-{max(age_range)} years"),
+      n_obs = nrow(data$values)
+    )
+
+  }
+
   data
 
 }
@@ -27,7 +39,7 @@ data_exclude.melodem_sim <- function(data,
   if(!is.null(age_range)){
 
     # age_min <= age and age <= age_max
-    dt <- dt[age %between% age_range %||% c(0, Inf)]
+    dt <- dt[age %between% age_range]
 
     data$exclusions %<>% add_row(
       label = glue("Aged {age_range[1]}-{age_range[2]} years"),
