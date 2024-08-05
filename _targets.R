@@ -3,6 +3,7 @@
 # manage packages ---------------------------------------------------------
 
 source("_targets_packages.R")
+source("_targets_conflicts.R")
 
 # Load R functions --------------------------------------------------------
 
