@@ -2,37 +2,7 @@
 
 # manage packages ---------------------------------------------------------
 
-# these need to be loaded when the pipeline starts
-library(targets)
-library(tarchetypes)
-library(magrittr)
-library(tibble)
-library(glue)
-library(here)
-
-tar_option_set(
-  # these only need to be loaded when targets are being made
-  packages = c(
-    "tidyverse",  # general data management
-    "tidymodels", # general data management
-    "data.table", # general data management
-    "haven",      # reading sas files
-    "magrittr",   # pipes!
-    "glue",       # string management
-    "grf",        # causal random forests
-    "aorsf",      # oblique random forests
-    "glmnet",     # penalized regression
-    "xgboost",    # boosted trees
-    "randomForestSRC", # axis based random forests
-    "party",           # conditional inference forests
-    "survival",        # provides the Surv() function
-    "ggforce",         # graphics
-    "rpart",           # decision trees
-    "ranger",          # random forests
-    "butcher"          # manage memory
-  )
-)
-
+source("_targets_packages.R")
 
 # Load R functions --------------------------------------------------------
 
