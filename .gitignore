@@ -38,9 +38,6 @@ rsconnect/
 # targets
 _targets/
 
-
-# renv via capsule
-renv/
 .Rproj.user
 .Rdata
 .DS_Store
