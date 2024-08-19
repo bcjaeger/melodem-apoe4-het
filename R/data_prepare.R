@@ -27,6 +27,7 @@ data_prepare <- function(file,
                          trt_var,
                          time_var,
                          status_var,
+                         use_lifecourse = FALSE,
                          ...){
 
   output <- data_load(file) %>%
@@ -39,6 +40,10 @@ data_prepare <- function(file,
 
   check_names(output$values,
               c("age", "sex", "treatment", "time", "status"))
+
+  if(use_lifecourse) output$values %<>% mutate(time = age + time)
+
+  attr(output, 'lifecourse') <- use_lifecourse
 
   # in case treatment was passed into data_prepare as a 0/1 numeric.
   if(!is.factor(output$values$treatment)){

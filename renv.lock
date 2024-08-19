@@ -1753,18 +1753,6 @@
       ],
       "Hash": "8954069286b4b2b0d023d1b288dce978"
     },
-    "job": {
-      "Package": "job",
-      "Version": "0.3.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "digest",
-        "rstudioapi"
-      ],
-      "Hash": "945285a22922791140a67584e315c162"
-    },
     "jquerylib": {
       "Package": "jquerylib",
       "Version": "0.1.4",
@@ -2184,6 +2172,26 @@
         "R"
       ],
       "Hash": "df58958f293b166e4ab885ebcad90e02"
+    },
+    "officedown": {
+      "Package": "officedown",
+      "Version": "0.3.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "grDevices",
+        "knitr",
+        "memoise",
+        "officer",
+        "rlang",
+        "rmarkdown",
+        "rvg",
+        "utils",
+        "uuid",
+        "xml2",
+        "yaml"
+      ],
+      "Hash": "325003bf1bfea2b04fdb433267e802ee"
     },
     "officer": {
       "Package": "officer",
@@ -2805,6 +2813,22 @@
         "xml2"
       ],
       "Hash": "0bcf0c6f274e90ea314b812a6d19a519"
+    },
+    "rvg": {
+      "Package": "rvg",
+      "Version": "0.3.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "Rcpp",
+        "gdtools",
+        "grDevices",
+        "officer",
+        "rlang",
+        "xml2"
+      ],
+      "Hash": "8f7a79f622774ff95d60b74e486d99ba"
     },
     "sandwich": {
       "Package": "sandwich",

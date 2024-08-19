@@ -31,6 +31,9 @@ fit_grf_surv <- function(data,
   # stop if the data aren't created using data_prep()
   stopifnot(inherits(data, 'melodem_data'))
 
+  # drop age column if we are using lifecourse approach
+  if(uses_lifecourse(data)) data$values$age <- NULL
+
   data_grf <- data_coerce_grf(data$values)
 
   if(is.null(horizon)){
