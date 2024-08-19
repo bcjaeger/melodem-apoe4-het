@@ -33,6 +33,7 @@ data_coerce_grf <- function(data,
   recipe_x <- recipe(~ ., data = data_x) %>%
     # step_impute_mode(all_nominal_predictors()) %>%
     # step_impute_mean(all_numeric_predictors()) %>%
+    step_unknown(all_nominal_predictors()) %>%
     step_center(all_numeric_predictors()) %>%
     step_scale(all_numeric_predictors()) %>%
     step_dummy(all_nominal_predictors()) %>%
