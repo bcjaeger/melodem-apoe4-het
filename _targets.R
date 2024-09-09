@@ -79,6 +79,14 @@ orsf_shareable_tar <- tar_target(
   orsf_summarize(fit_orsf)
 )
 
+cate_shareable_tar <- tar_target(
+  cate_shareable,
+  command = {
+    data_list <- map(fit_grf, ~tibble(score = get_scores(.x)))
+    map2_dfr(data_list, horizon_grid, ~mutate(.x, horizon = .y))
+  }
+)
+
 grf_shareable_tar <- tar_target(
   grf_shareable,
   map_dfr(set_names(fit_grf, horizon_grid),
@@ -121,6 +129,7 @@ targets <- list(
   fit_orsf_tar,
   fit_grf_tar,
   orsf_shareable_tar,
+  cate_shareable_tar,
   grf_shareable_tar
 )
 
