@@ -115,9 +115,9 @@ grf_shareable_tar <- tar_target(
           .y = time_var,
           .f = ~ .x %>%
             grf_summarize(vars = setdiff(c("age", "sex_female"), .y))
-        ),
-        .keep = 'unused'
+        )
       ) %>%
+      select(-fit) %>%
       unnest(summary)
 
   }
