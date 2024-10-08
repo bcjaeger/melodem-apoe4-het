@@ -269,8 +269,8 @@
     "objectID": "slides/04-causal_forests.html#overview",
     "href": "slides/04-causal_forests.html#overview",
     "title": "Causal random forests with grf",
-    "section": "Overview",
-    "text": "Overview\n\nRobinson’s residual-on-residual regression\n\nCausal trees\nCausal random forest\nCausal random survival forest\n\nInference with causal random forests\n\nConditional average treatment effect (CATE)\nBest linear projection (BLP)\nRank weighted average treatment effect (RATE)"
+    "section": "",
+    "text": "Robinson’s residual-on-residual regression\n\nCausal trees\nCausal random forest\nCausal random survival forest\n\nInference with causal random forests\n\nConditional average treatment effect (CATE)\nBest linear projection (BLP)\nRank weighted average treatment effect (RATE)"
   },
   {
     "objectID": "slides/04-causal_forests.html#the-partially-linear-model",
@@ -312,7 +312,7 @@
     "href": "slides/04-causal_forests.html#example-done-wrong",
     "title": "Causal random forests with grf",
     "section": "Example done wrong",
-    "text": "Example done wrong\n\nFirst we’ll do it the wrong way.\n\nFit a classical model to estimate conditional mean of \\(Y\\).\nCompute residuals and run Robinson’s regression.\nWhat’d we do wrong?\n\n\n\n\nlibrary(glue)\nlibrary(ggplot2)\n\nfit_cmean &lt;- lm(Y ~ X, data = data)\n\nm_x &lt;- predict(fit_cmean, new_data = data)\n\nresid_y &lt;- Y - m_x\nresid_w &lt;- W - 1/2\n\ntau_fit &lt;- lm(resid_y ~ resid_w) \n\nglue(\"True tau is {tau_truth}, \\\\\n      estimated tau is {coef(tau_fit)[2]}\")\n\nTrue tau is 0.5, estimated tau is 0.462441735905266"
+    "text": "Example done wrong\n\nFirst we’ll do it the wrong way.\n\nFit a classical model to estimate conditional mean of \\(Y\\).\nCompute residuals and run Robinson’s regression.\nWhat’d we do wrong?\n\n\n\n\nlibrary(glue)\nlibrary(ggplot2)\n\nfit_cmean &lt;- lm(Y ~ X, data = data)\n\nm_x &lt;- predict(fit_cmean, new_data = data)\n\nresid_y &lt;- Y - m_x\nresid_w &lt;- W - 1/2\n\ntau_fit &lt;- lm(resid_y ~ resid_w) \n\nglue(\"True tau is {tau_truth}, \\\\\n      estimated tau is {coef(tau_fit)[2]}\")\n\nTrue tau is 0.5, estimated tau is 0.462441735905258"
   },
   {
     "objectID": "slides/04-causal_forests.html#conditional-mean-predictions",
@@ -326,14 +326,14 @@
     "href": "slides/04-causal_forests.html#example-done-wrong-take-2",
     "title": "Causal random forests with grf",
     "section": "Example done wrong, take 2",
-    "text": "Example done wrong, take 2\n\nThe model for conditional mean was under-specified.\n\nFit a flexible model to estimate conditional mean of \\(Y\\).\nCompute residuals and run Robinson’s regression.\nWhat’d we do wrong?\n\n\n\n\nlibrary(aorsf)\n\nfit_cmean &lt;- orsf(Y ~ X, data = data)\n\nm_x &lt;- predict(fit_cmean, new_data = data)\n\nresid_y &lt;- Y - m_x\nresid_w &lt;- W - 1/2\n\ntau_fit &lt;- lm(resid_y ~ resid_w) \n\nglue(\"True tau is {tau_truth}, \\\\\n      estimated tau is {coef(tau_fit)[2]}\")\n\nTrue tau is 0.5, estimated tau is 0.394643899391376"
+    "text": "Example done wrong, take 2\n\nThe model for conditional mean was under-specified.\n\nFit a flexible model to estimate conditional mean of \\(Y\\).\nCompute residuals and run Robinson’s regression.\nWhat’d we do wrong?\n\n\n\n\nlibrary(aorsf)\n\nfit_cmean &lt;- orsf(Y ~ X, data = data)\n\nm_x &lt;- predict(fit_cmean, new_data = data)\n\nresid_y &lt;- Y - m_x\nresid_w &lt;- W - 1/2\n\ntau_fit &lt;- lm(resid_y ~ resid_w) \n\nglue(\"True tau is {tau_truth}, \\\\\n      estimated tau is {coef(tau_fit)[2]}\")\n\nTrue tau is 0.5, estimated tau is 0.394643899391371"
   },
   {
     "objectID": "slides/04-causal_forests.html#example-done-right",
     "href": "slides/04-causal_forests.html#example-done-right",
     "title": "Causal random forests with grf",
     "section": "Example done right",
-    "text": "Example done right\n\nWe forgot about cross-fitting!\n\nFit a flexible model to estimate conditional mean of \\(Y\\).\nUse out-of-bag predictions.\nCompute residuals and run Robinson’s regression.\n\n\n\n\nm_x_oobag &lt;- predict(fit_cmean, oobag = TRUE)\n\nresid_y &lt;- Y - m_x_oobag\nresid_w &lt;- W - 1/2\n\ntau_fit &lt;- lm(resid_y ~ resid_w) \n\nglue(\"True tau is {tau_truth}, \\\\\n      estimated tau is {coef(tau_fit)[2]}\")\n\nTrue tau is 0.5, estimated tau is 0.495509155402128"
+    "text": "Example done right\n\nWe forgot about cross-fitting!\n\nFit a flexible model to estimate conditional mean of \\(Y\\).\nUse out-of-bag predictions.\nCompute residuals and run Robinson’s regression.\n\n\n\n\nm_x_oobag &lt;- predict(fit_cmean, oobag = TRUE)\n\nresid_y &lt;- Y - m_x_oobag\nresid_w &lt;- W - 1/2\n\ntau_fit &lt;- lm(resid_y ~ resid_w) \n\nglue(\"True tau is {tau_truth}, \\\\\n      estimated tau is {coef(tau_fit)[2]}\")\n\nTrue tau is 0.5, estimated tau is 0.495509155402123"
   },
   {
     "objectID": "slides/04-causal_forests.html#conditional-mean-predictions-1",
@@ -438,21 +438,21 @@
     "href": "slides/04-causal_forests.html#estimating-the-ate",
     "title": "Causal random forests with grf",
     "section": "Estimating the ATE",
-    "text": "Estimating the ATE\nFirst, we’ll prepare the data:\n\n# loads packages and R functions\ntargets::tar_load_globals()\n\n# loads a specific target\ntar_load(data_sim)\n\nSecond, coerce data to grf format:\n\n# helper function for grf data prep \ndata_grf &lt;- data_coerce_grf(data_sim$values)\n\n# just a view of the X matrix\nhead(data_grf$X, n = 2)\n\n          age biomarker_1 biomarker_2 biomarker_3 sex_female\n[1,] 66.27077   0.7473138 -0.74236839  -1.7127343          1\n[2,] 65.51047  -0.5621949 -0.05134715   0.5464561          1"
+    "text": "Estimating the ATE\nFirst, we’ll prepare the data:\n\n# loads packages and R functions\ntargets::tar_load_globals()\n\n# loads a specific target\ntar_load(data_melodem)\n\nSecond, coerce data to grf format:\n\n# helper function for grf data prep \ndata_grf &lt;- data_coerce_grf(data_melodem$values)\n\n# just a view of the X matrix\nhead(data_grf$X, n = 2)\n\n         statin    aspirin      egfr    sub_ckd        age    sub_cvd\n[1,] -0.8994367 -1.0374288 0.8063765 -0.5983451 -1.4119699 -0.4897294\n[2,]  1.1116507  0.9637867 0.4961700 -0.5983451 -0.8576657 -0.4897294\n            CHR        GLUR         HDL        TRR     UMALCR        BMI\n[1,]  0.4445567  0.07162673 -0.04571026 -0.6775012 -0.1185727  0.3706294\n[2,] -0.2114133 -0.67907349 -0.67458295  1.0027111 -0.1936573 -1.0884217\n             sbp        dbp fr_risk10yrs  orth_hypo   education\n[1,] -0.40504337 0.58627338   -0.7134939 -0.2760562 -0.07626949\n[2,]  0.05247806 0.05612061   -0.3414115 -0.2760562 -0.07626949\n     frailty_catg_Frail frailty_catg_Pre.frail frailty_catg_unknown\n[1,]                  0                      1                    0\n[2,]                  0                      1                    0\n     race4_HISPANIC race4_OTHER race4_WHITE race4_unknown sex_female\n[1,]              0           0           0             0          1\n[2,]              0           0           1             0          1\n     sex_unknown\n[1,]           0\n[2,]           0"
   },
   {
     "objectID": "slides/04-causal_forests.html#fitting-the-forest",
     "href": "slides/04-causal_forests.html#fitting-the-forest",
     "title": "Causal random forests with grf",
     "section": "Fitting the forest",
-    "text": "Fitting the forest\nThird, fit the causal survival forest:\n\nfit_grf &lt;- causal_survival_forest(\n  X = data_grf$X, # covariates\n  Y = data_grf$Y, # time to event\n  W = data_grf$W, # treatment status\n  D = data_grf$D, # event status\n  horizon = 3, # 3-year horizon\n  # treatment effect will be\n  # measured in terms of the\n  # restricted mean survival time\n  target = 'RMST' \n)\n\nfit_grf\n\nGRF forest object of type causal_survival_forest \nNumber of trees: 2000 \nNumber of training samples: 1000 \nVariable importance: \n    1     2     3     4     5 \n0.149 0.560 0.148 0.123 0.020"
+    "text": "Fitting the forest\nThird, fit the causal survival forest:\n\nfit_grf &lt;- causal_survival_forest(\n  X = data_grf$X, # covariates\n  Y = data_grf$Y, # time to event\n  W = data_grf$W, # treatment status\n  D = data_grf$D, # event status\n  horizon = 3, # 3-year horizon\n  # treatment effect will be\n  # measured in terms of the\n  # restricted mean survival time\n  target = 'RMST' \n)\n\nfit_grf\n\nGRF forest object of type causal_survival_forest \nNumber of trees: 2000 \nNumber of training samples: 7159 \nVariable importance: \n    1     2     3     4     5     6     7     8     9    10    11    12    13 \n0.003 0.002 0.064 0.000 0.117 0.012 0.067 0.060 0.047 0.033 0.154 0.117 0.027 \n   14    15    16    17    18    19    20    21    22    23    24    25    26 \n0.083 0.112 0.006 0.050 0.021 0.001 0.000 0.020 0.000 0.005 0.000 0.001 0.000"
   },
   {
     "objectID": "slides/04-causal_forests.html#get-gamma-scores",
     "href": "slides/04-causal_forests.html#get-gamma-scores",
     "title": "Causal random forests with grf",
     "section": "Get \\(\\Gamma\\) scores",
-    "text": "Get \\(\\Gamma\\) scores\nRemember the \\(\\Gamma_i\\)’s that provide conditional estimates of \\(\\tau\\)? Let’s get them.\n\n# pull the augmented CATEs from the fitted grf object\ngammas &lt;- get_scores(fit_grf)\n\n\nWith gammas, we can compute ATE manually\n\n\nmean(gammas) \n\n[1] -2.596136\n\n\n\nVerify this is what the grf function gives\n\n\naverage_treatment_effect(fit_grf)\n\n   estimate     std.err \n-2.59613637  0.02468187"
+    "text": "Get \\(\\Gamma\\) scores\nRemember the \\(\\Gamma_i\\)’s that provide conditional estimates of \\(\\tau\\)? Let’s get them.\n\n# pull the augmented CATEs from the fitted grf object\ngammas &lt;- get_scores(fit_grf)\n\n\nWith gammas, we can compute ATE manually\n\n\nmean(gammas) \n\n[1] -0.001035183\n\n\n\nVerify this is what the grf function gives\n\n\naverage_treatment_effect(fit_grf)\n\n    estimate      std.err \n-0.001035183  0.002502688"
   },
   {
     "objectID": "slides/04-causal_forests.html#your-turn",
@@ -473,7 +473,7 @@
     "href": "slides/04-causal_forests.html#what-happens-underneath-the-grf-hood",
     "title": "Causal random forests with grf",
     "section": "What happens underneath the grf hood",
-    "text": "What happens underneath the grf hood\nHere’s how you can replicate grf results:\n\n\nlmtest::coeftest(fit_blp, \n                 vcov = sandwich::vcovCL, \n                 type = 'HC3')\n\n\nt test of coefficients:\n\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.7627108  0.2851404 -9.6890 &lt; 2.2e-16 ***\nage          0.0028813  0.0045228  0.6371 0.5242294    \nbiomarker_1 -0.1251919  0.0323413 -3.8710 0.0001155 ***\nbiomarker_2 -0.0356646  0.0198704 -1.7949 0.0729805 .  \nbiomarker_3 -0.0050577  0.0204804 -0.2470 0.8049951    \nsex_female  -0.0398459  0.0488021 -0.8165 0.4144222    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n\n\n\nbest_linear_projection(fit_grf, data_grf$X)\n\n\nBest linear projection of the conditional average treatment effect.\nConfidence intervals are cluster- and heteroskedasticity-robust (HC3):\n\n              Estimate Std. Error t value  Pr(&gt;|t|)    \n(Intercept) -2.7627108  0.2851404 -9.6890 &lt; 2.2e-16 ***\nage          0.0028813  0.0045228  0.6371 0.5242294    \nbiomarker_1 -0.1251919  0.0323413 -3.8710 0.0001155 ***\nbiomarker_2 -0.0356646  0.0198704 -1.7949 0.0729805 .  \nbiomarker_3 -0.0050577  0.0204804 -0.2470 0.8049951    \nsex_female  -0.0398459  0.0488021 -0.8165 0.4144222    \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+    "text": "What happens underneath the grf hood\nHere’s how you can replicate grf results:\n\n\nlmtest::coeftest(fit_blp, \n                 vcov = sandwich::vcovCL, \n                 type = 'HC3')\n\n\nt test of coefficients:\n\n                          Estimate  Std. Error t value Pr(&gt;|t|)\n(Intercept)             0.00439932  0.00632648  0.6954   0.4868\nstatin                 -0.00213497  0.00287177 -0.7434   0.4572\naspirin                 0.00314203  0.00281955  1.1144   0.2652\negfr                    0.00040709  0.00330155  0.1233   0.9019\nsub_ckd                 0.00292551  0.00369910  0.7909   0.4290\nage                     0.00393674  0.00477607  0.8243   0.4098\nsub_cvd                -0.00423127  0.00310080 -1.3646   0.1724\nCHR                     0.00312453  0.00412521  0.7574   0.4488\nGLUR                   -0.00380898  0.00272365 -1.3985   0.1620\nHDL                     0.00101039  0.00350525  0.2882   0.7732\nTRR                     0.00173615  0.00296643  0.5853   0.5584\nUMALCR                 -0.00324024  0.00245118 -1.3219   0.1862\nBMI                    -0.00205123  0.00257303 -0.7972   0.4254\nsbp                     0.00015949  0.00378842  0.0421   0.9664\ndbp                     0.00324218  0.00410429  0.7899   0.4296\nfr_risk10yrs           -0.00351058  0.00654447 -0.5364   0.5917\north_hypo               0.00090846  0.00265606  0.3420   0.7323\neducation              -0.00474135  0.00331396 -1.4307   0.1526\nfrailty_catg_Frail     -0.00949440  0.00874185 -1.0861   0.2775\nfrailty_catg_Pre.frail -0.00305295  0.00501740 -0.6085   0.5429\nrace4_HISPANIC         -0.00548466  0.01196162 -0.4585   0.6466\nrace4_OTHER             0.02118089  0.01405513  1.5070   0.1319\nrace4_WHITE             0.00701133  0.00652185  1.0751   0.2824\nsex_female             -0.01388631  0.00873421 -1.5899   0.1119\n\n\n\n\n\nbest_linear_projection(fit_grf, data_grf$X)\n\n\nBest linear projection of the conditional average treatment effect.\nConfidence intervals are cluster- and heteroskedasticity-robust (HC3):\n\n                          Estimate  Std. Error t value Pr(&gt;|t|)\n(Intercept)             0.00439932  0.00632648  0.6954   0.4868\nstatin                 -0.00213497  0.00287177 -0.7434   0.4572\naspirin                 0.00314203  0.00281955  1.1144   0.2652\negfr                    0.00040709  0.00330155  0.1233   0.9019\nsub_ckd                 0.00292551  0.00369910  0.7909   0.4290\nage                     0.00393674  0.00477607  0.8243   0.4098\nsub_cvd                -0.00423127  0.00310080 -1.3646   0.1724\nCHR                     0.00312453  0.00412521  0.7574   0.4488\nGLUR                   -0.00380898  0.00272365 -1.3985   0.1620\nHDL                     0.00101039  0.00350525  0.2882   0.7732\nTRR                     0.00173615  0.00296643  0.5853   0.5584\nUMALCR                 -0.00324024  0.00245118 -1.3219   0.1862\nBMI                    -0.00205123  0.00257303 -0.7972   0.4254\nsbp                     0.00015949  0.00378842  0.0421   0.9664\ndbp                     0.00324218  0.00410429  0.7899   0.4296\nfr_risk10yrs           -0.00351058  0.00654447 -0.5364   0.5917\north_hypo               0.00090846  0.00265606  0.3420   0.7323\neducation              -0.00474135  0.00331396 -1.4307   0.1526\nfrailty_catg_Frail     -0.00949440  0.00874185 -1.0861   0.2775\nfrailty_catg_Pre.frail -0.00305295  0.00501740 -0.6085   0.5429\nrace4_HISPANIC         -0.00548466  0.01196162 -0.4585   0.6466\nrace4_OTHER             0.02118089  0.01405513  1.5070   0.1319\nrace4_WHITE             0.00701133  0.00652185  1.0751   0.2824\nsex_female             -0.01388631  0.00873421 -1.5899   0.1119"
   },
   {
     "objectID": "slides/04-causal_forests.html#your-turn-1",
@@ -522,7 +522,7 @@
     "href": "slides/04-causal_forests.html#rate-of-prediction-model",
     "title": "Causal random forests with grf",
     "section": "RATE of prediction model",
-    "text": "RATE of prediction model\nLet’s use RATE to see how well risk prediction works as a treatment prioritization rule.\n\nlibrary(aorsf)\n\nfit_orsf &lt;- orsf(time + status ~ .,\n                 data = data_sim$values,\n                 oobag_pred_horizon = 3)\n\n# important to use oobag!\nprd_risk &lt;- as.numeric(fit_orsf$pred_oobag)\n\nprd_rate &lt;- \n  rank_average_treatment_effect(fit_grf, \n                                priorities = prd_risk)"
+    "text": "RATE of prediction model\nLet’s use RATE to see how well risk prediction works as a treatment prioritization rule.\n\nlibrary(aorsf)\n\nfit_orsf &lt;- orsf(time + status ~ .,\n                 data = data_melodem$values, \n                 na_action = 'impute_meanmode',\n                 oobag_pred_horizon = 3)\n\n# important to use oobag!\nprd_risk &lt;- as.numeric(fit_orsf$pred_oobag)\n\nprd_rate &lt;- \n  rank_average_treatment_effect(fit_grf, \n                                priorities = prd_risk)"
   },
   {
     "objectID": "slides/04-causal_forests.html#not-good",
@@ -536,7 +536,7 @@
     "href": "slides/04-causal_forests.html#estimating-rate-from-cate",
     "title": "Causal random forests with grf",
     "section": "Estimating RATE from CATE",
-    "text": "Estimating RATE from CATE\nAn intuitive way to assign treatment priority is to use the CATE: \\(\\hat\\tau(X_i)\\)\n\n\\(\\hat\\tau(X_i)\\) should not be estimated and evaluated using the same data\nUse split-sample estimation or cross-fitting (Yadlowsky et al. 2021).\n\nAs a preliminary step, we’ll split our data in to training and testing sets\n\ntrain_index &lt;- sample(x = nrow(data_sim$values), \n                      size = nrow(data_sim$values)/2)\n\ndata_trn &lt;- data_sim$values[train_index, ]\ndata_tst &lt;- data_sim$values[-train_index, ]\n\ndata_trn_grf &lt;- data_coerce_grf(data_trn)\ndata_tst_grf &lt;- data_coerce_grf(data_tst)"
+    "text": "Estimating RATE from CATE\nAn intuitive way to assign treatment priority is to use the CATE: \\(\\hat\\tau(X_i)\\)\n\n\\(\\hat\\tau(X_i)\\) should not be estimated and evaluated using the same data\nUse split-sample estimation or cross-fitting (Yadlowsky et al. 2021).\n\nAs a preliminary step, we’ll split our data in to training and testing sets\n\ntrain_index &lt;- sample(x = nrow(data_melodem$values), \n                      size = nrow(data_melodem$values)/2)\n\ndata_trn &lt;- data_melodem$values[train_index, ]\ndata_tst &lt;- data_melodem$values[-train_index, ]\n\ndata_trn_grf &lt;- data_coerce_grf(data_trn)\ndata_tst_grf &lt;- data_coerce_grf(data_tst)"
   },
   {
     "objectID": "slides/04-causal_forests.html#fitting",
@@ -690,7 +690,7 @@
     "href": "slides/02-trees_and_forests.html#leaves",
     "title": "Decision trees and random forests",
     "section": "Leaves?",
-    "text": "Leaves?\n\nWhat is a leaf node?\n\nA leaf node is a terminal node in the tree.\nPredictions for new data are stored in leaf nodes.\n\n\n\n\nmutate(\n  penguins,\n  node = case_when(\n    flipper_length_mm &gt;= 206.5 ~ 'leaf_1',\n    bill_length_mm &gt;= 43.35 ~ 'leaf_2',\n    TRUE ~ 'leaf_3'\n  )\n) %&gt;% \n  group_by(node) %&gt;% count(species) %&gt;% \n  mutate(n = n / sum(n)) %&gt;% \n  pivot_wider(values_from = n, names_from = species, \n              values_fill = 0)\n\n# A tibble: 3 × 4\n# Groups:   node [3]\n  node   Adelie Chinstrap Gentoo\n  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;\n1 leaf_1 0.016     0.04   0.944 \n2 leaf_2 0.0635    0.921  0.0159\n3 leaf_3 0.966     0.0345 0"
+    "text": "Leaves?\n\nWhat is a leaf node?\n\nA leaf node is a terminal node in the tree.\nPredictions for new data are stored in leaf nodes.\n\n\n\nmutate(\n  penguins,\n  node = case_when(\n    flipper_length_mm &gt;= 206.5 ~ 'leaf_1',\n    bill_length_mm &gt;= 43.35 ~ 'leaf_2',\n    TRUE ~ 'leaf_3'\n  )\n) %&gt;% \n  group_by(node) %&gt;% count(species) %&gt;% \n  mutate(n = n / sum(n)) %&gt;% \n  pivot_wider(values_from = n, names_from = species, \n              values_fill = 0)\n\n# A tibble: 3 × 4\n# Groups:   node [3]\n  node   Adelie Chinstrap Gentoo\n  &lt;chr&gt;   &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;\n1 leaf_1 0.016     0.04   0.944 \n2 leaf_2 0.0635    0.921  0.0159\n3 leaf_3 0.966     0.0345 0"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#your-turn-2",
@@ -704,7 +704,7 @@
     "href": "slides/02-trees_and_forests.html#from-partition-to-flowchart",
     "title": "Decision trees and random forests",
     "section": "From partition to flowchart",
-    "text": "From partition to flowchart\nThe same partitions, visualized as a binary tree.\n\nAs a reminder, here is our ‘hand-made’ leaf data\n\n\n\n\n\n\n  \n    \n      \n      Adelie\n      Chinstrap\n      Gentoo\n    \n  \n  \n    leaf_1\n0.02\n0.04\n0.94\n    leaf_2\n0.06\n0.92\n0.02\n    leaf_3\n0.97\n0.03\n0.00"
+    "text": "From partition to flowchart\nThe same partitions, visualized as a binary tree.\n\nAs a reminder, here is our ‘hand-made’ leaf data\n\n\n\n\n\n\n\n\n\nAdelie\nChinstrap\nGentoo\n\n\n\n\nleaf_1\n0.02\n0.04\n0.94\n\n\nleaf_2\n0.06\n0.92\n0.02\n\n\nleaf_3\n0.97\n0.03\n0.00"
   },
   {
     "objectID": "slides/02-trees_and_forests.html#leaves-for-other-types-of-trees",
@@ -879,7 +879,7 @@
     "href": "slides/02-trees_and_forests.html#references",
     "title": "Decision trees and random forests",
     "section": "References",
-    "text": "References\n\n\nBreiman, Leo. 1996. “Out-of-Bag Estimation.”\n\n\n———. 2001. “Random Forests.” Machine Learning 45: 5–32.\n\n\n———. 2017. “Classification and Regression Trees.”\n\n\nIshwaran, Hemant, Udaya B Kogalur, Eugene H Blackstone, and Michael S Lauer. 2008. “Random Survival Forests.”\n\n\nStrobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007. “Bias in Random Forest Variable Importance Measures: Illustrations, Sources and a Solution.” BMC Bioinformatics 8: 1–21.\n\n\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/"
+    "text": "References\n\n\nBreiman, Leo. 1996. “Out-of-Bag Estimation.”\n\n\n———. 2001. “Random Forests.” Machine Learning 45: 5–32.\n\n\n———. 2017. “Classification and Regression Trees.”\n\n\nIshwaran, Hemant, Udaya B Kogalur, Eugene H Blackstone, and Michael S Lauer. 2008. “Random Survival Forests.”\n\n\nStrobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007. “Bias in Random Forest Variable Importance Measures: Illustrations, Sources and a Solution.” BMC Bioinformatics 8: 1–21.\n\n\n\n\n\nSlides available at https://bcjaeger.github.io/melodem-apoe4-het/"
   },
   {
     "objectID": "slides/03-oblique_forests.html",
@@ -892,8 +892,8 @@
     "objectID": "slides/03-oblique_forests.html#overview",
     "href": "slides/03-oblique_forests.html#overview",
     "title": "Oblique random forests with aorsf",
-    "section": "Overview",
-    "text": "Overview\n\nWhat does oblique mean?\naorsf\n\nMotivation\nDesign\nBenchmarks\nApplications"
+    "section": "",
+    "text": "What does oblique mean?\naorsf\n\nMotivation\nDesign\nBenchmarks\nApplications"
   },
   {
     "objectID": "slides/03-oblique_forests.html#background",
@@ -949,7 +949,7 @@
     "href": "slides/03-oblique_forests.html#what-is-the-problem",
     "title": "Oblique random forests with aorsf",
     "section": "What is the problem?",
-    "text": "What is the problem?\nOblique random forests are slow. How slow, you ask?\n\nlibrary(ODRF)\nlibrary(ranger)\nlibrary(microbenchmark)\n\nmicrobenchmark(\n  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              ntrees = 500),\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500),\n  times = 5\n)\n\nUnit: milliseconds\n   expr       min        lq       mean   median        uq       max neval cld\n   ODRF 3571.7562 3711.5112 3702.25270 3722.025 3732.6053 3773.3657     5  a \n ranger   20.6516   21.4896   27.57974   21.989   25.2287   48.5398     5   b"
+    "text": "What is the problem?\nOblique random forests are slow. How slow, you ask?\n\nlibrary(ODRF)\nlibrary(ranger)\nlibrary(microbenchmark)\n\nmicrobenchmark(\n  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              ntrees = 500),\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500),\n  times = 5\n)\n\nUnit: milliseconds\n   expr       min        lq      mean    median        uq       max neval cld\n   ODRF 4651.9503 4757.0415 4779.5978 4789.0610 4845.8683 4854.0679     5  a \n ranger   20.2193   20.7901   23.5078   21.8179   23.3712   31.3405     5   b"
   },
   {
     "objectID": "slides/03-oblique_forests.html#why-so-slow",
@@ -970,7 +970,7 @@
     "href": "slides/03-oblique_forests.html#but-r-is-not-small",
     "title": "Oblique random forests with aorsf",
     "section": "But \\(R\\) is not small",
-    "text": "But \\(R\\) is not small\nIt takes \\(\\approx\\) 2.5ms for 1 oblique split, $$20ms to fit 500 axis-based trees…\n\n# compare time for 1 oblique split to 500 axis-based trees\nmicrobenchmark(\n  # 1 oblique split\n  glm = glm(I(species == 'Adelie') ~ bill_length_mm + flipper_length_mm,\n            family = 'binomial', \n            data = penguins),\n  # 500 axis based trees\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500)\n)\n\nUnit: milliseconds\n   expr     min       lq      mean   median       uq     max neval cld\n    glm  1.7644  2.17035  2.543723  2.37145  2.52560 19.8735   100  a \n ranger 19.5321 20.31135 20.990783 20.57210 20.77865 37.5845   100   b\n\n\n1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩"
+    "text": "But \\(R\\) is not small\nIt takes \\(\\approx\\) 2.5ms for 1 oblique split, $$20ms to fit 500 axis-based trees…\n\n# compare time for 1 oblique split to 500 axis-based trees\nmicrobenchmark(\n  # 1 oblique split\n  glm = glm(I(species == 'Adelie') ~ bill_length_mm + flipper_length_mm,\n            family = 'binomial', \n            data = penguins),\n  # 500 axis based trees\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500)\n)\n\nUnit: milliseconds\n   expr     min       lq      mean   median      uq     max neval cld\n    glm  1.7714  2.07825  2.778256  2.47365  2.5821 23.4204   100  a \n ranger 20.6938 21.58195 21.989103 21.85165 22.0588 40.8994   100   b\n\n\n1 oblique tree with 10 splits takes longer than 500 axis-based trees 😩"
   },
   {
     "objectID": "slides/03-oblique_forests.html#aorsf",
@@ -984,7 +984,7 @@
     "href": "slides/03-oblique_forests.html#benchmark",
     "title": "Oblique random forests with aorsf",
     "section": "Benchmark",
-    "text": "Benchmark\nMinimizing \\(R\\) helps.\n\nmicrobenchmark(\n  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              ntrees = 500),\n  aorsf = orsf(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              n_tree = 500),\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500),\n  times = 5\n)\n\nUnit: milliseconds\n   expr       min        lq       mean    median        uq       max neval cld\n   ODRF 3540.8292 3721.2370 3714.38962 3753.8662 3776.0013 3780.0144     5  a \n  aorsf   39.1224   41.6434   51.17836   44.1699   57.6122   73.3439     5   b\n ranger   21.0272   21.5199   22.69840   22.1287   22.2456   26.5706     5   b"
+    "text": "Benchmark\nMinimizing \\(R\\) helps.\n\nmicrobenchmark(\n  ODRF = ODRF(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              ntrees = 500),\n  aorsf = orsf(species ~ bill_length_mm + flipper_length_mm, \n              data = penguins, \n              n_tree = 500),\n  ranger = ranger(species ~ bill_length_mm + flipper_length_mm,\n                  data = penguins,\n                  num.trees = 500),\n  times = 5\n)\n\nUnit: milliseconds\n   expr       min        lq       mean    median        uq       max neval cld\n   ODRF 4559.8742 4767.7961 4745.46626 4773.5435 4802.6260 4823.4915     5  a \n  aorsf   46.4154   46.4625   55.92320   51.6300   52.4436   82.6645     5   b\n ranger   21.6600   21.8220   22.42138   22.0821   23.0740   23.4688     5   b"
   },
   {
     "objectID": "slides/03-oblique_forests.html#more-benchmarks",
@@ -1026,7 +1026,7 @@
     "href": "slides/03-oblique_forests.html#model-fitting",
     "title": "Oblique random forests with aorsf",
     "section": "Model fitting",
-    "text": "Model fitting\n\nFormula interface\n\nSimilar to other R packages\nShortcut: outcome ~ .\n\n\nlibrary(aorsf)\nfit &lt;- orsf(ad_data, Class ~ .)\n\n\n\n\n\n---------- Oblique random classification forest\n\n     Linear combinations: Accelerated Logistic regression\n          N observations: 333\n               N classes: 2\n                 N trees: 500\n      N predictors total: 130\n   N predictors per node: 12\n Average leaves per tree: 13.118\nMin observations in leaf: 5\n          OOB stat value: 0.89\n           OOB stat type: AUC-ROC\n     Variable importance: anova\n\n-----------------------------------------"
+    "text": "Model fitting\n\nFormula interface\n\nSimilar to other R packages\nShortcut: outcome ~ .\n\n\nlibrary(aorsf)\nfit &lt;- orsf(ad_data, Class ~ .)\n\n\n\n\n\n---------- Oblique random classification forest\n\n     Linear combinations: Accelerated Logistic regression\n          N observations: 333\n               N classes: 2\n                 N trees: 500\n      N predictors total: 130\n   N predictors per node: 12\n Average leaves per tree: 13.122\nMin observations in leaf: 5\n          OOB stat value: 0.88\n           OOB stat type: AUC-ROC\n     Variable importance: anova\n\n-----------------------------------------"
   },
   {
     "objectID": "slides/03-oblique_forests.html#your-turn",
@@ -1047,7 +1047,7 @@
     "href": "slides/03-oblique_forests.html#compare-computational-efficiency",
     "title": "Oblique random forests with aorsf",
     "section": "Compare computational efficiency",
-    "text": "Compare computational efficiency\n‘Many splits’ is slower\n\nmicrobenchmark::microbenchmark(\n  rando = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, n_retry = 500,\n               split_rule = 'cstat', split_min_stat = .6,\n               control = control_rando),\n  accel = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, split_rule = 'cstat',\n               split_min_stat = .6),\n  times = 5\n)\n\nUnit: milliseconds\n  expr       min        lq      mean   median       uq       max neval cld\n rando 1067.1459 1078.8281 1108.6802 1088.707 1095.048 1213.6718     5  a \n accel   97.7655   98.8434  100.5617  100.597  102.173  103.4297     5   b"
+    "text": "Compare computational efficiency\n‘Many splits’ is slower\n\nmicrobenchmark::microbenchmark(\n  rando = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, n_retry = 500,\n               split_rule = 'cstat', split_min_stat = .6,\n               control = control_rando),\n  accel = orsf(ad_data, formula = Class ~ ., \n               tree_seeds = 1, split_rule = 'cstat',\n               split_min_stat = .6),\n  times = 5\n)\n\nUnit: milliseconds\n  expr       min        lq      mean   median       uq       max neval cld\n rando 1103.7639 1111.5100 1173.4211 1133.069 1135.577 1383.1855     5  a \n accel  101.4826  109.4326  115.1902  115.645  119.620  129.7707     5   b"
   },
   {
     "objectID": "slides/03-oblique_forests.html#compare-out-of-bag-prediction-accuracy",
@@ -1068,7 +1068,7 @@
     "href": "slides/03-oblique_forests.html#single-variable-summary",
     "title": "Oblique random forests with aorsf",
     "section": "Single variable summary",
-    "text": "Single variable summary\nSimilar to summary(), orsf_summarize_uni() computes out-of-bag partial dependence on the number of variables you request.\n\norsf_summarize_uni(fit, n_variables = 1, class = \"Impaired\")\n\n\n-- tau (VI Rank: 1) ----------------------------\n\n        |------------ Probability ------------|\n  Value      Mean    Median    25th %    75th %\n &lt;char&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;\n   5.04 0.2289781 0.1909107 0.1219569 0.3173935\n   5.37 0.2349259 0.1965919 0.1241136 0.3251669\n   5.75 0.2513727 0.2118122 0.1349814 0.3528321\n   6.18 0.2843050 0.2464631 0.1613582 0.3984072\n   6.50 0.3074606 0.2659016 0.1825196 0.4170013\n\n Predicted probability for top 1 predictors"
+    "text": "Single variable summary\nSimilar to summary(), orsf_summarize_uni() computes out-of-bag partial dependence on the number of variables you request.\n\norsf_summarize_uni(fit, n_variables = 1, class = \"Impaired\")\n\n\n-- tau (VI Rank: 1) ----------------------------\n\n        |------------ Probability ------------|\n  Value      Mean    Median    25th %    75th %\n &lt;char&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;     &lt;num&gt;\n   5.04 0.2322465 0.1929924 0.1187406 0.3173001\n   5.37 0.2369582 0.1963388 0.1223932 0.3234504\n   5.75 0.2529760 0.2109251 0.1293360 0.3498093\n   6.18 0.2817313 0.2352786 0.1531655 0.3805347\n   6.50 0.3011033 0.2557926 0.1721181 0.4076272\n\n Predicted probability for top 1 predictors"
   },
   {
     "objectID": "slides/03-oblique_forests.html#multi-variable-summary",
@@ -1089,7 +1089,7 @@
     "href": "slides/03-oblique_forests.html#variable-selection",
     "title": "Oblique random forests with aorsf",
     "section": "Variable selection",
-    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 39.5% ~ time remaining: 5 seconds \nSelecting variables: 100%"
+    "text": "Variable selection\nWe want to remove predictors that don’t have any prognostic value.\n\norsf_vs() performs recursive feature elimination.\nFit a forest and estimate importance\nDrop the least important predictor\nRepeat until &lt; n_predictor_min predictors left.\n\n\norsf_vars &lt;- orsf_vs(fit, \n                     n_predictor_min = 1, \n                     verbose_progress = TRUE)\n\nSelecting variables: 34.9% ~ time remaining: 6 seconds \nSelecting variables: 81.4% ~ time remaining: 1 seconds \nSelecting variables: 100%"
   },
   {
     "objectID": "slides/03-oblique_forests.html#faster",
@@ -1152,7 +1152,7 @@
     "href": "slides/03-oblique_forests.html#evaluating-in-test-data",
     "title": "Oblique random forests with aorsf",
     "section": "Evaluating in test data",
-    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.943\n3 ranger roc_auc binary         0.918"
+    "text": "Evaluating in test data\nWe predict probabilities for observations in the testing data, and evaluate discrimination using the yardstick package:\n\npreds &lt;- list(aorsf = aorsf_fit, ranger = ranger_fit) %&gt;% \n  map(~ predict(.x, new_data = test_processed, type = 'prob')) %&gt;% \n  map(~ mutate(.x, truth = test_processed$Class)) %&gt;% \n  bind_rows(.id = 'model')\n\nlibrary(yardstick)\n\npreds %&gt;% \n  group_by(model) %&gt;% \n  roc_auc(truth = truth, .pred_Impaired)\n\n\n\n# A tibble: 3 × 4\n  model  .metric .estimator .estimate\n  &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;\n1 aorsf  roc_auc binary         0.936\n2 odrf   roc_auc binary         0.940\n3 ranger roc_auc binary         0.918"
   },
   {
     "objectID": "slides/03-oblique_forests.html#to-the-pipeline",

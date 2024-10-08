@@ -9,10 +9,10 @@
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.450">
+  <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Byron C. Jaeger, PhD">
-  <title>Methods in longitudinal dementia research workshop - Decision trees and random forests</title>
+  <title>Methods in longitudinal dementia research workshop – Decision trees and random forests</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -32,7 +32,7 @@
     }
     /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -43,7 +43,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -71,7 +71,7 @@
     code span.at { color: #657422; } /* Attribute */
     code span.bn { color: #ad0000; } /* BaseN */
     code span.bu { } /* BuiltIn */
-    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #20794d; } /* Char */
     code span.cn { color: #8f5902; } /* Constant */
     code span.co { color: #5e5e5e; } /* Comment */
@@ -85,7 +85,7 @@
     code span.fu { color: #4758ab; } /* Function */
     code span.im { color: #00769e; } /* Import */
     code span.in { color: #5e5e5e; } /* Information */
-    code span.kw { color: #003b4f; } /* Keyword */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
     code span.op { color: #5e5e5e; } /* Operator */
     code span.ot { color: #003b4f; } /* Other */
     code span.pp { color: #ad0000; } /* Preprocessor */
@@ -99,6 +99,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+      margin-bottom: 0em;
     }
     .hanging-indent div.csl-entry {
       margin-left:2em;
@@ -241,7 +242,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -405,10 +407,13 @@
     }
   </style>
   <link href="../site_libs/countdown-0.4.0/countdown.css" rel="stylesheet">
+
   <script src="../site_libs/countdown-0.4.0/countdown.js"></script>
+
 </head>
 <body class="quarto-light">
 <script src="https://use.fontawesome.com/5235085b15.js"></script>
+
   <div class="reveal">
     <div class="slides">
 
@@ -459,129 +464,119 @@ Byron C. Jaeger, PhD
 <h2>Growing decision trees</h2>
 <div class="column" style="width:40%;">
 <p>Decision trees are grown by recursively splitting a set of training data <span class="citation" data-cites="breiman2017classification">(<a href="#/references" role="doc-biblioref" onclick="">Breiman 2017</a>)</span>.</p>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-demo-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/penguin-fig-demo-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="gini-impurity" class="slide level2">
 <h2>Gini impurity</h2>
 <div class="column" style="width:40%;">
 <p>For classification, “Gini impurity” measures split quality:</p>
 <p><span class="math display">\[G = 1 - \sum_{i = 1}^{K} P(i)^2\]</span></p>
 <p><span class="math inline">\(K\)</span> is no. of classes, <span class="math inline">\(P(i)\)</span> is the probability of class <span class="math inline">\(i\)</span>.</p>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/gini-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/gini-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="first-split-right-node" class="slide level2">
 <h2>First split: right node</h2>
 <div class="column" style="width:40%;">
 <p>Consider splitting at flipper length of 206.5: <strong>Right node</strong>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>gini_right <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb1-2"><a href="#cb1-2"></a> <span class="fu">filter</span>(flipper_length_mm<span class="sc">&gt;=</span><span class="fl">206.5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-3"><a href="#cb1-3"></a> <span class="fu">count</span>(species) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-4"><a href="#cb1-4"></a> <span class="fu">mutate</span>(<span class="at">p =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-5"><a href="#cb1-5"></a> <span class="fu">summarize</span>(<span class="at">gini =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(p<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-6"><a href="#cb1-6"></a> <span class="fu">pull</span>(gini)</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a>gini_right</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>gini_right <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a></a> <span class="fu">filter</span>(flipper_length_mm<span class="sc">&gt;=</span><span class="fl">206.5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-3"><a></a> <span class="fu">count</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a></a> <span class="fu">mutate</span>(<span class="at">p =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a></a> <span class="fu">summarize</span>(<span class="at">gini =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(p<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-6"><a></a> <span class="fu">pull</span>(gini)</span>
+<span id="cb1-7"><a></a></span>
+<span id="cb1-8"><a></a>gini_right</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.107008</code></pre>
 </div>
 </div>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-1-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/penguin-fig-axis-1-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="first-split-left-node" class="slide level2">
 <h2>First split: left node</h2>
 <div class="column" style="width:40%;">
 <p>Consider splitting at flipper length of 206.5: <strong>Left node</strong>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>gini_left <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2"></a> <span class="fu">filter</span>(flipper_length_mm<span class="sc">&lt;</span><span class="fl">206.5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-3"><a href="#cb3-3"></a> <span class="fu">count</span>(species) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-4"><a href="#cb3-4"></a> <span class="fu">mutate</span>(<span class="at">p =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-5"><a href="#cb3-5"></a> <span class="fu">summarize</span>(<span class="at">gini =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(p<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-6"><a href="#cb3-6"></a> <span class="fu">pull</span>(gini)</span>
-<span id="cb3-7"><a href="#cb3-7"></a></span>
-<span id="cb3-8"><a href="#cb3-8"></a>gini_left</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>gini_left <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a></a> <span class="fu">filter</span>(flipper_length_mm<span class="sc">&lt;</span><span class="fl">206.5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a></a> <span class="fu">count</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a></a> <span class="fu">mutate</span>(<span class="at">p =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a></a> <span class="fu">summarize</span>(<span class="at">gini =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(p<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a></a> <span class="fu">pull</span>(gini)</span>
+<span id="cb3-7"><a></a></span>
+<span id="cb3-8"><a></a>gini_left</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4289479</code></pre>
 </div>
 </div>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-3-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-3-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="first-split-total-impurity" class="slide level2">
 <h2>First split: total impurity</h2>
 <div class="column" style="width:40%;">
 <p>Consider splitting at flipper length of 206.5: <strong>Impurity</strong>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>split_var <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">pull</span>(flipper_length_mm)</span>
-<span id="cb5-3"><a href="#cb5-3"></a></span>
-<span id="cb5-4"><a href="#cb5-4"></a>n_tot <span class="ot">&lt;-</span> <span class="fu">length</span>(split_var)</span>
-<span id="cb5-5"><a href="#cb5-5"></a>n_right <span class="ot">&lt;-</span> <span class="fu">sum</span>(split_var <span class="sc">&gt;=</span> <span class="fl">206.5</span>)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>n_left <span class="ot">&lt;-</span> <span class="fu">sum</span>(split_var <span class="sc">&lt;</span> <span class="fl">206.5</span>)</span>
-<span id="cb5-7"><a href="#cb5-7"></a></span>
-<span id="cb5-8"><a href="#cb5-8"></a>gini_right <span class="sc">*</span> (n_right <span class="sc">/</span> n_tot) <span class="sc">+</span> </span>
-<span id="cb5-9"><a href="#cb5-9"></a>  gini_left <span class="sc">*</span> (n_left <span class="sc">/</span> n_tot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>split_var <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a></a>  <span class="fu">pull</span>(flipper_length_mm)</span>
+<span id="cb5-3"><a></a></span>
+<span id="cb5-4"><a></a>n_tot <span class="ot">&lt;-</span> <span class="fu">length</span>(split_var)</span>
+<span id="cb5-5"><a></a>n_right <span class="ot">&lt;-</span> <span class="fu">sum</span>(split_var <span class="sc">&gt;=</span> <span class="fl">206.5</span>)</span>
+<span id="cb5-6"><a></a>n_left <span class="ot">&lt;-</span> <span class="fu">sum</span>(split_var <span class="sc">&lt;</span> <span class="fl">206.5</span>)</span>
+<span id="cb5-7"><a></a></span>
+<span id="cb5-8"><a></a>gini_right <span class="sc">*</span> (n_right <span class="sc">/</span> n_tot) <span class="sc">+</span> </span>
+<span id="cb5-9"><a></a>  gini_left <span class="sc">*</span> (n_left <span class="sc">/</span> n_tot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.3080996</code></pre>
 </div>
 </div>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-5-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-5-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="your-turn" class="slide level2">
 <h2>Your turn</h2>
 <p>Was this the best possible split? Let’s find out.</p>
@@ -609,55 +604,49 @@ Byron C. Jaeger, PhD
 <li><p><span class="math inline">\(\bar{y}\)</span>: mean of <span class="math inline">\(y_i\)</span> in the node.</p></li>
 <li><p><span class="math inline">\(n\)</span>: no. of observations in the node.</p></li>
 </ul>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-6-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-6-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="survival-trees" class="slide level2">
 <h2>Survival trees</h2>
 <div class="column" style="width:40%;">
 <p>Log-rank stat measures split quality <span class="citation" data-cites="ishwaran2008random">(<a href="#/references" role="doc-biblioref" onclick="">Ishwaran et al. 2008</a>)</span>:</p>
 <p><span class="math display">\[\frac{ \sum_{j=1}^J O_{j } - E_{j}}{\sqrt{\sum_{j=1}^J V_{j}}}\]</span> <span class="math inline">\(O\)</span> is observed and <span class="math inline">\(E\)</span> expected events in the node at time <span class="math inline">\(j\)</span>. <span class="math inline">\(V\)</span> is variance.</p>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-7-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-7-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="keep-growing" class="slide level2">
 <h2>Keep growing?</h2>
 <div class="column" style="width:40%;">
 <p>Now we have two potential datasets, or <strong>nodes</strong> in the tree, that we can split.</p>
 <p>Do we keep going or stop?</p>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-8-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-8-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="stopping-conditions" class="slide level2">
 <h2>Stopping conditions</h2>
 <div class="column" style="width:40%;">
@@ -668,19 +657,17 @@ Byron C. Jaeger, PhD
 <li><p>Impurity &lt; <code>min_impurity</code></p></li>
 <li><p>Depth = <code>max_depth</code></p></li>
 </ol>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-9-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-9-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="your-turn-1" class="slide level2">
 <h2>Your turn</h2>
 <div class="column" style="width:40%;">
@@ -692,19 +679,17 @@ Byron C. Jaeger, PhD
 <li><code>max_depth</code> = 3</li>
 </ul>
 <p>Which node(s) can we split?</p>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-10-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-10-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="split-the-left-node" class="slide level2">
 <h2>Split the left node</h2>
 <div class="column" style="width:40%;">
@@ -712,19 +697,17 @@ Byron C. Jaeger, PhD
 <li><p>The left node can be split.</p></li>
 <li><p>The right node cannot, since impurity on the right is &lt; <code>min_impurity</code></p></li>
 </ul>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-11-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-11-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="finished-growing" class="slide level2">
 <h2>Finished growing</h2>
 <div class="column" style="width:40%;">
@@ -733,19 +716,17 @@ Byron C. Jaeger, PhD
 <li><p>After splitting the left node, all nodes have impurity &lt; <code>min_impurity</code>.</p></li>
 <li><p>If no more nodes to grow, convert partitioned sets into <strong>leaf nodes</strong></p></li>
 </ul>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-12-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-12-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="leaves" class="slide level2">
 <h2>Leaves?</h2>
 <div class="column" style="width:40%;">
@@ -754,21 +735,20 @@ Byron C. Jaeger, PhD
 <li><p>A <strong>leaf node</strong> is a terminal node in the tree.</p></li>
 <li><p>Predictions for new data are stored in leaf nodes.</p></li>
 </ul>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">mutate</span>(</span>
-<span id="cb7-2"><a href="#cb7-2"></a>  penguins,</span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="at">node =</span> <span class="fu">case_when</span>(</span>
-<span id="cb7-4"><a href="#cb7-4"></a>    flipper_length_mm <span class="sc">&gt;=</span> <span class="fl">206.5</span> <span class="sc">~</span> <span class="st">'leaf_1'</span>,</span>
-<span id="cb7-5"><a href="#cb7-5"></a>    bill_length_mm <span class="sc">&gt;=</span> <span class="fl">43.35</span> <span class="sc">~</span> <span class="st">'leaf_2'</span>,</span>
-<span id="cb7-6"><a href="#cb7-6"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">'leaf_3'</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>  )</span>
-<span id="cb7-8"><a href="#cb7-8"></a>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-9"><a href="#cb7-9"></a>  <span class="fu">group_by</span>(node) <span class="sc">%&gt;%</span> <span class="fu">count</span>(species) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-10"><a href="#cb7-10"></a>  <span class="fu">mutate</span>(<span class="at">n =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-11"><a href="#cb7-11"></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> n, <span class="at">names_from =</span> species, </span>
-<span id="cb7-12"><a href="#cb7-12"></a>              <span class="at">values_fill =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a><span class="fu">mutate</span>(</span>
+<span id="cb7-2"><a></a>  penguins,</span>
+<span id="cb7-3"><a></a>  <span class="at">node =</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-4"><a></a>    flipper_length_mm <span class="sc">&gt;=</span> <span class="fl">206.5</span> <span class="sc">~</span> <span class="st">'leaf_1'</span>,</span>
+<span id="cb7-5"><a></a>    bill_length_mm <span class="sc">&gt;=</span> <span class="fl">43.35</span> <span class="sc">~</span> <span class="st">'leaf_2'</span>,</span>
+<span id="cb7-6"><a></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">'leaf_3'</span></span>
+<span id="cb7-7"><a></a>  )</span>
+<span id="cb7-8"><a></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a></a>  <span class="fu">group_by</span>(node) <span class="sc">%&gt;%</span> <span class="fu">count</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-10"><a></a>  <span class="fu">mutate</span>(<span class="at">n =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-11"><a></a>  <span class="fu">pivot_wider</span>(<span class="at">values_from =</span> n, <span class="at">names_from =</span> species, </span>
+<span id="cb7-12"><a></a>              <span class="at">values_fill =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 4
 # Groups:   node [3]
@@ -779,8 +759,7 @@ Byron C. Jaeger, PhD
 3 leaf_3 0.966     0.0345 0     </code></pre>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="your-turn-2" class="slide level2">
 <h2>Your turn</h2>
 <p>Fit your own decision tree to the <code>penguins</code> data.</p>
@@ -806,7 +785,6 @@ Byron C. Jaeger, PhD
 <p>As a reminder, here is our ‘hand-made’ leaf data</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-
 <div id="hchsydxtsz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#hchsydxtsz table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1246,49 +1224,62 @@ Byron C. Jaeger, PhD
 #hchsydxtsz .gt_indent_5 {
   text-indent: 25px;
 }
+
+#hchsydxtsz .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#hchsydxtsz div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
 </style>
-<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-  <thead>
-    <tr class="gt_col_headings">
-      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id=""></th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Adelie">Adelie</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Chinstrap">Chinstrap</th>
-      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col" id="Gentoo">Gentoo</th>
-    </tr>
-  </thead>
-  <tbody class="gt_table_body">
-    <tr><th id="stub_1_1" scope="row" class="gt_row gt_left gt_stub">leaf_1</th>
-<td headers="stub_1_1 Adelie" class="gt_row gt_right" style="background-color: #008B8B; color: #FFFFFF;">0.02</td>
-<td headers="stub_1_1 Chinstrap" class="gt_row gt_right" style="background-color: #008B8B; color: #FFFFFF;">0.04</td>
-<td headers="stub_1_1 Gentoo" class="gt_row gt_right" style="background-color: #008B8B; color: #FFFFFF;">0.94</td></tr>
-    <tr><th id="stub_1_2" scope="row" class="gt_row gt_left gt_stub">leaf_2</th>
-<td headers="stub_1_2 Adelie" class="gt_row gt_right" style="background-color: #A020F0; color: #FFFFFF;">0.06</td>
-<td headers="stub_1_2 Chinstrap" class="gt_row gt_right" style="background-color: #A020F0; color: #FFFFFF;">0.92</td>
-<td headers="stub_1_2 Gentoo" class="gt_row gt_right" style="background-color: #A020F0; color: #FFFFFF;">0.02</td></tr>
-    <tr><th id="stub_1_3" scope="row" class="gt_row gt_left gt_stub">leaf_3</th>
-<td headers="stub_1_3 Adelie" class="gt_row gt_right" style="background-color: #FF8C00; color: #000000;">0.97</td>
-<td headers="stub_1_3 Chinstrap" class="gt_row gt_right" style="background-color: #FF8C00; color: #000000;">0.03</td>
-<td headers="stub_1_3 Gentoo" class="gt_row gt_right" style="background-color: #FF8C00; color: #000000;">0.00</td></tr>
-  </tbody>
-  
-  
+
+<table class="gt_table caption-top" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="Adelie" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Adelie</th>
+<th id="Chinstrap" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Chinstrap</th>
+<th id="Gentoo" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Gentoo</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td id="stub_1_1" class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th" scope="row">leaf_1</td>
+<td class="gt_row gt_right" headers="stub_1_1 Adelie" style="background-color: #008B8B; color: #FFFFFF">0.02</td>
+<td class="gt_row gt_right" headers="stub_1_1 Chinstrap" style="background-color: #008B8B; color: #FFFFFF">0.04</td>
+<td class="gt_row gt_right" headers="stub_1_1 Gentoo" style="background-color: #008B8B; color: #FFFFFF">0.94</td>
+</tr>
+<tr class="even">
+<td id="stub_1_2" class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th" scope="row">leaf_2</td>
+<td class="gt_row gt_right" headers="stub_1_2 Adelie" style="background-color: #A020F0; color: #FFFFFF">0.06</td>
+<td class="gt_row gt_right" headers="stub_1_2 Chinstrap" style="background-color: #A020F0; color: #FFFFFF">0.92</td>
+<td class="gt_row gt_right" headers="stub_1_2 Gentoo" style="background-color: #A020F0; color: #FFFFFF">0.02</td>
+</tr>
+<tr class="odd">
+<td id="stub_1_3" class="gt_row gt_left gt_stub" data-quarto-table-cell-role="th" scope="row">leaf_3</td>
+<td class="gt_row gt_right" headers="stub_1_3 Adelie" style="background-color: #FF8C00; color: #000000">0.97</td>
+<td class="gt_row gt_right" headers="stub_1_3 Chinstrap" style="background-color: #FF8C00; color: #000000">0.03</td>
+<td class="gt_row gt_right" headers="stub_1_3 Gentoo" style="background-color: #FF8C00; color: #000000">0.00</td>
+</tr>
+</tbody>
 </table>
+
 </div>
 </div>
 </div>
-</div>
-<div class="column" style="width:59%;">
+</div><div class="column" style="width:59%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/rpart_plot_classif.png" style="width:100.0%"></p>
+<p><img data-src="img/rpart_plot_classif.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="leaves-for-other-types-of-trees" class="slide level2">
 <h2>Leaves for other types of trees</h2>
 <ul>
@@ -1341,9 +1332,9 @@ Byron C. Jaeger, PhD
 </ul>
 <p>Why? Weak expert majority is right ~92% of the time</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># probability that &gt;2500 weak experts are right</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># = 1 - probability that &lt;=2500 are right</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbinom</span>(<span class="at">q =</span> <span class="dv">2500</span>, <span class="at">size =</span> <span class="dv">5000</span>, <span class="at">prob =</span> <span class="fl">0.51</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="co"># probability that &gt;2500 weak experts are right</span></span>
+<span id="cb9-2"><a></a><span class="co"># = 1 - probability that &lt;=2500 are right</span></span>
+<span id="cb9-3"><a></a><span class="dv">1</span> <span class="sc">-</span> <span class="fu">pbinom</span>(<span class="at">q =</span> <span class="dv">2500</span>, <span class="at">size =</span> <span class="dv">5000</span>, <span class="at">prob =</span> <span class="fl">0.51</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9192858</code></pre>
 </div>
@@ -1361,23 +1352,23 @@ Byron C. Jaeger, PhD
 <section id="a-single-traditional-tree-is-fine" class="slide level2">
 <h2>A single traditional tree is fine</h2>
 
-<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-traditional-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="02-trees_and_forests_files/figure-html/penguin-fig-axis-traditional-1.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
 <section id="a-single-randomized-tree-struggles" class="slide level2">
 <h2>A single randomized tree struggles</h2>
 
-<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-random-1-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="02-trees_and_forests_files/figure-html/penguin-fig-axis-random-1-1.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
 <section id="five-randomized-trees-do-okay" class="slide level2">
 <h2>Five randomized trees do okay</h2>
 
-<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-random-5-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="02-trees_and_forests_files/figure-html/penguin-fig-axis-random-5-1.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
 <section id="randomized-trees-do-great" class="slide level2">
 <h2>100 randomized trees do great</h2>
 
-<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-random-100-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="02-trees_and_forests_files/figure-html/penguin-fig-axis-random-100-1.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
 <section id="randomized-trees---no-overfitting" class="slide level2">
 <h2>500 randomized trees - no overfitting!</h2>
 
-<img data-src="02-trees_and_forests_files/figure-revealjs/penguin-fig-axis-random-500-1.svg" style="width:100.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="02-trees_and_forests_files/figure-html/penguin-fig-axis-random-500-1.svg" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
 <section id="random-forest-predictions" class="slide level2">
 <h2>Random forest predictions</h2>
 <p>To get a prediction from the random forest with <span class="math inline">\(B\)</span> trees,</p>
@@ -1431,73 +1422,65 @@ Byron C. Jaeger, PhD
 <div class="column" style="width:30%;">
 <p>First compute out-of-bag prediction accuracy.</p>
 <p>Here, classification accuracy is 96%</p>
-</div>
-<div class="column" style="width:69%;">
+</div><div class="column" style="width:69%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-15-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-15-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="variable-importance-1" class="slide level2">
 <h2>Variable importance</h2>
 <div class="column" style="width:30%;">
 <p>Next, permute the values of a given variable</p>
 <p>See how one value of flipper length is permuted in the figure?</p>
-</div>
-<div class="column" style="width:69%;">
+</div><div class="column" style="width:69%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-16-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-16-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="variable-importance-2" class="slide level2">
 <h2>Variable importance</h2>
 <div class="column" style="width:30%;">
 <p>Next, permute the values of a given variable</p>
 <p>Now they are <em>all</em> permuted, and out-of-bag classification accuracy is now 61%</p>
-</div>
-<div class="column" style="width:69%;">
+</div><div class="column" style="width:69%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-17-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-17-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="variable-importance-3" class="slide level2">
 <h2>Variable importance</h2>
 <div class="column" style="width:30%;">
 <p>Rinse and repeat for all variables.</p>
 <p>For bill length, out-of-bag classification accuracy is reduced to 63%</p>
-</div>
-<div class="column" style="width:69%;">
+</div><div class="column" style="width:69%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="02-trees_and_forests_files/figure-revealjs/unnamed-chunk-18-1.svg" style="width:100.0%"></p>
+<p><img data-src="02-trees_and_forests_files/figure-html/unnamed-chunk-18-1.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
 </div>
 </div>
-</div>
-</section>
+</div></section>
 <section id="variable-importance-4" class="slide level2">
 <h2>Variable importance</h2>
 <p>Once all variables have been through this process:</p>
@@ -1523,7 +1506,7 @@ Byron C. Jaeger, PhD
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-breiman1996out" class="csl-entry" role="listitem">
 Breiman, Leo. 1996. <span>“Out-of-Bag Estimation.”</span>
 </div>
@@ -1541,8 +1524,10 @@ Strobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007
 </div>
 </div>
 
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>Slides available at <a href="https://bcjaeger.github.io/melodem-apoe4-het/" class="uri">https://bcjaeger.github.io/melodem-apoe4-het/</a></p>
+</div>
 </div>
 </section></section>
     </div>
@@ -1571,7 +1556,6 @@ Strobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1757,72 +1741,65 @@ Strobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007
       });
     </script>
     <script>
+
     Reveal.addEventListener( 'slidechanged', function( event ) {
+
       console.log("hello")
 
+    
+
       slide_id = event.currentSlide.id
+
       link = "annotations" + ".html#" + slide_id
 
+    
+
       var annotation_div = document.createElement('div')
+
       annotation_div.setAttribute("class", "annotation-link")
 
+    
+
       var notes_link = document.createElement('a')
+
       notes_link.setAttribute("href", link)
+
       notes_link.setAttribute("target", "_blank")
 
+    
+
       var iii = document.createElement('i')
+
       iii.setAttribute("class", "fa fa-info")
+
       notes_link.appendChild(iii)
+
+    
 
       annotation_div.appendChild(notes_link)
 
+    
+
       var tmp = event.currentTarget.getElementsByClassName("annotation-link")
+
       if (tmp.length === 1) {
+
         tmp[0].remove()
+
       }
+
+    
 
       if (event.currentSlide.classList.contains("annotation")) {
+
         event.currentTarget.append(annotation_div)
+
       }
+
     } );
 
-    </script>
     
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
 
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
     </script>
 
     <script id="quarto-html-after-body" type="application/javascript">
@@ -1857,18 +1834,7 @@ Strobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -1900,11 +1866,50 @@ Strobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
-      function tippyHover(el, contentFn) {
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1914,8 +1919,17 @@ Strobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1929,7 +1943,11 @@ Strobl, Carolin, Anne-Laure Boulesteix, Achim Zeileis, and Torsten Hothorn. 2007
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {

@@ -25,13 +25,14 @@
 fit_grf_surv <- function(data,
                          trt_random,
                          fit_orsf,
+                         time_var,
                          horizon = NULL,
                          target = "RMST") {
 
   # stop if the data aren't created using data_prep()
   stopifnot(inherits(data, 'melodem_data'))
 
-  data_grf <- data_coerce_grf(data$values)
+  data_grf <- data_coerce_grf(data$values, name_Y = time_var)
 
   if(is.null(horizon)){
     horizon <- median(data_grf$Y)
@@ -57,6 +58,6 @@ fit_grf_surv <- function(data,
 
   attr(fit_grf, 'failure_times') <- failure_times
 
-  fit_grf
+  tibble(horizon = horizon, time_var = time_var, fit = list(fit_grf))
 
 }

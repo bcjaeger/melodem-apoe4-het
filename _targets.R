@@ -53,6 +53,24 @@ horizon_grid_tar <- tar_target(
   create_horizon_grid(data_melodem)
 )
 
+time_vars_tar <- tar_target(
+  time_vars,
+  command = {
+
+    time_vars <- c("time", "age")
+
+    time_vars_missing <- setdiff(time_vars, names(data_melodem$values))
+
+    if(!is_empty(time_vars_missing)){
+      stop("Missing time variable:", time_vars_missing)
+    }
+
+    time_vars
+
+  }
+
+)
+
 # Model targets -----------------------------------------------------------
 
 fit_orsf_tar <- tar_target(
@@ -66,9 +84,9 @@ fit_grf_tar <- tar_target(
   fit_grf_surv(data = data_melodem,
                trt_random = Sys.getenv("melodem_trt_random"),
                fit_orsf = fit_orsf,
+               time_var = time_vars,
                horizon = horizon_grid),
-  iteration = 'list',
-  pattern = map(horizon_grid)
+  pattern = cross(horizon_grid, time_vars)
 )
 
 
@@ -82,17 +100,28 @@ orsf_shareable_tar <- tar_target(
 cate_shareable_tar <- tar_target(
   cate_shareable,
   command = {
-    data_list <- map(fit_grf, ~tibble(score = get_scores(.x)))
-    map2_dfr(data_list, horizon_grid, ~mutate(.x, horizon = .y))
+    mutate(fit_grf, cate = map(fit, ~ get_scores(.x)), .keep = 'unused')
   }
 )
 
 grf_shareable_tar <- tar_target(
   grf_shareable,
-  map_dfr(set_names(fit_grf, horizon_grid),
-          ~grf_summarize(.x, vars = c("age",
-                                      "sex_female")),
-          .id = 'horizon')
+  command = {
+
+    fit_grf %>%
+      mutate(
+        summary = map2(
+          .x = fit,
+          .y = time_var,
+          .f = ~ .x %>%
+            grf_summarize(vars = setdiff(c("age", "sex_female"), .y))
+        ),
+        .keep = 'unused'
+      ) %>%
+      unnest(summary)
+
+  }
+
 )
 
 # uncomment and run line below to save shareables
@@ -126,6 +155,7 @@ targets <- list(
   file_tar,
   data_melodem_tar,
   horizon_grid_tar,
+  time_vars_tar,
   fit_orsf_tar,
   fit_grf_tar,
   orsf_shareable_tar,

@@ -1015,7 +1015,8 @@ Let's use RATE to see how well risk prediction works as a treatment prioritizati
 library(aorsf)
 
 fit_orsf <- orsf(time + status ~ .,
-                 data = data_melodem$values,
+                 data = data_melodem$values, 
+                 na_action = 'impute_meanmode',
                  oobag_pred_horizon = 3)
 
 # important to use oobag!
