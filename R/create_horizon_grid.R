@@ -9,7 +9,10 @@
 #' @export
 create_horizon_grid_time <- function(data_melodem) {
 
-  time_bounds <- quantile(data_melodem$values$time, probs = c(0.10, 0.90))
+
+  event_times <- data_melodem$values$time[data_melodem$values$status==1]
+
+  time_bounds <- quantile(event_times, probs = c(0.10, 0.90))
 
   horizon_grid_raw <- seq(0, 100, by = 5)
 
