@@ -48,9 +48,14 @@ data_melodem_tar <- tar_target(
                age_range = c(55, 80))
 )
 
-horizon_grid_tar <- tar_target(
-  horizon_grid,
-  create_horizon_grid(data_melodem)
+horizon_grid_time_tar <- tar_target(
+  horizon_grid_time,
+  create_horizon_grid_time(data_melodem)
+)
+
+horizon_grid_age_tar <- tar_target(
+  horizon_grid_age,
+  create_horizon_grid_age(data_melodem)
 )
 
 time_vars_tar <- tar_target(
@@ -79,14 +84,24 @@ fit_orsf_tar <- tar_target(
                 select_variables = FALSE)
 )
 
-fit_grf_tar <- tar_target(
-  fit_grf,
+fit_grf_time_tar <- tar_target(
+  fit_grf_time,
   fit_grf_surv(data = data_melodem,
                trt_random = Sys.getenv("melodem_trt_random"),
                fit_orsf = fit_orsf,
-               time_var = time_vars,
-               horizon = horizon_grid),
-  pattern = cross(horizon_grid, time_vars)
+               time_var = 'time',
+               horizon = horizon_grid_time),
+  pattern = map(horizon_grid_time)
+)
+
+fit_grf_age_tar <- tar_target(
+  fit_grf_age,
+  fit_grf_surv(data = data_melodem,
+               trt_random = Sys.getenv("melodem_trt_random"),
+               fit_orsf = fit_orsf,
+               time_var = 'age',
+               horizon = horizon_grid_age),
+  pattern = map(horizon_grid_age)
 )
 
 
@@ -108,7 +123,7 @@ grf_shareable_tar <- tar_target(
   grf_shareable,
   command = {
 
-    fit_grf %>%
+    bind_rows(fit_grf_time, fit_grf_age) %>%
       mutate(
         summary = map2(
           .x = fit,
@@ -154,10 +169,12 @@ targets <- list(
   # penguin_figs_tar,
   file_tar,
   data_melodem_tar,
-  horizon_grid_tar,
+  horizon_grid_time_tar,
+  horizon_grid_age_tar,
   time_vars_tar,
   fit_orsf_tar,
-  fit_grf_tar,
+  fit_grf_time_tar,
+  fit_grf_age_tar,
   orsf_shareable_tar,
   cate_shareable_tar,
   grf_shareable_tar
