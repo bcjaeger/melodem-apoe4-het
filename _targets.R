@@ -104,6 +104,7 @@ fit_grf_age_tar <- tar_target(
   pattern = map(horizon_grid_age)
 )
 
+fit_grf_tar <- tar_target(fit_grf, bind_rows(fit_grf_time, fit_grf_age))
 
 # Shar-eable targets ------------------------------------------------------
 
@@ -123,7 +124,7 @@ grf_shareable_tar <- tar_target(
   grf_shareable,
   command = {
 
-    bind_rows(fit_grf_time, fit_grf_age) %>%
+    fit_grf %>%
       mutate(
         summary = map2(
           .x = fit,
@@ -175,6 +176,7 @@ targets <- list(
   fit_orsf_tar,
   fit_grf_time_tar,
   fit_grf_age_tar,
+  fit_grf_tar,
   orsf_shareable_tar,
   cate_shareable_tar,
   grf_shareable_tar
