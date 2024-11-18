@@ -1,4 +1,8 @@
 
+# TODO: add race
+# TODO: check event times in ukb
+# TODO: tabulate grf shareable
+
 
 # manage packages ---------------------------------------------------------
 
@@ -108,6 +112,11 @@ fit_grf_tar <- tar_target(fit_grf, bind_rows(fit_grf_time, fit_grf_age))
 
 # Shar-eable targets ------------------------------------------------------
 
+characteristics_shareable_tar <- tar_target(
+  characteristics_shareable,
+  characteristics_summarize(data_melodem, labels = labels)
+)
+
 orsf_shareable_tar <- tar_target(
   orsf_shareable,
   orsf_summarize(fit_orsf)
@@ -141,7 +150,9 @@ grf_shareable_tar <- tar_target(
 )
 
 # uncomment and run line below to save shareables
-# write_shareables(.names = c("orsf_shareable", "grf_shareable"))
+# write_shareables(.names = c("characteristics_shareable",
+#                             "orsf_shareable",
+#                             "grf_shareable"))
 
 
 # Manuscript targets ------------------------------------------------------
@@ -177,6 +188,7 @@ targets <- list(
   fit_grf_time_tar,
   fit_grf_age_tar,
   fit_grf_tar,
+  characteristics_shareable_tar,
   orsf_shareable_tar,
   cate_shareable_tar,
   grf_shareable_tar

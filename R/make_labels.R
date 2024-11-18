@@ -16,11 +16,17 @@ make_labels <- function(...) {
   variables <- c(
     age = "Age",
     sex = "Sex",
-    apoe4 = "Apolipoprotein E"
+    apoe4 = "Apolipoprotein E",
+    sbp = "Systolic blood pressure",
+    dbp = "Diastolic blood pressure",
+    egfr = "Estimated GFR"
   )
 
   units <- c(
-    age = "years"
+    age = "years",
+    sbp = "mmHg",
+    dbp = "mmHg",
+    egfr= "ml/min/1.73m2"
   )
 
   levels <- list(
@@ -35,7 +41,8 @@ make_labels <- function(...) {
     MoCA = 'Montreal cognitive assessment',
     EHR  = 'electronic health records',
     CVD  = 'cardiovascular disease',
-    CKD  = 'chronic kidney disease'
+    CKD  = 'chronic kidney disease',
+    GFR  = 'glomerular filtration rate'
   )
 
   definitions <- list(
