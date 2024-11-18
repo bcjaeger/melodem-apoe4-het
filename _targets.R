@@ -117,6 +117,11 @@ characteristics_shareable_tar <- tar_target(
   characteristics_summarize(data_melodem, labels = labels)
 )
 
+incidence_shareable_tar <- tar_target(
+  incidence_shareable,
+  incidence_summarize(data_melodem)
+)
+
 orsf_shareable_tar <- tar_target(
   orsf_shareable,
   orsf_summarize(fit_orsf)
@@ -150,7 +155,8 @@ grf_shareable_tar <- tar_target(
 )
 
 # uncomment and run line below to save shareables
-# write_shareables(.names = c("characteristics_shareable",
+# write_shareables(.names = c("incidence_shareable",
+#                             "characteristics_shareable",
 #                             "orsf_shareable",
 #                             "grf_shareable"))
 
@@ -189,6 +195,7 @@ targets <- list(
   fit_grf_age_tar,
   fit_grf_tar,
   characteristics_shareable_tar,
+  incidence_shareable_tar,
   orsf_shareable_tar,
   cate_shareable_tar,
   grf_shareable_tar
