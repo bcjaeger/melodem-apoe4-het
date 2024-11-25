@@ -38,7 +38,14 @@ fit_grf_surv <- function(data,
     horizon <- median(data_grf$Y)
   }
 
-  failure_times <- get_failure_times(data_grf)
+  failure_times <- get_failure_times(data_grf) %>%
+    sort()
+
+  if(min(data_grf$Y) < min(failure_times)){
+    failure_times <- c(min(data_grf$Y), failure_times)
+  }
+
+  failure_times %<>% unique()
 
   W.hat <- if(trt_random == 'yes')
     get_trt_prop(data$values$treatment)
