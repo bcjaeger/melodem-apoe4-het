@@ -17,13 +17,14 @@ characteristics_summarize <- function(data_melodem, labels){
   }
 
   vars_to_select <- names(labels$variables) %>%
-    c(Sys.getenv("melodem_data_trt_var")) %>%
+    c('treatment') %>%
     unique()
 
   tbl_data_finalized <- tbl_data %>%
     select(any_of(vars_to_select))
 
-  tbl_summary(tbl_data_finalized, label = as.list(labels$variables)) %>%
+  tbl_summary(tbl_data_finalized,by = 'treatment', label = as.list(labels$variables)) %>%
+    add_overall() %>%
     as_tibble()
 
 }

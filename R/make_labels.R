@@ -16,10 +16,16 @@ make_labels <- function(...) {
   variables <- c(
     age = "Age",
     sex = "Sex",
-    apoe4 = "Apolipoprotein E",
+    # apoe4 = "Apolipoprotein E",
+    treatment = "Apolipoprotein E",
     sbp = "Systolic blood pressure",
     dbp = "Diastolic blood pressure",
-    egfr = "Estimated GFR"
+    egfr = "Estimated GFR",
+    race = "Race/Ethnicity",
+    BMI = "Body mass index",
+    smoking = "Smoking status",
+    physical.activity = "Physical activity",
+    education = "Education"
   )
 
   units <- c(
