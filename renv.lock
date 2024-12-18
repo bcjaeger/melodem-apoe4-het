@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.4.1",
+    "Version": "4.4.2",
     "Repositories": [
       {
         "Name": "CRAN",
@@ -2816,7 +2816,7 @@
     },
     "rvg": {
       "Package": "rvg",
-      "Version": "0.3.3",
+      "Version": "0.3.4",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -2828,7 +2828,7 @@
         "rlang",
         "xml2"
       ],
-      "Hash": "8f7a79f622774ff95d60b74e486d99ba"
+      "Hash": "84feb96f75452bfbb4b7858e36bea2c5"
     },
     "sandwich": {
       "Package": "sandwich",
