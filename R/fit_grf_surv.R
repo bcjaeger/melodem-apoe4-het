@@ -23,6 +23,7 @@
 # fit_orsf <- tar_read(fit_orsf)
 
 fit_grf_surv <- function(data,
+                         labels,
                          trt_random,
                          fit_orsf,
                          time_var,
@@ -32,7 +33,14 @@ fit_grf_surv <- function(data,
   # stop if the data aren't created using data_prep()
   stopifnot(inherits(data, 'melodem_data'))
 
-  data_grf <- data_coerce_grf(data$values, name_Y = time_var)
+  names_X <- names(labels$variables) %>%
+    unique() %>%
+    intersect(names(data$values)) %>%
+    setdiff('treatment')
+
+  data_grf <- data_coerce_grf(data$values,
+                              name_Y = time_var,
+                              names_X = names_X)
 
   if(is.null(horizon)){
     horizon <- median(data_grf$Y)

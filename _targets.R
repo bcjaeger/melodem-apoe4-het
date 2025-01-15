@@ -77,7 +77,6 @@ time_vars_tar <- tar_target(
     time_vars
 
   }
-
 )
 
 # Model targets -----------------------------------------------------------
@@ -85,12 +84,14 @@ time_vars_tar <- tar_target(
 fit_orsf_tar <- tar_target(
   fit_orsf,
   fit_orsf_clsf(data = data_melodem,
+                labels = labels,
                 select_variables = FALSE)
 )
 
 fit_grf_time_tar <- tar_target(
   fit_grf_time,
   fit_grf_surv(data = data_melodem,
+               labels = labels,
                trt_random = Sys.getenv("melodem_trt_random"),
                fit_orsf = fit_orsf,
                time_var = 'time',
@@ -101,6 +102,7 @@ fit_grf_time_tar <- tar_target(
 fit_grf_age_tar <- tar_target(
   fit_grf_age,
   fit_grf_surv(data = data_melodem,
+               labels = labels,
                trt_random = Sys.getenv("melodem_trt_random"),
                fit_orsf = fit_orsf,
                time_var = 'age',

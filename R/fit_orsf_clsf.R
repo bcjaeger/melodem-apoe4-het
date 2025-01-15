@@ -11,7 +11,7 @@
 
 # data <- tar_read(data_melodem)
 
-fit_orsf_clsf <- function(data, select_variables = TRUE) {
+fit_orsf_clsf <- function(data, labels, select_variables = TRUE) {
 
   # stop if the data aren't created using data_prep()
   stopifnot(inherits(data, 'melodem_data'))
