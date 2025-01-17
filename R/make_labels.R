@@ -25,6 +25,7 @@ make_labels <- function(...) {
     BMI = "Body mass index",
     smoking = "Smoking status",
     physical.activity = "Physical activity",
+    vigeractiv = "Physical activity (Vigorous vs. other)",
     education = "Education"
   )
 
