@@ -20,11 +20,17 @@ make_labels <- function(...) {
     treatment = "Apolipoprotein E",
     sbp = "Systolic blood pressure",
     dbp = "Diastolic blood pressure",
+    stroke = "Stroke", # added by Emma 1/22
+    heart = "Heart conditions", # added by Emma 1/22
+    hypertension = "Hypertension", # added by Emma 1/22
+    diabetes = "Diabetes",
     egfr = "Estimated GFR",
     race = "Race/Ethnicity",
     BMI = "Body mass index",
     smoking = "Smoking status",
+    smokesta = "Smoking status", # added by Emma 1/22
     physical.activity = "Physical activity",
+    vigeractiv = "Physical activity (Vigorous vs. other)", # added by Emma 1/22
     education = "Education"
   )
 
