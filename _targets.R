@@ -145,8 +145,8 @@ grf_shareable_tar <- tar_target(
         summary = map2(
           .x = fit,
           .y = time_var,
-          .f = ~ .x %>%
-            grf_summarize(vars = setdiff(c("age", "sex_female"), .y))
+          .f = ~  .x %>%
+              grf_summarize(vars = colnames(.x$X.orig))
         )
       ) %>%
       select(-fit) %>%
