@@ -1,183 +1,237 @@
 ---
-title: "MELODEM Workshop Paper (title TBD)"
+title: "MELODEM Workshop Paper Results"
 bibliography: refs.bib
 csl: jama.csl
 always_allow_html: true
 output: 
   officedown::rdocx_document:
-    reference_docx: style_manuscript_times_new_roman.docx
+    reference_docx: style_arial.docx
     keep_md: true
+    toc: true
+    toc_depth: 2
 ---
 
+```{r setup-knitr, include=FALSE}
 
-```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,    # don't show code blocks
+  message = FALSE, # don't print messages to the doc
+  warning = FALSE, # don't print warnings to the doc
+  dpi = 300,       # higher dpi => higher render time 
+  fig.width = 6,   # default figure width in inches
+  fig.height = 4   # default figure height in inches
+)
 
-knitr::opts_chunk$set(echo = FALSE, 
-                      message = FALSE,
-                      warning = FALSE,
-                      dpi = 600, 
-                      fig.width = 11, 
-                      fig.height = 6)
+library(officedown)
+library(officer)
 
-# unified specification for rounding in the paper.
-# if |value| is 0 to 1, round to 2 decimals
-# if |value| is 1 to 10, round to 1 decimal
-# if |value| is > 10, round to 0 decimals
-rspec <- round_spec() |>
-  round_using_magnitude(digits = c(2, 1, 0),
-                        breaks = c(1, 10, Inf))
+```
 
-# save it to options:
-names(rspec) <- paste('table.glue', names(rspec), sep = '.')
-options(rspec)
+```{r setup-figures}
 
-# make a short name for table.glue::table_value - this makes
-# the inline reporting of results less complicated to read.
-tv <- table_value
-tg <- table_glue
-
-
-# default is double space 
-# single spacing for title page, abstract, captions
-single_par <- fp_par(line_spacing=1)
-
-# default page margins
-margins_normal <- page_mar(bottom = 2.54 * 0.3937, 
-                           top    = 2.54 * 0.3937, 
-                           right  = 2.54 * 0.3937, 
-                           left   = 2.54 * 0.3937,
-                           gutter = 0)
-
-plain_text <- function(x){
-  paste(x[[1]]$txt, collapse = '')
+set_fig_landscape <- function() {
+  knitr::opts_chunk$set(fig.width = 10.5, fig.height = 6)
 }
+
+set_fig_portrait <- function() {
+  knitr::opts_chunk$set(fig.width = 6, fig.height = 4)
+}
+
+theme_set(
+  new = theme_bw() + 
+    theme(panel.grid = element_blank(),
+          text = element_text(size = 12))
+)
 
 
 ```
 
-Your name here, your degree,^1^ 
+```{r setup-margins}
 
-^1^Your department, University, City, State. `r single_par`
+# Set a default footer because when we use block_section, it 
+# starts a new style template for headers and footers. Thus,
+# if we want page numbers to appear on every page, we need to
+# put that into the default footer and then put that default
+# footer into every block section. MS word...¯\_(ツ)_/¯
+# note to future self - go here if you want to remember this: 
+# https://github.com/davidgohel/officedown/discussions/103
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+footer_default <- block_list(
+  fpar(
+    run_word_field(field = "PAGE"),
+    fp_p = fp_par(text.align = "left") 
+  )
+)
 
-**Correspondence to:**\
-Byron C. Jaeger, PhD\
-Department of Biostatistics and Data Science\
-Division of Public Health Sciences\
-Wake Forest School of Medicine\
-Medical Center Boulevard\
-Winston-Salem, NC 27154\
-336-716-6956\
-[bjaeger\@wakehealth.edu](mailto:bjaeger@wakehealth.edu){.email} `r single_par`
+# Code in this chunk sets the margins for your document. 
+# The helper functions page_long_above() and page_wide_above()
+# also provide shortcuts for switching between wide (landscape)
+# and normal (long) MS word layouts. 
 
-**Word Count:** Abstract: ; Manuscript: 
+# helper function for defining margins
+make_margin <- function(x=NULL){
+  
+  if(is.null(x)){ return(page_mar()) } 
+  
+  if(is.character(x)){
+    
+    out <- switch(
+      tolower(x),
+      "normal" = page_mar(1, 1, 1, 1),
+      "narrow" = page_mar(1/2, 1/2, 1/2, 1/2),
+      "moderate" = page_mar(1, 1, 3/4, 3/4)
+    )
+    
+  }
+  
+}
 
-\newpage
+# set content above to be portrait
+page_long_above <- function(margins = make_margin('narrow')){
+  
+  # b/c block_sections apply to content ABOVE, we set
+  # the content BELOW to be landscape when we use page_long_above  
+  set_fig_landscape()
+  
+  block_section(
+    prop_section(
+      page_size = page_size(orient = "portrait"),
+      type = "continuous",
+      page_margins = margins,
+      footer_default = footer_default
+    )
+  )
+  
+}
 
-```{r load-targets}
+# set content above to be landscape
+page_wide_above <- function(margins = make_margin('narrow')){
+  
+  # b/c block_sections apply to content ABOVE, we set
+  # the content BELOW to be portrait when we use page_wide_above
+  set_fig_portrait()
+  
+  block_section(
+    prop_section(
+      page_size = page_size(orient = "landscape"),
+      type = "continuous",
+      page_margins = margins,
+      footer_default = footer_default
+    )
+  )
+  
+}
+
+```
+
+```{r setup-targets}
 
 withr::with_dir(
-  here::here(),
+  new = here::here(),
   code = {
-    targets::tar_load(
-      names = c("data_melodem",
-                "data_melodem_2",
-                "data_pooled",
-                "bm_risk")
-    )
+    targets::tar_load(names = c(tbl_characteristics,
+                                tbl_het,
+                                fig_incidence))
   }
 )
 
 ```
 
 
-# ABSTRACT
 
-\newpage
+```{r setup-formatters}
 
-# INTRODUCTION
+# make a short name for table.glue::table_value - this makes
+# the inline reporting of results less complicated to read.
+tv <- table.glue::table_value
+tg <- table.glue::table_glue
+
+r_version <- tg("{version$major}.{version$minor}")
+
+```
+
+```{r setup-tbl}
+
+# Footnotes should be wrapped in `as_paragraph`:
+
+ckd_defn <- as_paragraph("Chronic Kidney Disease was defined by an estimated glomerular filtration rate <60 ml/min/1.73 m", as_sup(2L), " based on the 2021 CKD-EPI creatinine equation.")
+
+# abbreviation management
+
+abbrvs <- list(
+  "SD"   = 'standard deviation',
+  "ACR" =	"Albumin-to-creatinine ratio",
+  "ASCVD" =	"Atherosclerotic cardiovascular disease",
+  "CI" =	"Confidence interval",
+  "COPD" =	"Chronic obstructive pulmonary disease",
+  "eGFR" =	"Estimated glomerular filtration rate",
+  "GLP-1RA" =	"Glucagon-like peptide-1 receptor agonist ",
+  "HbA1c" =	"Glycated hemoglobin",
+  "HDL" =	"High-density lipoprotein",
+  "hsCRP" =	"High-sensitivity C-reactive protein",
+  "NHANES" =	"National Health and Nutrition Examination Survey",
+  "PHQ" =	"Patient Health Questionnaire"
+)
 
 
-Here's how to cite one thing.[@r_language]
 
+abbrvs_paste <- function(strings){
+  
+  front <- 'Abbreviations'
+  
+  matter <- glue::glue_collapse(strings, sep = '; ', last = '; and ')
+  
+  paste(front, matter, sep = ': ')
+  
+}
 
-# METHODS
-
-Chronic kidney disease was defined by `r labels$definitions$ckd`
-
-# RESULTS
-
-# DISCUSSION
-
-\newpage
-
-# REFERENCES
-
-<div id="refs"></div>
-
-\newpage
-
-# ACKNOWLEDGMENTS 
-
-# FINANCIAL DISCLOSURE 
-
-```{r tbl_footers}
-
+abbrvs_write <- function(abbr){
+  
+  sorted <- abbr[sort(names(abbr))]
+  
+  strings <- map2_chr(names(sorted), sorted, paste, sep = ' = ')
+  
+  as_paragraph(abbrvs_paste(strings))
+  
+}
 
 
 ```
 
+\newpage
 
-
-<!-- new page not needed at the end of a block section -->
+## Table 1: Participant characteristics
 
 ```{r}
-
-block_section(
-  prop_section(
-    page_size = page_size(orient = "portrait"),
-    type = "continuous",
-    page_margins = margins_normal
-  )
-)
-
+tbl_characteristics
 ```
 
-To make a landscape section, use the block_section code here. Note that the section will be applied to all content prior to the block reaching up to the most recent block.
+\newpage
 
-```{r echo = TRUE}
+## Table 2: Heterogeneity in the effect of APOE-4 on dementia risk using time since birth
 
-block_section(
-  prop_section(
-    page_size = page_size(orient = "landscape"),
-    page_margins = page_mar(bottom = 1/8, top = 1/8, 
-                            right = 1/4, left = 1/4),
-    type = "continuous"
-  )
-)
+```{r}
+tbl_het[[1]]
 ```
 
+\newpage
 
-To switch back to regular portrait section, add another portrait block. Notice how the block below acts on all content above it up to the prior block.
+## Table 3: Heterogeneity in the effect of APOE-4 on dementia risk using time since baseline
 
-
-```{r echo = TRUE}
-block_section(
-  prop_section(
-    page_size = page_size(orient = "portrait"),
-    type = "continuous",
-    page_margins = margins_normal
-  )
-)
+```{r}
+tbl_het[[2]]
 ```
+
+`r page_long_above()`
+
+## Cumulative incidence of dementia stratified by study
+
+```{r}
+fig_incidence
+```
+
+`r page_wide_above()`
+
+
+
 

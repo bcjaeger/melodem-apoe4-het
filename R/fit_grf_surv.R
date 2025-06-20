@@ -36,7 +36,7 @@ fit_grf_surv <- function(data,
   names_X <- names(labels$variables) %>%
     unique() %>%
     intersect(names(data$values)) %>%
-    setdiff('treatment')
+    setdiff(c('treatment', time_var))
 
   data_grf <- data_coerce_grf(data$values,
                               name_Y = time_var,
@@ -55,10 +55,11 @@ fit_grf_surv <- function(data,
 
   failure_times %<>% unique()
 
-  W.hat <- if(trt_random == 'yes')
+  W.hat <- if(trt_random == 'yes'){
     get_trt_prop(data$values$treatment)
-  else
+  } else{
     get_trt_prop(fit_orsf)
+  }
 
   fit_grf <- causal_survival_forest(
     X = data_grf$X,

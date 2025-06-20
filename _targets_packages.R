@@ -68,4 +68,6 @@ suppressPackageStartupMessages({
   library(xgboost)
   library(yardstick)
   library(zoo)
+  library(table.glue)
+  library(flextable)
 })

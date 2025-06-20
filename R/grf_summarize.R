@@ -5,7 +5,7 @@
 #' @param fit_grf a causal random forest object
 #'
 
-# fit_grf <- tar_read(fit_grf)[[1]]
+# fit_grf <- tar_read(fit_grf)$fit[[2]]
 
 grf_summarize <- function(fit_grf, vars = NULL) {
 
