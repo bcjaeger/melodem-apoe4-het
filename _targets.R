@@ -222,7 +222,8 @@ tbl_characteristics_tar <- tar_target(
       merge_v(part = 'header') %>%
       padding(padding.left = 15,
               j = ~ Characteristic,
-              i = ~ Characteristic %in% c("male", "female"),
+              i = ~ Characteristic %in% c("male", "female",
+                                          "White", "Black", "Asian", "Other"),
               part = 'body')
 
   }
@@ -303,6 +304,8 @@ tbl_het_tar <- tar_target(
                    horizon = table_value(horizon),
                    .keep = 'unused') %>%
             select(-blp_pval) %>%
+            filter(str_detect(blp_term, "^age|^race|^sex")) %>%
+            filter(blp_term != .time_var) %>%
             pivot_wider(names_from = blp_term, values_from = blp)
 
           horizon_lab <- switch(.time_var,
@@ -311,8 +314,13 @@ tbl_het_tar <- tar_target(
 
           lookup_vec <- c(
             "Women versus men" = "sex_female",
-            "Age, per year" = "age"
+            "Age, per year" = "age",
+            "Black versus White" = "race_Black",  # JW will come back
+            "Other versis White" = "race_Other",
+            "Asian versus White" = "race_Asian"
           )
+
+          lookup_vec <- lookup_vec[lookup_vec %in% names(tbl_data_format)]
 
           ncol_blp <- length(intersect(lookup_vec, names(tbl_data_format)))
 
