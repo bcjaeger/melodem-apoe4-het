@@ -24,6 +24,7 @@ make_labels <- function(...) {
     heart = "Heart conditions", # added by Emma 1/22
     hypertension = "Hypertension", # added by Emma 1/22
     diabetes = "Diabetes",
+    # biomarker_1 = "First biomarker",
     egfr = "Estimated GFR",
     race = "Race/Ethnicity",
     BMI = "Body mass index",

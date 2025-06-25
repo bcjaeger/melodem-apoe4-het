@@ -1,7 +1,10 @@
 
-# TODO: add race
-# TODO: check event times in ukb
-# TODO: tabulate grf shareable
+# agenda:
+# - gifts for data stewards
+# - tour of newest code
+# - demo - how to use the labels
+# - renv, set up each steward
+# - run results / discuss
 
 
 # manage packages ---------------------------------------------------------
