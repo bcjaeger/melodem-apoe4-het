@@ -1,5 +1,6 @@
 
 suppressPackageStartupMessages({
+  library(mice)
   library(gtsummary)
   library(Matrix)
   library(aorsf)

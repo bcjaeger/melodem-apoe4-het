@@ -131,24 +131,13 @@ withr::with_dir(
   code = {
     targets::tar_load(names = c(tbl_characteristics,
                                 tbl_het,
+                                tbl_coxph,
                                 fig_incidence))
   }
 )
 
 ```
 
-
-
-```{r setup-formatters}
-
-# make a short name for table.glue::table_value - this makes
-# the inline reporting of results less complicated to read.
-tv <- table.glue::table_value
-tg <- table.glue::table_glue
-
-r_version <- tg("{version$major}.{version$minor}")
-
-```
 
 ```{r setup-tbl}
 
@@ -208,10 +197,20 @@ tbl_characteristics
 
 \newpage
 
-## Table 2: Heterogeneity in the effect of APOE-4 on dementia risk using time since birth
+## Table 2: Hazard ratios for dementia overall and in subgroups based on Apolipoprotein E. 
 
 ```{r}
-tbl_het[[1]]
+tbl_coxph
+```
+
+
+`r page_long_above()`
+
+## Table 3: Heterogeneity in the effect of APOE-4 on dementia risk using time since birth
+
+```{r}
+tbl_het[[1]] %>% 
+  flextable_autofit(width_max = 11)
 ```
 
 \newpage
@@ -219,10 +218,9 @@ tbl_het[[1]]
 ## Table 3: Heterogeneity in the effect of APOE-4 on dementia risk using time since baseline
 
 ```{r}
-tbl_het[[2]]
+tbl_het[[2]] %>% 
+  flextable_autofit(width_max = 11)
 ```
-
-`r page_long_above()`
 
 ## Cumulative incidence of dementia stratified by study
 

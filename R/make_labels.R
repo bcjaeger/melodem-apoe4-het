@@ -15,25 +15,36 @@ make_labels <- function(...) {
 
   variables <- c(
     age = "Age",
-    sex = "Sex",
-    # apoe4 = "Apolipoprotein E",
+    apoe4 = "Apolipoprotein E",
     treatment = "Apolipoprotein E",
-    sbp = "Systolic blood pressure",
-    dbp = "Diastolic blood pressure",
-    stroke = "Stroke", # added by Emma 1/22
-    heart = "Heart conditions", # added by Emma 1/22
-    hypertension = "Hypertension", # added by Emma 1/22
-    diabetes = "Diabetes",
-    # biomarker_1 = "First biomarker",
-    egfr = "Estimated GFR",
-    race = "Race/Ethnicity",
     BMI = "Body mass index",
-    smoking = "Smoking status",
-    smokesta = "Smoking status", # added by Emma 1/22
+    FBMI = "Body mass index",
+    diabetes = "Diabetes",
+    f_dia = "Diabetes",
+    dbp = "Diastolic blood pressure",
+    DEM06 = "Education",
+    education = "Education",
+    egfr = "Estimated GFR",
+    heart = "Heart conditions",
+    f_hyp = "Hypertension",
+    hypertension = "Hypertension",
+    mi = "Myocardial infarction",
+    occup = "Occupation",
     physical.activity = "Physical activity",
-    vigeractiv = "Physical activity (Vigorous vs. other)", # added by Emma 1/22
-    education = "Education"
+    vigeractiv = "Physical activity (Vigorous vs. other)",
+    race = "Race/Ethnicity",
+    raceeth = "Race/Ethnicity",
+    sex = "Sex",
+    f_smoke = "Smoking status",
+    smokesta = "Smoking status",
+    smoking = "Smoking status",
+    stroke = "Stroke",
+    sbp = "Systolic blood pressure",
+    income_first = "income"
   )
+
+
+
 
   units <- c(
     age = "years",
@@ -43,11 +54,14 @@ make_labels <- function(...) {
   )
 
   levels <- list(
-    sex = c("male" = "Men", "female" = "Women"),
-    apoe4 = c("non_carrier" = "Non carrier", "carrier" = "Carrier"),
+    sex = c("male" = "Men",
+            "female" = "Women"),
+    apoe4 = c("non_carrier" = "Non carrier",
+              "carrier" = "Carrier"),
     race = c("White" = "White",
              "Black" = "Black",
              "Asian" = "Asian",
+             "Hispanic" = "Hispanic",
              "Other" = "Other")
   )
 

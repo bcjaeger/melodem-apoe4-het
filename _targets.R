@@ -93,6 +93,55 @@ fit_orsf_tar <- tar_target(
                 select_variables = FALSE)
 )
 
+fit_coxph_tar <- tar_target(
+  fit_coxph,
+  command = {
+
+    names_X <- names(labels$variables) %>%
+      unique() %>%
+      intersect(names(data_melodem$values))
+
+    ctns_X <- names_X %>%
+      intersect(names(select(data_melodem$values, where(is.numeric))))
+
+    formula <- paste("Surv(time, status)",
+                     paste(names_X, collapse = " + "),
+                     sep = " ~ ") %>%
+      as.formula()
+
+    formula_split <- update(formula, .~. -treatment)
+
+    data_model <- data_melodem$values %>%
+      select(time, status, all_of(names_X)) %>%
+      mutate(across(all_of(ctns_X), ~ .x / sd(.x, na.rm = TRUE)))
+
+    data_model_imputed <-
+      mice(data_model, m = 5, method = 'rf') %>%
+      complete(action = 'all')
+
+    fit_overall <- data_model_imputed %>%
+      map(~ coxph(formula = formula, data = .x)) %>%
+      pool()
+
+    fit_by_apoe <- data_model_imputed %>%
+      map(~ split(.x, .x$treatment)) %>%
+      map(~ list(carrier = coxph(formula = formula_split,
+                                 data = .x$carrier),
+                 non_carrier = coxph(formula = formula_split,
+                                     data = .x$non_carrier)))
+
+    fit_carrier <- pool(map(fit_by_apoe, "carrier"))
+    fit_non_carrier <- pool(map(fit_by_apoe, "non_carrier"))
+
+    list(
+      overall = fit_overall,
+      non_carrier = fit_non_carrier,
+      carrier = fit_carrier
+    )
+
+  }
+)
+
 fit_grf_time_tar <- tar_target(
   fit_grf_time,
   fit_grf_surv(data = data_melodem,
@@ -134,6 +183,17 @@ orsf_shareable_tar <- tar_target(
   orsf_summarize(fit_orsf)
 )
 
+coxph_shareable_tar <- tar_target(
+  coxph_shareable,
+  command = {
+    map_dfr(fit_coxph,
+            tidy, conf.int = TRUE, exponentiate = TRUE,
+            .id = 'group') %>%
+      as_tibble() %>%
+      select(group, term, estimate, p.value, conf.low, conf.high)
+  }
+)
+
 cate_shareable_tar <- tar_target(
   cate_shareable,
   command = {
@@ -161,13 +221,11 @@ grf_shareable_tar <- tar_target(
 
 )
 
-# - any labelled variable should be included in grf
-# - include race/ethnicity in blps
-
-# uncomment and run line below to save shareables
+# # uncomment and run line below to save shareables
 # write_shareables(.names = c("incidence_shareable",
 #                             "characteristics_shareable",
 #                             "orsf_shareable",
+#                             "coxph_shareable",
 #                             "grf_shareable"))
 
 
@@ -269,6 +327,61 @@ fig_incidence_tar <- tar_target(
   }
 )
 
+tbl_coxph_tar <- tar_target(
+  name = tbl_coxph,
+  command = {
+
+    shareable_subdirs <- list.dirs('shareable/')[-1]
+
+    if(is_empty(shareable_subdirs)) return(NULL)
+
+    names(shareable_subdirs) <- shareable_subdirs %>%
+      str_extract("_.*$") %>%
+      str_remove("^_")
+
+    tbl_data <- map_dfr(
+      shareable_subdirs,
+      .id = 'study',
+      .f = ~ {
+        fpath <- .x %>%
+          file.path('coxph_shareable.rds')
+
+        if(!file.exists(fpath)) return(NULL)
+
+        read_rds(fpath)
+      }
+    ) %>%
+      select(-p.value) %>%
+      mutate(
+        tbl_val = table_glue("{estimate}\n({conf.low}, {conf.high})"),
+        .keep = 'unused'
+      ) %>%
+      pivot_wider(names_from = group, values_from = tbl_val) %>%
+      mutate(term = recode(term,
+                           "sexfemale" = "Women versus men",
+                           "treatmentcarrier" = "Apolipoprotein E",
+                           "age" = "Age"))
+
+    as_grouped_data(tbl_data, groups = 'study') %>%
+      as_flextable(hide_grouplabel = TRUE) %>%
+      flextable_polish() %>%
+      flextable_autofit() %>%
+      set_header_labels(
+        term = "Characteristic",
+        overall = "Overall",
+        non_carrier = "Non-carrier",
+        carrier = "Carrier"
+      ) %>%
+      add_header_row(
+        values = c("Characteristic", "Hazard ratio (95% CI)"),
+        colwidths = c(1, 3)
+      ) %>%
+      merge_v(part = 'header')
+
+
+  }
+)
+
 tbl_het_tar <- tar_target(
   name = tbl_het,
   tidy_eval = FALSE,
@@ -294,6 +407,10 @@ tbl_het_tar <- tar_target(
       select(-rate_apriori) %>%
       unnest(blp) %>%
       filter(blp_term != "(Intercept)") %>%
+      mutate(blp_term = str_replace(blp_term, "raceeth", "race"),
+             blp_term = recode(blp_term,
+                               "race_unknown" = "race_Other",
+                               "race_Hisp" = "race_Hispanic")) %>%
       split(.$time_var) %>%
       map(
         ~ {
@@ -308,6 +425,7 @@ tbl_het_tar <- tar_target(
                    .keep = 'unused') %>%
             select(-blp_pval) %>%
             filter(str_detect(blp_term, "^age|^race|^sex")) %>%
+            filter(!str_detect(blp_term, "unknown$")) %>%
             filter(blp_term != .time_var) %>%
             pivot_wider(names_from = blp_term, values_from = blp)
 
@@ -317,15 +435,18 @@ tbl_het_tar <- tar_target(
 
           lookup_vec <- c(
             "Women versus men" = "sex_female",
+            "Men versus women" = "sex_male",
             "Age, per year" = "age",
             "Black versus White" = "race_Black",  # JW will come back
-            "Other versis White" = "race_Other",
-            "Asian versus White" = "race_Asian"
+            "White versus black" = "race_White",
+            "Other versus White" = "race_Other",
+            "Asian versus White" = "race_Asian",
+            "Hispanic versus White" = "race_Hispanic"
           )
 
           lookup_vec <- lookup_vec[lookup_vec %in% names(tbl_data_format)]
 
-          ncol_blp <- length(intersect(lookup_vec, names(tbl_data_format)))
+          ncol_blp <- ncol(tbl_data_format) - 5
 
           tbl_data_format %>%
             select(-time_var) %>%
@@ -383,17 +504,20 @@ targets <- list(
   horizon_grid_age_tar,
   time_vars_tar,
   fit_orsf_tar,
+  fit_coxph_tar,
   fit_grf_time_tar,
   fit_grf_age_tar,
   fit_grf_tar,
   characteristics_shareable_tar,
   incidence_shareable_tar,
   orsf_shareable_tar,
+  coxph_shareable_tar,
   cate_shareable_tar,
   grf_shareable_tar,
   tbl_characteristics_tar,
   fig_incidence_tar,
   tbl_het_tar,
+  tbl_coxph_tar,
   manuscript_tar
 )
 
